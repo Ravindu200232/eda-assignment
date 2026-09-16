@@ -51,11 +51,39 @@ public class StaffUserFlowTests
             new { username = user.Email, password = TestData.StaffPassword });
         await blockedLogin.ShouldHaveStatusAsync(HttpStatusCode.Forbidden);
 
+        // The token issued before deactivation must stop working too.
+        var oldToken = await _factory.ClientWithToken(firstLogin.Token).GetAsync("/api/auth/me");
+        var oldTokenProblem = await oldToken.ReadProblemAsync(HttpStatusCode.Unauthorized);
+        Assert.Contains("no longer active", oldTokenProblem.Detail);
+
         var reactivate = await admin.PatchJsonAsync($"/api/users/{user.Nic}/status", new { isActive = true });
         await reactivate.ShouldHaveStatusAsync(HttpStatusCode.OK);
 
         var loginAgain = await _factory.CreateClient().LoginAsync(user.Email, TestData.StaffPassword);
         Assert.Equal(user.Nic, loginAgain.User.Nic);
+    }
+
+    // After a role change the old token is refused, so the user must log in again.
+    [Fact]
+    public async Task RoleChange_InvalidatesExistingToken()
+    {
+        var admin = await _factory.AdminClientAsync();
+        var user = await TestData.CreateStaffAsync(admin, UserRole.GridOperator);
+        var operatorClient = await _factory.ClientForAsync(user.Email, TestData.StaffPassword);
+
+        var promote = await admin.PutJsonAsync($"/api/users/{user.Nic}", new
+        {
+            fullName = user.FullName,
+            email = user.Email,
+            phone = user.Phone,
+            role = "Backoffice"
+        });
+        await promote.ShouldHaveStatusAsync(HttpStatusCode.OK);
+
+        var response = await operatorClient.GetAsync("/api/auth/me");
+
+        var problem = await response.ReadProblemAsync(HttpStatusCode.Unauthorized);
+        Assert.Equal("Your access level has changed. Please log in again.", problem.Detail);
     }
 
     // A second account with the same NIC is refused with 409.

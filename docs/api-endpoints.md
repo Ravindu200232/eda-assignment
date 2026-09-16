@@ -16,7 +16,7 @@ Interactive documentation: `/swagger`.
   | Status | Meaning |
   |---|---|
   | 400 | Invalid input or a business rule was broken (`errors` lists field problems) |
-  | 401 | Not logged in, wrong password or expired token |
+  | 401 | Not logged in, wrong password, expired token, or the account was deactivated / changed role after login |
   | 403 | Logged in but not allowed (or account pending/deactivated at login) |
   | 404 | Record not found |
   | 409 | Duplicate value (NIC, email, code) or a clash with existing data |
