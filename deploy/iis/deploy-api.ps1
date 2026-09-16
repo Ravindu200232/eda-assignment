@@ -36,6 +36,26 @@ function New-Secret {
     return [Convert]::ToBase64String($bytes)
 }
 
+# Removes an inherited module or handler for this site only. The change is written to
+# applicationHost.config because many IIS installs lock these sections for web.config files.
+# Source: API-11 (sources/api-sources.md) - appcmd "/-[name=...]" with "/commit:apphost".
+function Remove-SiteEntry([string]$section, [string]$name) {
+    $appcmd = Join-Path $env:windir "System32\inetsrv\appcmd.exe"
+    $effective = & $appcmd list config $SiteName "-section:$section" "/config:*" | Out-String
+    if ($effective -notmatch "name=""$name""") {
+        Write-Host "   $name is already off for this site."
+        return
+    }
+
+    & $appcmd set config $SiteName "-section:$section" "/-[name='$name']" "/commit:apphost" | Out-Null
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "   Removed $name ($section)"
+    }
+    else {
+        Write-Warning "Could not remove $name. If PUT or DELETE return 405, remove it for the site in IIS Manager."
+    }
+}
+
 # Adds a secret to the settings object only if it is not there yet.
 function Add-SecretIfMissing($settings, [string]$section, [string]$name) {
     if (-not $settings.PSObject.Properties[$section]) {
@@ -90,12 +110,21 @@ else {
     Set-ItemProperty "IIS:\Sites\$SiteName" -Name applicationPool -Value $AppPoolName
 }
 
-Write-Step "7. Giving the application pool access to the files"
+Write-Step "7. Turning off WebDAV for this site (it blocks PUT and DELETE)"
+if (Test-Path (Join-Path $env:windir "System32\inetsrv\webdav.dll")) {
+    Remove-SiteEntry "system.webServer/modules" "WebDAVModule"
+    Remove-SiteEntry "system.webServer/handlers" "WebDAV"
+}
+else {
+    Write-Host "   WebDAV is not installed on this server."
+}
+
+Write-Step "8. Giving the application pool access to the files"
 icacls $SitePath /grant "IIS AppPool\${AppPoolName}:(OI)(CI)RX" /T /Q | Out-Null
 icacls (Join-Path $SitePath "logs") /grant "IIS AppPool\${AppPoolName}:(OI)(CI)M" /T /Q | Out-Null
 
 if ($OpenFirewall) {
-    Write-Step "8. Allowing devices on the local network to reach port $Port"
+    Write-Step "9. Allowing devices on the local network to reach port $Port"
     $ruleName = "SolarGrid API (TCP $Port)"
     if (-not (Get-NetFirewallRule -DisplayName $ruleName -ErrorAction SilentlyContinue)) {
         New-NetFirewallRule -DisplayName $ruleName -Direction Inbound -Protocol TCP -LocalPort $Port `

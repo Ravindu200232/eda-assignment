@@ -28,6 +28,11 @@ function Test-Step([string]$name, [scriptblock]$check) {
     }
 }
 
+# Windows PowerShell 5.1 returns a JSON array as one object; this sends out its items one by one.
+function Get-JsonList([string]$url) {
+    Invoke-RestMethod $url -Headers $script:headers | ForEach-Object { $_ }
+}
+
 Write-Host "Testing $BaseUrl`n"
 
 Test-Step "Health" {
@@ -53,6 +58,23 @@ Test-Step "Staff users" {
     "$($page.total) staff accounts"
 }
 
+# PUT and DELETE on a slot that does not exist must reach the API (404), not WebDAV (405).
+Test-Step "PUT and DELETE reach the API" {
+    foreach ($method in "Put", "Delete") {
+        $body = if ($method -eq "Put") { '{"capacity":1,"isOpen":true}' } else { $null }
+        try {
+            Invoke-RestMethod "$BaseUrl/api/slots/000000000000000000000000" -Method $method `
+                -Headers $script:headers -ContentType "application/json" -Body $body | Out-Null
+            throw "$method was accepted for a slot that does not exist"
+        }
+        catch [System.Net.WebException] {
+            $code = [int]$_.Exception.Response.StatusCode
+            if ($code -ne 404) { throw "$method returned $code (405 means WebDAV is still active)" }
+        }
+    }
+    "both answered 404 by the API"
+}
+
 # Added by Malith
 Test-Step "Public summary" {
     $summary = Invoke-RestMethod "$BaseUrl/api/dashboard/public"
@@ -71,19 +93,19 @@ Test-Step "Prosumer list" {
 
 # Added by Nimthara
 Test-Step "Station list" {
-    $stations = @(Invoke-RestMethod "$BaseUrl/api/stations" -Headers $script:headers)
+    $stations = @(Get-JsonList "$BaseUrl/api/stations")
     if ($stations.Count -gt 0) { $script:firstStationId = $stations[0].id }
     "$($stations.Count) stations"
 }
 
 Test-Step "Nearby stations (Malabe)" {
-    $nearby = @(Invoke-RestMethod "$BaseUrl/api/stations/nearby?lat=6.9147&lng=79.9729&radiusKm=50" -Headers $script:headers)
+    $nearby = @(Get-JsonList "$BaseUrl/api/stations/nearby?lat=6.9147&lng=79.9729&radiusKm=50")
     "$($nearby.Count) within 50 km"
 }
 
 Test-Step "Station slots" {
     if (-not $script:firstStationId) { throw "no station to check" }
-    $slots = @(Invoke-RestMethod "$BaseUrl/api/stations/$($script:firstStationId)/slots" -Headers $script:headers)
+    $slots = @(Get-JsonList "$BaseUrl/api/stations/$($script:firstStationId)/slots")
     "$($slots.Count) slots in the next 7 days"
 }
 

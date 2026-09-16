@@ -41,11 +41,21 @@ Each member owns one feature from end to end — in the API, the web app and the
 | **Nimthara** | Microgrid stations, battery slots, schedules, maps and nearby search |
 | **Hamnad** | Energy reservations, booking workflow and rules, booking history, QR code generation |
 
-A detailed list of who built which endpoint, page and screen is in the report and in each file's header comment.
+### Web API contributions
+
+| Member | Endpoints | Business rules and other work |
+|---|---|---|
+| **Ravindu** | `auth/*`, `users/*`, `checkin/*`, `health` | Project set-up, MongoDB data layer and indexes, seed data, JWT login and role checks, blocking tokens of deactivated accounts, staff account rules, QR verification with a 2-hour check-in window, transfer completion, error handling, Swagger, IIS hosting scripts |
+| **Malith** | `prosumers/*`, `dashboard/*` | NIC registration (pending until activated), profile updates, password-confirmed deactivation, Backoffice-only activation, activation queue, live dashboard numbers (Sri Lanka "today") |
+| **Nimthara** | `stations/*`, `slots/*` | Station codes, GPS, capacity and schedule validation, battery slot availability, deactivation blocked by active bookings, nearby search with `$geoNear`, slot creation and weekly generation inside opening hours |
+| **Hamnad** | `reservations/*` | 7-day booking window, 12-hour change and cancel notice, atomic bay counter (no overbooking), overlap check, approval and rejection, signed QR codes, current/pending/history lists and search |
+
+Every source file starts with a header that names its owner.
 
 ## Branches
 
-The work is split into 12 branches: 3 parts × 4 members. Each member's branches have the same name in every part.
+The work is split into 12 member branches (3 parts × 4 members) and 3 integration branches.
+Each member's branches have the same name in every part.
 
 | Member | API | Web | Android |
 |---|---|---|---|
@@ -53,9 +63,14 @@ The work is split into 12 branches: 3 parts × 4 members. Each member's branches
 | Malith | `api/malith-prosumers-dashboard` | `web/malith-prosumers-dashboard` | `android/malith-prosumers-dashboard` |
 | Nimthara | `api/nimthara-stations-slots-maps` | `web/nimthara-stations-slots-maps` | `android/nimthara-stations-slots-maps` |
 | Hamnad | `api/hamnad-reservations-qr` | `web/hamnad-reservations-qr` | `android/hamnad-reservations-qr` |
+| **Integration** | `api/integration` | `web/integration` | `android/integration` |
 
-Every branch is merged into `main` through a pull request. Within each part the core branch is merged first, and
-reservations are merged last because they depend on stations and prosumers.
+How work reaches `main`:
+
+1. Each member branch is merged into its part's integration branch through a pull request.
+   The core branch goes first and reservations go last, because they depend on stations and prosumers.
+2. The complete unit and end-to-end test suite runs on the integration branch.
+3. When everything passes, the integration branch is merged into `main` through a pull request.
 
 ## Folder structure
 
@@ -79,7 +94,7 @@ dotnet run --project src/SolarGrid.Api
 
 Open **http://localhost:5080/swagger**, call `POST /api/auth/login`, press **Authorize** and paste the token.
 
-To host the API on IIS, see [docs/deployment.md](docs/deployment.md).
+To host the API on IIS (http://localhost:8080/swagger), see [docs/deployment.md](docs/deployment.md).
 
 ### Demo accounts
 
@@ -93,6 +108,10 @@ Created automatically on first start (`App:SeedDemoData`):
 | Prosumer | `nadeesha@example.com` / `995671234V` | `Prosumer@123` | Active |
 | Prosumer | `tharindu@example.com` / `200112304567` | `Prosumer@123` | Pending activation |
 | Prosumer | `dilani@example.com` / `882345678V` | `Prosumer@123` | Deactivated |
+
+The demo data also contains bookings in every status. Booking `RSV-DEMO-0006` is approved and starts within
+two hours of the first start-up, so its QR code can be checked in straight away. Delete the `SolarGridDb`
+database in MongoDB Compass and restart the API to get fresh demo data.
 
 ## Tests
 

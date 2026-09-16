@@ -123,11 +123,11 @@ Microsoft Learn articles are published under CC BY 4.0, with code samples under 
 
 | | |
 |---|---|
-| **What it does** | Lists IIS modules that do not work with ASP.NET Core (WebDAV is one of them) and shows how to remove a module in `web.config`. Without this, IIS can block PUT and DELETE requests. |
-| **Where we used it** | `api/src/SolarGrid.Api/web.config` |
-| **Source** | Microsoft Learn — *IIS modules with ASP.NET Core* |
-| **Link** | https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/modules |
-| **How much we used** | The `<remove name="..." />` element for the WebDAV module and handler. |
+| **What it does** | Explains that the IIS WebDAV module answers PUT and DELETE requests with "405 Method Not Allowed" before the API sees them, and that it should be removed for the site. The appcmd guide shows how to remove a module or handler for one site and how `/commit:apphost` writes the change to `applicationHost.config` when a section is locked. |
+| **Where we used it** | `deploy/iis/deploy-api.ps1` (`Remove-SiteEntry`, step 7), `docs/deployment.md` |
+| **Sources** | Microsoft Learn — *Troubleshoot Web API2 apps that work in Visual Studio and fail on a production IIS server*; Microsoft Learn — *Getting Started with AppCmd.exe*; Microsoft Learn — *IIS modules with ASP.NET Core* |
+| **Links** | https://learn.microsoft.com/en-us/aspnet/web-api/overview/testing-and-debugging/troubleshooting-http-405-errors-after-publishing-web-api-applications · https://learn.microsoft.com/en-us/iis/get-started/getting-started-with-iis/getting-started-with-appcmdexe · https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/modules |
+| **How much we used** | The removal of the `WebDAVModule` module and `WebDAV` handler, and the appcmd `/-[name='…']` and `/commit:apphost` options. The check that runs it only when WebDAV is installed is our own. |
 | **Added by** | Ravindu |
 
 ## API-12 · Database indexes

@@ -135,6 +135,27 @@ Each response includes `canModify` (the 12-hour rule), `modifyDeadline` and `has
 
 QR payload format: `SSG1.<reservationId>.<nonce>.<HMAC-SHA256 signature>`.
 
+## Operator check-in — *Ravindu*
+
+Both endpoints require a **Backoffice or Grid Operator** token.
+
+| Method | Path | Description |
+|---|---|---|
+| POST | `/api/checkin/verify` | Body `{ payload }` — the text read from the prosumer's QR code. Returns `{ canComplete, message, prosumerPhone, checkInOpensAt, checkInClosesAt, reservation }`. |
+| POST | `/api/checkin/{reservationId}/complete` | Body `{ payload, deliveredKwh }`. The code is checked again; the booking becomes **Completed** and the code can no longer be used. |
+
+Check-in rules:
+
+| Situation | Result |
+|---|---|
+| Text is not a `SSG1.…` code | 400 "This is not a Smart Solar booking QR code." |
+| Signature does not match (edited or forged code) | 400 "This QR code is not genuine." |
+| Booking was changed and approved again (older code) | 400 "This QR code is out of date…" |
+| Booking is pending, cancelled, rejected or already completed | 200 with `canComplete: false` and the reason |
+| Earlier than 2 hours before the start, or later than 1 hour after the end | 200 with `canComplete: false` and the opening time / "has passed" |
+| Delivered energy ≤ 0 or above the station's `bayCapacityKwh` | 400 |
+| Code from a different booking than `{reservationId}` | 400 |
+
 ## Health — *Ravindu*
 
 | Method | Path | Who | Description |
