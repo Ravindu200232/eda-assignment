@@ -36,6 +36,11 @@ public static class ServiceSetup
         services.AddOptions<AppSettings>()
             .Bind(config.GetSection(AppSettings.SectionName));
 
+        services.AddOptions<QrSettings>()
+            .Bind(config.GetSection(QrSettings.SectionName))
+            .Validate(s => s.SigningKey.Length >= 32, "Qr:SigningKey must be at least 32 characters long.")
+            .ValidateOnStart();
+
         services.AddSingleton(TimeProvider.System);
         services.AddSingleton(sp => new AppClock(
             sp.GetRequiredService<TimeProvider>(),
@@ -75,6 +80,7 @@ public static class ServiceSetup
     {
         services.AddSingleton<IPasswordHasher>(new PasswordHasher(workFactor: 11));
         services.AddSingleton<IJwtTokenService, JwtTokenService>();
+        services.AddSingleton<IQrTokenService, QrTokenService>();
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
