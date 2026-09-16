@@ -31,4 +31,11 @@ public interface IReservationRepository
 
     // Added by Nimthara for station deactivation.
     Task<bool> HasActiveForStationAsync(string stationId, DateTime nowUtc);
+
+    // Added by Hamnad for the booking workflow.
+    Task<(IReadOnlyList<EnergyReservation> Items, long Total)> SearchAsync(ReservationFilter filter, int page, int pageSize);
+
+    Task<bool> HasOverlapForProsumerAsync(string prosumerNic, DateTime startUtc, DateTime endUtc, string? exceptId = null);
+
+    Task<bool> ReplaceIfStatusAsync(EnergyReservation reservation, ReservationStatus expectedStatus);
 }

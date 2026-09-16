@@ -43,7 +43,7 @@ The script (`deploy/iis/deploy-api.ps1`):
 1. Publishes a Release build to `api/publish`.
 2. Stops the site if it is already running.
 3. Copies the files to `C:\inetpub\SolarGridApi`.
-4. Creates `appsettings.Production.json` there with a random JWT signing key. The file is kept on later deployments and never goes into Git.
+4. Creates `appsettings.Production.json` there with random keys for signing login tokens (`Jwt:Key`) and booking QR codes (`Qr:SigningKey`). The file is kept on later deployments, so existing QR codes stay valid, and it never goes into Git.
 5. Creates the application pool **SolarGridApiPool** with *.NET CLR version = No Managed Code*.
 6. Creates the website **SolarGridApi** on **port 8080**.
 7. Gives the application pool read access to the folder, and write access to `logs`.
@@ -65,7 +65,10 @@ All checks should print `PASS`. Swagger is available at `http://localhost:8080/s
 4. Create `C:\inetpub\SolarGridApi\appsettings.Production.json`:
 
    ```json
-   { "Jwt": { "Key": "<a random string of at least 32 characters>" } }
+   {
+     "Jwt": { "Key": "<a random string of at least 32 characters>" },
+     "Qr": { "SigningKey": "<another random string of at least 32 characters>" }
+   }
    ```
 
 5. Give `IIS AppPool\SolarGridApiPool` *Read & execute* permission on the folder.
@@ -83,7 +86,7 @@ All checks should print `PASS`. Swagger is available at `http://localhost:8080/s
 | Symptom | Likely cause | Fix |
 |---|---|---|
 | HTTP **500.19** | Hosting Bundle missing, or installed before IIS | Install or repair the .NET Hosting Bundle, then run `iisreset` |
-| HTTP **500.30** / app fails to start | Missing or short `Jwt:Key`, or a settings error | Check `appsettings.Production.json`; set `stdoutLogEnabled="true"` in `web.config` and read `logs\` |
+| HTTP **500.30** / app fails to start | Missing or short `Jwt:Key` / `Qr:SigningKey`, or a settings error | Check `appsettings.Production.json`; set `stdoutLogEnabled="true"` in `web.config` and read `logs\` |
 | **405** on PUT/DELETE | WebDAV module intercepts the request | Already removed in our `web.config` (see sources API-11) |
 | `/api/health` returns **503** | MongoDB service stopped | `Start-Service MongoDB` |
 | Phone cannot connect | Firewall or wrong address | Deploy with `-OpenFirewall`; use the PC's LAN IP, not `localhost` |

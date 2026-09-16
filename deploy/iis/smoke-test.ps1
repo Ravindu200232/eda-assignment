@@ -87,6 +87,17 @@ Test-Step "Station slots" {
     "$($slots.Count) slots in the next 7 days"
 }
 
+# Added by Hamnad
+Test-Step "Pending reservations" {
+    $page = Invoke-RestMethod "$BaseUrl/api/reservations?scope=pending&pageSize=5" -Headers $script:headers
+    "$($page.total) waiting for approval"
+}
+
+Test-Step "Reservation history" {
+    $page = Invoke-RestMethod "$BaseUrl/api/reservations?scope=history&pageSize=5" -Headers $script:headers
+    "$($page.total) finished bookings"
+}
+
 if ($script:failures -gt 0) {
     Write-Host "`n$($script:failures) check(s) failed." -ForegroundColor Red
     exit 1

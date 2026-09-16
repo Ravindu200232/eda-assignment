@@ -70,6 +70,7 @@ Write-Step "4. Checking production secrets (kept between deployments)"
 $secretsFile = Join-Path $SitePath "appsettings.Production.json"
 $secrets = if (Test-Path $secretsFile) { Get-Content $secretsFile -Raw | ConvertFrom-Json } else { [pscustomobject]@{} }
 Add-SecretIfMissing $secrets "Jwt" "Key"
+Add-SecretIfMissing $secrets "Qr" "SigningKey"
 $secrets | ConvertTo-Json -Depth 5 | Set-Content -Path $secretsFile -Encoding UTF8
 
 Write-Step "5. Preparing the application pool '$AppPoolName'"

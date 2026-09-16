@@ -43,6 +43,8 @@ reader without a programming background, can see **what** we used, **where** we 
 | API-12 | Database indexes | Ravindu | MongoDB Docs |
 | API-13 | Adding up completed transfers (aggregation) | Malith | MongoDB Docs |
 | API-14 | Finding the nearest stations ($geoNear) | Nimthara | MongoDB Manual |
+| API-15 | Never overbooking a slot (atomic update) | Hamnad | MongoDB Manual |
+| API-16 | Signing the booking QR code (HMAC) | Hamnad | Microsoft Learn |
 
 ## Glossary (plain English)
 
