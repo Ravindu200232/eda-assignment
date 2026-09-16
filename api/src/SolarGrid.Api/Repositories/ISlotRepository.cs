@@ -21,4 +21,7 @@ public interface ISlotRepository
     Task UpdateAsync(EnergySlot slot);
 
     Task DeleteAsync(string id);
+
+    // Added by Nimthara to stop overlapping slots.
+    Task<bool> HasOverlapAsync(string stationId, DateTime startUtc, DateTime endUtc);
 }

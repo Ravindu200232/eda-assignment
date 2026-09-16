@@ -111,4 +111,17 @@ public class ReservationRepository : IReservationRepository
 
         return totals == null ? (0, 0) : (totals.Count, totals.Energy ?? 0);
     }
+
+    // True when a station still has pending or approved bookings that have not ended.
+    public async Task<bool> HasActiveForStationAsync(string stationId, DateTime nowUtc)
+    {
+        if (!ObjectId.TryParse(stationId, out _))
+            return false;
+
+        return await _reservations
+            .Find(r => r.StationId == stationId
+                && (r.Status == ReservationStatus.Pending || r.Status == ReservationStatus.Approved)
+                && r.EndTime > nowUtc)
+            .AnyAsync();
+    }
 }

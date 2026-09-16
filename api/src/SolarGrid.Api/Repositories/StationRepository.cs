@@ -6,6 +6,7 @@
  */
 using System.Text.RegularExpressions;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using SolarGrid.Api.Data;
 using SolarGrid.Api.Models;
@@ -81,5 +82,28 @@ public class StationRepository : IStationRepository
             : Builders<SolarStation>.Filter.Empty;
 
         return await _stations.CountDocumentsAsync(filter);
+    }
+
+    // Active stations within a radius, nearest first, with the distance in km.
+    // Source: API-14 (sources/api-sources.md) - $geoNear on a 2dsphere index.
+    public async Task<IReadOnlyList<(SolarStation Station, double DistanceKm)>> FindNearbyAsync(
+        double latitude, double longitude, double radiusKm, int limit)
+    {
+        var options = new GeoNearOptions<SolarStation, BsonDocument>
+        {
+            DistanceField = "distanceMeters",
+            MaxDistance = radiusKm * 1000,
+            Spherical = true,
+            Query = Builders<SolarStation>.Filter.Eq(s => s.Status, StationStatus.Active)
+        };
+
+        var documents = await _stations.Aggregate()
+            .GeoNear(SolarStation.ToPoint(latitude, longitude), options)
+            .Limit(limit)
+            .ToListAsync();
+
+        return documents
+            .Select(d => (BsonSerializer.Deserialize<SolarStation>(d), Math.Round(d["distanceMeters"].ToDouble() / 1000, 2)))
+            .ToList();
     }
 }

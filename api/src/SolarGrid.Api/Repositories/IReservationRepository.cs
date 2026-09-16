@@ -28,4 +28,7 @@ public interface IReservationRepository
     Task<IReadOnlyList<EnergyReservation>> ListUpcomingAsync(DateTime nowUtc, int limit, string? prosumerNic = null);
 
     Task<(long Count, double TotalKwh)> GetCompletedTotalsAsync(string? prosumerNic = null);
+
+    // Added by Nimthara for station deactivation.
+    Task<bool> HasActiveForStationAsync(string stationId, DateTime nowUtc);
 }
