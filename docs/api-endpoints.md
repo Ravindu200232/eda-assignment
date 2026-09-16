@@ -90,6 +90,7 @@ All numbers are calculated from the database on every call. "Today" means today 
 | PATCH | `/api/stations/{id}/battery-slots` | Staff | `{ availableBatterySlots }` — how many bays can be used now (0 to total). |
 | POST | `/api/stations/{id}/deactivate` | Backoffice | Blocked while the station has pending or approved reservations that have not ended. |
 | POST | `/api/stations/{id}/activate` | Backoffice | Bring a station back into service. |
+| DELETE | `/api/stations/{id}` | Backoffice | Delete a station that was **never booked**, together with its empty slots. Stations with booking history return 400 and can only be deactivated. Returns 204. |
 
 Each station response includes `bayCapacityKwh` (storage ÷ battery slots), the most energy one booking can use.
 

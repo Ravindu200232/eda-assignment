@@ -126,6 +126,15 @@ public class ReservationRepository : IReservationRepository
             .AnyAsync();
     }
 
+    // True when any booking, in any status, was ever made at the station.
+    public async Task<bool> AnyForStationAsync(string stationId)
+    {
+        if (!ObjectId.TryParse(stationId, out _))
+            return false;
+
+        return await _reservations.Find(r => r.StationId == stationId).AnyAsync();
+    }
+
     // One page of reservations that match the filter.
     public async Task<(IReadOnlyList<EnergyReservation> Items, long Total)> SearchAsync(ReservationFilter filter, int page, int pageSize)
     {
