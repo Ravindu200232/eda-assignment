@@ -79,6 +79,7 @@ public static class ServiceSetup
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProsumerService, ProsumerService>();
+        services.AddScoped<IDashboardService, DashboardService>();
 
         return services;
     }
