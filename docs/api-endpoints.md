@@ -132,7 +132,7 @@ Booking rules enforced by the API:
 | A free bay in the slot (taken atomically, never overbooked) | 409 |
 | Someone else changed the booking at the same moment | 409 |
 
-Each response includes `canModify` (the 12-hour rule), `modifyDeadline` and `hasQrCode`, so the apps can show or hide buttons without re-implementing the rules.
+Each response includes `canModify` (the 12-hour rule), `modifyDeadline`, `hasQrCode` and `isPast` (the booking's time has ended — a pending or approved booking with `isPast` was missed), so the apps can show or hide buttons and label bookings without re-implementing the rules.
 
 QR payload format: `SSG1.<reservationId>.<nonce>.<HMAC-SHA256 signature>`.
 

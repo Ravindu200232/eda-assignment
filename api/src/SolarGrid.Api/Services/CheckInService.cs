@@ -160,8 +160,10 @@ public class CheckInService : ICheckInService
     // Uses the booking rules to fill the response flags.
     private ReservationResponse ToResponse(EnergyReservation reservation)
     {
+        var now = _clock.UtcNow;
         return reservation.ToResponse(
-            ReservationService.CanChange(reservation, _clock.UtcNow),
-            reservation.StartTime - ReservationService.ChangeNotice);
+            ReservationService.CanChange(reservation, now),
+            reservation.StartTime - ReservationService.ChangeNotice,
+            ReservationService.HasEnded(reservation, now));
     }
 }
