@@ -143,6 +143,9 @@ public class ReservationResponse
     public DateTime ModifyDeadline { get; set; }
 
     public bool HasQrCode { get; set; }
+
+    // True when the booking's time has already ended (used for "missed" bookings in history).
+    public bool IsPast { get; set; }
 }
 
 public class QrCodeResponse
@@ -164,7 +167,7 @@ public class QrCodeResponse
 public static class ReservationMappings
 {
     // Copies a reservation into a response. The service decides the rule flags.
-    public static ReservationResponse ToResponse(this EnergyReservation r, bool canModify, DateTime modifyDeadline)
+    public static ReservationResponse ToResponse(this EnergyReservation r, bool canModify, DateTime modifyDeadline, bool isPast)
     {
         return new ReservationResponse
         {
@@ -195,7 +198,8 @@ public static class ReservationMappings
             CompletedAt = r.CompletedAt,
             CanModify = canModify,
             ModifyDeadline = modifyDeadline,
-            HasQrCode = r.Status == ReservationStatus.Approved && !string.IsNullOrEmpty(r.QrNonce)
+            HasQrCode = r.Status == ReservationStatus.Approved && !string.IsNullOrEmpty(r.QrNonce),
+            IsPast = isPast
         };
     }
 }

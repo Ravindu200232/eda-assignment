@@ -439,6 +439,21 @@ public class ReservationServiceTests
         Assert.Equal(result.StartTime.AddHours(-12), result.ModifyDeadline);
     }
 
+    // A booking whose time has ended is flagged as past; a future one is not.
+    [Fact]
+    public async Task GetAsync_SetsIsPastFromTheEndTime()
+    {
+        GivenBooking(ReservationStatus.Approved, TimeSpan.FromHours(-3));
+        var ended = await _service.GetAsync(BookingId, _prosumer);
+
+        GivenBooking(ReservationStatus.Approved, TimeSpan.FromHours(3));
+        var upcoming = await _service.GetAsync(BookingId, _prosumer);
+
+        Assert.True(ended.IsPast);
+        Assert.False(ended.CanModify);
+        Assert.False(upcoming.IsPast);
+    }
+
     // Prosumers always get their own bookings, whatever NIC they ask for.
     [Fact]
     public async Task ListAsync_Prosumer_IsLimitedToOwnBookings()

@@ -249,6 +249,24 @@ public class ReservationFlowTests
         Assert.Empty(otherList.Items);
     }
 
+    // History marks approved bookings whose time has passed as past ("missed"), and live ones are not past.
+    [Fact]
+    public async Task History_FlagsEndedBookingsAsPast()
+    {
+        var setup = await ReservationTestData.CreateSetupAsync(_factory);
+        var missed = await TestDb.InsertReservationAsync(_factory, setup.Prosumer.Nic, ReservationStatus.Approved,
+            TimeSpan.FromDays(-1), stationId: setup.Station.Id);
+        var live = await ReservationTestData.BookAsync(setup.ProsumerClient, setup.Slot.Id);
+
+        var history = await (await setup.ProsumerClient.GetAsync("/api/reservations?scope=history"))
+            .ReadAsync<PagedResult<ReservationResponse>>();
+
+        var item = Assert.Single(history.Items, r => r.Id == missed.Id);
+        Assert.True(item.IsPast);
+        Assert.Equal(ReservationStatus.Approved, item.Status);
+        Assert.False(live.IsPast);
+    }
+
     // The prosumer dashboard follows real bookings and approvals.
     [Fact]
     public async Task Dashboard_TracksBookingAndApproval()

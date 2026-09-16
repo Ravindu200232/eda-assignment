@@ -74,6 +74,12 @@ public class SlotRepository : ISlotRepository
             .AnyAsync();
     }
 
+    // Removes every slot of a station (used when an unused station is deleted).
+    public Task DeleteByStationAsync(string stationId)
+    {
+        return _slots.DeleteManyAsync(s => s.StationId == stationId);
+    }
+
     // Takes one bay in a single database step, only if the slot is open and not full.
     // Two people can never get the last bay, because the check and the +1 happen together.
     // Source: API-15 (sources/api-sources.md) - atomic update with a condition ($inc + $expr).

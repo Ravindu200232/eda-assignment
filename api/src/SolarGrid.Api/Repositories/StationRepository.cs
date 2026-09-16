@@ -84,6 +84,12 @@ public class StationRepository : IStationRepository
         return await _stations.CountDocumentsAsync(filter);
     }
 
+    // Removes a station document.
+    public Task DeleteAsync(string id)
+    {
+        return _stations.DeleteOneAsync(s => s.Id == id);
+    }
+
     // Active stations within a radius, nearest first, with the distance in km.
     // Source: API-14 (sources/api-sources.md) - $geoNear on a 2dsphere index.
     public async Task<IReadOnlyList<(SolarStation Station, double DistanceKm)>> FindNearbyAsync(

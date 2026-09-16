@@ -90,6 +90,7 @@ All numbers are calculated from the database on every call. "Today" means today 
 | PATCH | `/api/stations/{id}/battery-slots` | Staff | `{ availableBatterySlots }` — how many bays can be used now (0 to total). |
 | POST | `/api/stations/{id}/deactivate` | Backoffice | Blocked while the station has pending or approved reservations that have not ended. |
 | POST | `/api/stations/{id}/activate` | Backoffice | Bring a station back into service. |
+| DELETE | `/api/stations/{id}` | Backoffice | Delete a station that was **never booked**, together with its empty slots. Stations with booking history return 400 and can only be deactivated. Returns 204. |
 
 Each station response includes `bayCapacityKwh` (storage ÷ battery slots), the most energy one booking can use.
 
@@ -131,7 +132,7 @@ Booking rules enforced by the API:
 | A free bay in the slot (taken atomically, never overbooked) | 409 |
 | Someone else changed the booking at the same moment | 409 |
 
-Each response includes `canModify` (the 12-hour rule), `modifyDeadline` and `hasQrCode`, so the apps can show or hide buttons without re-implementing the rules.
+Each response includes `canModify` (the 12-hour rule), `modifyDeadline`, `hasQrCode` and `isPast` (the booking's time has ended — a pending or approved booking with `isPast` was missed), so the apps can show or hide buttons and label bookings without re-implementing the rules.
 
 QR payload format: `SSG1.<reservationId>.<nonce>.<HMAC-SHA256 signature>`.
 
