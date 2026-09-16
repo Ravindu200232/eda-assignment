@@ -11,6 +11,7 @@ using SolarGrid.Api.Common;
 using SolarGrid.Api.Data;
 using SolarGrid.Api.Repositories;
 using SolarGrid.Api.Security;
+using SolarGrid.Api.Services;
 
 namespace SolarGrid.Api.Extensions;
 
@@ -74,6 +75,9 @@ public static class ServiceSetup
     {
         services.AddSingleton<IPasswordHasher>(new PasswordHasher(workFactor: 11));
         services.AddSingleton<IJwtTokenService, JwtTokenService>();
+
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }

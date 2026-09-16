@@ -1,0 +1,50 @@
+### Smart Solar Microgrid API - sample requests
+### Open in Visual Studio or VS Code (REST Client) and press "Send Request".
+### Run the "login" request first; the token is reused by the others.
+
+@host = http://localhost:5080
+@token = {{login.response.body.$.token}}
+
+### Health check
+GET {{host}}/api/health
+
+### Log in as the default Backoffice user
+# @name login
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin@solargrid.lk",
+  "password": "Admin@123"
+}
+
+### Who am I?
+GET {{host}}/api/auth/me
+Authorization: Bearer {{token}}
+
+### List staff users
+GET {{host}}/api/users?page=1&pageSize=20
+Authorization: Bearer {{token}}
+
+### Create a Grid Operator
+POST {{host}}/api/users
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nic": "199512345678",
+  "fullName": "Sachini Wijesinghe",
+  "email": "sachini@solargrid.lk",
+  "phone": "0771112233",
+  "password": "Operator@123",
+  "role": "GridOperator"
+}
+
+### Deactivate that operator
+PATCH {{host}}/api/users/199512345678/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "isActive": false
+}
