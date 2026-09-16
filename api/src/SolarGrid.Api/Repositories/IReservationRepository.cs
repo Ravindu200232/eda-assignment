@@ -29,8 +29,10 @@ public interface IReservationRepository
 
     Task<(long Count, double TotalKwh)> GetCompletedTotalsAsync(string? prosumerNic = null);
 
-    // Added by Nimthara for station deactivation.
+    // Added by Nimthara for station deactivation and deletion.
     Task<bool> HasActiveForStationAsync(string stationId, DateTime nowUtc);
+
+    Task<bool> AnyForStationAsync(string stationId);
 
     // Added by Hamnad for the booking workflow.
     Task<(IReadOnlyList<EnergyReservation> Items, long Total)> SearchAsync(ReservationFilter filter, int page, int pageSize);

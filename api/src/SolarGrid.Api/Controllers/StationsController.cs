@@ -91,6 +91,15 @@ public class StationsController : ControllerBase
         return Ok(await _stationService.DeactivateAsync(id));
     }
 
+    // DELETE api/stations/{id} - only stations that were never booked.
+    [HttpDelete("{id}")]
+    [Authorize(Roles = Roles.Backoffice)]
+    public async Task<IActionResult> Delete(string id)
+    {
+        await _stationService.DeleteAsync(id);
+        return NoContent();
+    }
+
     // POST api/stations/{id}/activate
     [HttpPost("{id}/activate")]
     [Authorize(Roles = Roles.Backoffice)]

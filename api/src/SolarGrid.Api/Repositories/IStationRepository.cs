@@ -25,7 +25,9 @@ public interface IStationRepository
     // Added by Malith for dashboards.
     Task<long> CountAsync(StationStatus? status = null);
 
-    // Added by Nimthara for the map.
+    // Added by Nimthara for the map and for deleting unused stations.
     Task<IReadOnlyList<(SolarStation Station, double DistanceKm)>> FindNearbyAsync(
         double latitude, double longitude, double radiusKm, int limit);
+
+    Task DeleteAsync(string id);
 }

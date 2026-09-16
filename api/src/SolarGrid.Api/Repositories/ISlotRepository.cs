@@ -22,8 +22,10 @@ public interface ISlotRepository
 
     Task DeleteAsync(string id);
 
-    // Added by Nimthara to stop overlapping slots.
+    // Added by Nimthara to stop overlapping slots and to clean up deleted stations.
     Task<bool> HasOverlapAsync(string stationId, DateTime startUtc, DateTime endUtc);
+
+    Task DeleteByStationAsync(string stationId);
 
     // Added by Hamnad: atomic bay counter for bookings.
     Task<bool> TryTakeBayAsync(string slotId);

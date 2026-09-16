@@ -118,6 +118,10 @@ Content-Type: application/json
   "slotMinutes": 120
 }
 
+### Delete a station that was never booked (Backoffice) - run this last, it removes the station above
+# DELETE {{host}}/api/stations/{{newStation.response.body.$.id}}
+# Authorization: Bearer {{token}}
+
 ### Take two battery slots out of service (Grid Operator or Backoffice)
 PATCH {{host}}/api/stations/{{newStation.response.body.$.id}}/battery-slots
 Authorization: Bearer {{token}}
