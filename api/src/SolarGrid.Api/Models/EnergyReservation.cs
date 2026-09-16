@@ -59,6 +59,11 @@ public class EnergyReservation
 
     public DateTime? ApprovedAt { get; set; }
 
+    // Added by Hamnad for the approval workflow.
+    public string? RejectedBy { get; set; }
+
+    public DateTime? RejectedAt { get; set; }
+
     public string? CancelledBy { get; set; }
 
     public DateTime? CancelledAt { get; set; }

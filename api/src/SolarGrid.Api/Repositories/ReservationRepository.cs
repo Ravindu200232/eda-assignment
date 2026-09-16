@@ -4,6 +4,7 @@
  * Owner:   Ravindu
  * Purpose: MongoDB implementation of IReservationRepository.
  */
+using System.Text.RegularExpressions;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using SolarGrid.Api.Data;
@@ -123,5 +124,88 @@ public class ReservationRepository : IReservationRepository
                 && (r.Status == ReservationStatus.Pending || r.Status == ReservationStatus.Approved)
                 && r.EndTime > nowUtc)
             .AnyAsync();
+    }
+
+    // One page of reservations that match the filter.
+    public async Task<(IReadOnlyList<EnergyReservation> Items, long Total)> SearchAsync(ReservationFilter filter, int page, int pageSize)
+    {
+        var f = Builders<EnergyReservation>.Filter;
+        var query = f.Empty;
+
+        if (filter.ProsumerNic != null)
+            query &= f.Eq(r => r.ProsumerNic, filter.ProsumerNic);
+
+        if (filter.StationId != null)
+        {
+            if (!ObjectId.TryParse(filter.StationId, out _))
+                return (Array.Empty<EnergyReservation>(), 0);
+
+            query &= f.Eq(r => r.StationId, filter.StationId);
+        }
+
+        if (filter.Statuses is { Count: > 0 })
+            query &= f.In(r => r.Status, filter.Statuses);
+
+        if (filter.EndsAfterUtc.HasValue)
+            query &= f.Gt(r => r.EndTime, filter.EndsAfterUtc.Value);
+
+        if (filter.HistoryAtUtc.HasValue)
+        {
+            var finished = new[] { ReservationStatus.Completed, ReservationStatus.Cancelled, ReservationStatus.Rejected };
+            query &= f.Or(f.In(r => r.Status, finished), f.Lte(r => r.EndTime, filter.HistoryAtUtc.Value));
+        }
+
+        if (filter.StartFromUtc.HasValue)
+            query &= f.Gte(r => r.StartTime, filter.StartFromUtc.Value);
+
+        if (filter.StartBeforeUtc.HasValue)
+            query &= f.Lt(r => r.StartTime, filter.StartBeforeUtc.Value);
+
+        if (!string.IsNullOrWhiteSpace(filter.Search))
+        {
+            var pattern = new BsonRegularExpression(Regex.Escape(filter.Search.Trim()), "i");
+            query &= f.Or(
+                f.Regex(r => r.ReferenceNo, pattern),
+                f.Regex(r => r.StationName, pattern),
+                f.Regex(r => r.ProsumerName, pattern),
+                f.Regex(r => r.ProsumerNic, pattern));
+        }
+
+        var sort = filter.NewestFirst
+            ? Builders<EnergyReservation>.Sort.Descending(r => r.StartTime)
+            : Builders<EnergyReservation>.Sort.Ascending(r => r.StartTime);
+
+        var total = await _reservations.CountDocumentsAsync(query);
+        var items = await _reservations.Find(query)
+            .Sort(sort)
+            .Skip((page - 1) * pageSize)
+            .Limit(pageSize)
+            .ToListAsync();
+
+        return (items, total);
+    }
+
+    // True when the prosumer already has a live booking that overlaps the window.
+    public async Task<bool> HasOverlapForProsumerAsync(string prosumerNic, DateTime startUtc, DateTime endUtc, string? exceptId = null)
+    {
+        var f = Builders<EnergyReservation>.Filter;
+        var query = f.Eq(r => r.ProsumerNic, prosumerNic)
+            & f.In(r => r.Status, new[] { ReservationStatus.Pending, ReservationStatus.Approved })
+            & f.Lt(r => r.StartTime, endUtc)
+            & f.Gt(r => r.EndTime, startUtc);
+
+        if (exceptId != null)
+            query &= f.Ne(r => r.Id, exceptId);
+
+        return await _reservations.Find(query).AnyAsync();
+    }
+
+    // Saves the reservation only if nobody changed its status in the meantime.
+    public async Task<bool> ReplaceIfStatusAsync(EnergyReservation reservation, ReservationStatus expectedStatus)
+    {
+        var result = await _reservations.ReplaceOneAsync(
+            r => r.Id == reservation.Id && r.Status == expectedStatus, reservation);
+
+        return result.MatchedCount == 1;
     }
 }

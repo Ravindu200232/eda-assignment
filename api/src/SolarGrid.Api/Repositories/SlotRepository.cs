@@ -73,4 +73,27 @@ public class SlotRepository : ISlotRepository
             .Find(s => s.StationId == stationId && s.StartTime < endUtc && s.EndTime > startUtc)
             .AnyAsync();
     }
+
+    // Takes one bay in a single database step, only if the slot is open and not full.
+    // Two people can never get the last bay, because the check and the +1 happen together.
+    // Source: API-15 (sources/api-sources.md) - atomic update with a condition ($inc + $expr).
+    public async Task<bool> TryTakeBayAsync(string slotId)
+    {
+        if (!ObjectId.TryParse(slotId, out _))
+            return false;
+
+        var result = await _slots.UpdateOneAsync(
+            s => s.Id == slotId && s.IsOpen && s.BookedCount < s.Capacity,
+            Builders<EnergySlot>.Update.Inc(s => s.BookedCount, 1));
+
+        return result.MatchedCount == 1;
+    }
+
+    // Gives a bay back when a booking is cancelled, rejected or moved.
+    public Task ReleaseBayAsync(string slotId)
+    {
+        return _slots.UpdateOneAsync(
+            s => s.Id == slotId && s.BookedCount > 0,
+            Builders<EnergySlot>.Update.Inc(s => s.BookedCount, -1));
+    }
 }
