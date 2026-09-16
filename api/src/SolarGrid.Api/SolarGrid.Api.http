@@ -1,0 +1,195 @@
+### Smart Solar Microgrid API - sample requests
+### Open in Visual Studio or VS Code (REST Client) and press "Send Request".
+### Run the "login" request first; the token is reused by the others.
+
+@host = http://localhost:5080
+@token = {{login.response.body.$.token}}
+
+### Health check
+GET {{host}}/api/health
+
+### Log in as the default Backoffice user
+# @name login
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin@solargrid.lk",
+  "password": "Admin@123"
+}
+
+### Who am I?
+GET {{host}}/api/auth/me
+Authorization: Bearer {{token}}
+
+### List staff users
+GET {{host}}/api/users?page=1&pageSize=20
+Authorization: Bearer {{token}}
+
+### Create a Grid Operator
+POST {{host}}/api/users
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nic": "199512345678",
+  "fullName": "Sachini Wijesinghe",
+  "email": "sachini@solargrid.lk",
+  "phone": "0771112233",
+  "password": "Operator@123",
+  "role": "GridOperator"
+}
+
+### Deactivate that operator
+PATCH {{host}}/api/users/199512345678/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "isActive": false
+}
+
+### ---------- Prosumers and dashboards (Malith) ----------
+
+### Prosumer sign-up from the mobile app (account starts as Pending)
+POST {{host}}/api/prosumers/register
+Content-Type: application/json
+
+{
+  "nic": "200265601234",
+  "fullName": "Ishara Madushani",
+  "email": "ishara@example.com",
+  "phone": "0761234567",
+  "password": "Prosumer@123",
+  "address": "No. 5, Lake Drive, Kurunegala",
+  "meterNumber": "CEB-KUR-50123",
+  "solarCapacityKw": 3.5
+}
+
+### Sign-ups waiting for activation (Backoffice)
+GET {{host}}/api/prosumers/pending-activations
+Authorization: Bearer {{token}}
+
+### Activate the new prosumer (Backoffice)
+POST {{host}}/api/prosumers/200265601234/activate
+Authorization: Bearer {{token}}
+
+### Staff dashboard
+GET {{host}}/api/dashboard/summary
+Authorization: Bearer {{token}}
+
+### Public home page numbers
+GET {{host}}/api/dashboard/public
+
+### ---------- Stations and slots (Nimthara) ----------
+
+### All stations
+GET {{host}}/api/stations
+Authorization: Bearer {{token}}
+
+### Stations within 25 km of SLIIT Malabe
+GET {{host}}/api/stations/nearby?lat=6.9147&lng=79.9729&radiusKm=25
+Authorization: Bearer {{token}}
+
+### Register a station (Backoffice)
+# @name newStation
+POST {{host}}/api/stations
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "code": "SSG-KUR-01",
+  "name": "Kurunegala Lake Microgrid",
+  "address": "Lake Road, Kurunegala",
+  "latitude": 7.4818,
+  "longitude": 80.3609,
+  "solarCapacityKw": 110,
+  "storageCapacityKwh": 440,
+  "totalBatterySlots": 8
+}
+
+### Generate a week of 2-hour slots for the new station
+POST {{host}}/api/stations/{{newStation.response.body.$.id}}/slots/generate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "days": 7,
+  "slotMinutes": 120
+}
+
+### Take two battery slots out of service (Grid Operator or Backoffice)
+PATCH {{host}}/api/stations/{{newStation.response.body.$.id}}/battery-slots
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "availableBatterySlots": 6
+}
+
+### ---------- Reservations and QR codes (Hamnad) ----------
+
+### Pick the first station and its open slots
+# @name stations
+GET {{host}}/api/stations?status=Active
+Authorization: Bearer {{token}}
+
+###
+# @name slots
+GET {{host}}/api/stations/{{stations.response.body.$[0].id}}/slots?onlyAvailable=true
+Authorization: Bearer {{token}}
+
+### Book a slot for a prosumer (staff must give prosumerNic)
+# @name booking
+POST {{host}}/api/reservations
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "slotId": "{{slots.response.body.$[0].id}}",
+  "energyKwh": 8.5,
+  "tradeType": "Export",
+  "prosumerNic": "200034501234"
+}
+
+### Approve it (issues the QR code)
+POST {{host}}/api/reservations/{{booking.response.body.$.id}}/approve
+Authorization: Bearer {{token}}
+
+### QR text for the approved booking
+GET {{host}}/api/reservations/{{booking.response.body.$.id}}/qr
+Authorization: Bearer {{token}}
+
+### Bookings waiting for approval
+GET {{host}}/api/reservations?scope=pending
+Authorization: Bearer {{token}}
+
+### Search the history by reference number
+GET {{host}}/api/reservations?scope=history&search=RSV-DEMO
+Authorization: Bearer {{token}}
+
+### ---------- Operator check-in (Ravindu) ----------
+
+### Scan the QR code of the approved booking (Grid Operator or Backoffice)
+# @name qr
+GET {{host}}/api/reservations/{{booking.response.body.$.id}}/qr
+Authorization: Bearer {{token}}
+
+###
+POST {{host}}/api/checkin/verify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "payload": "{{qr.response.body.$.payload}}"
+}
+
+### Finish the energy transfer (works from 2 hours before the slot starts)
+POST {{host}}/api/checkin/{{booking.response.body.$.id}}/complete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "payload": "{{qr.response.body.$.payload}}",
+  "deliveredKwh": 8.2
+}

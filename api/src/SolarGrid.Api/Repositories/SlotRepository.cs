@@ -1,0 +1,99 @@
+/*
+ * File:    SlotRepository.cs
+ * Module:  Data Access
+ * Owner:   Ravindu
+ * Purpose: MongoDB implementation of ISlotRepository.
+ */
+using MongoDB.Bson;
+using MongoDB.Driver;
+using SolarGrid.Api.Data;
+using SolarGrid.Api.Models;
+
+namespace SolarGrid.Api.Repositories;
+
+public class SlotRepository : ISlotRepository
+{
+    private readonly IMongoCollection<EnergySlot> _slots;
+
+    // Uses the EnergyBookingSlots collection from the shared context.
+    public SlotRepository(MongoDbContext db)
+    {
+        _slots = db.Slots;
+    }
+
+    // Finds a slot by id. Returns null for ids that are not valid ObjectIds.
+    public async Task<EnergySlot?> GetByIdAsync(string id)
+    {
+        if (!ObjectId.TryParse(id, out _))
+            return null;
+
+        return await _slots.Find(s => s.Id == id).FirstOrDefaultAsync();
+    }
+
+    // Lists a station's slots that start inside the given UTC range.
+    public async Task<IReadOnlyList<EnergySlot>> ListByStationAsync(string stationId, DateTime fromUtc, DateTime toUtc)
+    {
+        if (!ObjectId.TryParse(stationId, out _))
+            return Array.Empty<EnergySlot>();
+
+        return await _slots
+            .Find(s => s.StationId == stationId && s.StartTime >= fromUtc && s.StartTime < toUtc)
+            .SortBy(s => s.StartTime)
+            .ToListAsync();
+    }
+
+    // Adds a new slot.
+    public Task InsertAsync(EnergySlot slot)
+    {
+        return _slots.InsertOneAsync(slot);
+    }
+
+    // Adds several slots at once.
+    public Task InsertManyAsync(IEnumerable<EnergySlot> slots)
+    {
+        return _slots.InsertManyAsync(slots);
+    }
+
+    // Saves all changes to an existing slot.
+    public Task UpdateAsync(EnergySlot slot)
+    {
+        return _slots.ReplaceOneAsync(s => s.Id == slot.Id, slot);
+    }
+
+    // Removes a slot.
+    public Task DeleteAsync(string id)
+    {
+        return _slots.DeleteOneAsync(s => s.Id == id);
+    }
+
+    // True when another slot at the station shares any part of the time window.
+    public async Task<bool> HasOverlapAsync(string stationId, DateTime startUtc, DateTime endUtc)
+    {
+        return await _slots
+            .Find(s => s.StationId == stationId && s.StartTime < endUtc && s.EndTime > startUtc)
+            .AnyAsync();
+    }
+
+    // Takes one bay in a single database step, only if the slot is open and not full.
+    // Two people can never get the last bay, because the check and the +1 happen together.
+    // Source: API-15 (sources/api-sources.md) - atomic update with a condition ($inc + $expr).
+    public async Task<bool> TryTakeBayAsync(string slotId)
+    {
+        if (!ObjectId.TryParse(slotId, out _))
+            return false;
+
+        var result = await _slots.UpdateOneAsync(
+            s => s.Id == slotId && s.IsOpen && s.BookedCount < s.Capacity,
+            Builders<EnergySlot>.Update.Inc(s => s.BookedCount, 1));
+
+        return result.MatchedCount == 1;
+    }
+
+    // Gives a bay back when a booking is cancelled, rejected or moved.
+    public Task ReleaseBayAsync(string slotId)
+    {
+        return _slots.UpdateOneAsync(
+            s => s.Id == slotId && s.BookedCount > 0,
+            Builders<EnergySlot>.Update.Inc(s => s.BookedCount, -1));
+    }
+}
