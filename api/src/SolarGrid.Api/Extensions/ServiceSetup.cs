@@ -89,6 +89,7 @@ public static class ServiceSetup
         services.AddScoped<IStationService, StationService>();
         services.AddScoped<ISlotService, SlotService>();
         services.AddScoped<IReservationService, ReservationService>();
+        services.AddScoped<ICheckInService, CheckInService>();
 
         return services;
     }
