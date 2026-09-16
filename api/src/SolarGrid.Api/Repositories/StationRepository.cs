@@ -72,4 +72,14 @@ public class StationRepository : IStationRepository
     {
         return _stations.ReplaceOneAsync(s => s.Id == station.Id, station);
     }
+
+    // Counts stations, optionally in one status.
+    public async Task<long> CountAsync(StationStatus? status = null)
+    {
+        var filter = status.HasValue
+            ? Builders<SolarStation>.Filter.Eq(s => s.Status, status.Value)
+            : Builders<SolarStation>.Filter.Empty;
+
+        return await _stations.CountDocumentsAsync(filter);
+    }
 }

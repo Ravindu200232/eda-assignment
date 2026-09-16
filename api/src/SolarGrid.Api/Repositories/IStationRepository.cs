@@ -21,4 +21,7 @@ public interface IStationRepository
     Task InsertManyAsync(IEnumerable<SolarStation> stations);
 
     Task UpdateAsync(SolarStation station);
+
+    // Added by Malith for dashboards.
+    Task<long> CountAsync(StationStatus? status = null);
 }

@@ -97,4 +97,12 @@ public class UserRepository : IUserRepository
     {
         return _users.UpdateOneAsync(u => u.Nic == nic, Builders<User>.Update.Set(u => u.LastLoginAt, loginTime));
     }
+
+    // All users with a role and status, oldest first (used as a waiting queue).
+    public async Task<IReadOnlyList<User>> ListByStatusAsync(UserRole role, AccountStatus status)
+    {
+        return await _users.Find(u => u.Role == role && u.Status == status)
+            .SortBy(u => u.CreatedAt)
+            .ToListAsync();
+    }
 }
