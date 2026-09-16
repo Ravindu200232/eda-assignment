@@ -7,6 +7,7 @@
  */
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
+using MongoDB.Driver;
 using SolarGrid.Api.Data;
 using SolarGrid.Api.Models;
 
@@ -16,7 +17,7 @@ public static class TestDb
 {
     // Inserts one reservation that starts after the given delay (negative = in the past).
     public static async Task<EnergyReservation> InsertReservationAsync(ApiFactory factory, string prosumerNic,
-        ReservationStatus status, TimeSpan startsIn, double? deliveredKwh = null)
+        ReservationStatus status, TimeSpan startsIn, double? deliveredKwh = null, string? stationId = null)
     {
         var now = DateTime.UtcNow;
         var start = now.Add(startsIn);
@@ -26,7 +27,7 @@ public static class TestDb
             ReferenceNo = "TEST-" + Guid.NewGuid().ToString("N")[..10].ToUpperInvariant(),
             ProsumerNic = prosumerNic,
             ProsumerName = "Test Prosumer",
-            StationId = ObjectId.GenerateNewId().ToString(),
+            StationId = stationId ?? ObjectId.GenerateNewId().ToString(),
             StationName = "Test Station",
             SlotId = ObjectId.GenerateNewId().ToString(),
             StartTime = start,
@@ -43,5 +44,21 @@ public static class TestDb
         var db = factory.Services.GetRequiredService<MongoDbContext>();
         await db.Reservations.InsertOneAsync(reservation);
         return reservation;
+    }
+
+    // Changes a reservation's status directly (added by Nimthara).
+    public static async Task SetReservationStatusAsync(ApiFactory factory, string reservationId, ReservationStatus status)
+    {
+        var db = factory.Services.GetRequiredService<MongoDbContext>();
+        await db.Reservations.UpdateOneAsync(r => r.Id == reservationId,
+            Builders<EnergyReservation>.Update.Set(r => r.Status, status));
+    }
+
+    // Marks bays of a slot as booked without going through the booking endpoints (added by Nimthara).
+    public static async Task SetSlotBookedCountAsync(ApiFactory factory, string slotId, int bookedCount)
+    {
+        var db = factory.Services.GetRequiredService<MongoDbContext>();
+        await db.Slots.UpdateOneAsync(s => s.Id == slotId,
+            Builders<EnergySlot>.Update.Set(s => s.BookedCount, bookedCount));
     }
 }
