@@ -53,6 +53,23 @@ Test-Step "Staff users" {
     "$($page.total) staff accounts"
 }
 
+# PUT and DELETE on a slot that does not exist must reach the API (404), not WebDAV (405).
+Test-Step "PUT and DELETE reach the API" {
+    foreach ($method in "Put", "Delete") {
+        $body = if ($method -eq "Put") { '{"capacity":1,"isOpen":true}' } else { $null }
+        try {
+            Invoke-RestMethod "$BaseUrl/api/slots/000000000000000000000000" -Method $method `
+                -Headers $script:headers -ContentType "application/json" -Body $body | Out-Null
+            throw "$method was accepted for a slot that does not exist"
+        }
+        catch [System.Net.WebException] {
+            $code = [int]$_.Exception.Response.StatusCode
+            if ($code -ne 404) { throw "$method returned $code (405 means WebDAV is still active)" }
+        }
+    }
+    "both answered 404 by the API"
+}
+
 # Added by Malith
 Test-Step "Public summary" {
     $summary = Invoke-RestMethod "$BaseUrl/api/dashboard/public"
