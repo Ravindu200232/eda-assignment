@@ -41,6 +41,7 @@ reader without a programming background, can see **what** we used, **where** we 
 | API-10 | How data is saved in MongoDB (naming, enums) | Ravindu | MongoDB Docs |
 | API-11 | Turning off WebDAV on IIS | Ravindu | Microsoft Learn |
 | API-12 | Database indexes | Ravindu | MongoDB Docs |
+| API-13 | Adding up completed transfers (aggregation) | Malith | MongoDB Docs |
 
 ## Glossary (plain English)
 

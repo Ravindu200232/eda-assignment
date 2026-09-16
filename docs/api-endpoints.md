@@ -44,6 +44,39 @@ All endpoints require the **Backoffice** role.
 | PUT | `/api/users/{nic}` | Update name, email, phone, role; optional `newPassword` resets the password. |
 | PATCH | `/api/users/{nic}/status` | Body `{ isActive }`. You cannot deactivate yourself or the last active Backoffice account. |
 
+## Prosumers — *Malith*
+
+Self-service (mobile app):
+
+| Method | Path | Who | Description |
+|---|---|---|---|
+| POST | `/api/prosumers/register` | anyone | Sign up with `{ nic, fullName, email, phone, password, address, meterNumber?, solarCapacityKw? }`. Returns 201 with status **Pending**. |
+| GET | `/api/prosumers/me` | Prosumer | Own profile. |
+| PUT | `/api/prosumers/me` | Prosumer | Update `{ fullName, email, phone, address, meterNumber?, solarCapacityKw? }`. The NIC cannot change. |
+| POST | `/api/prosumers/me/deactivate` | Prosumer | Body `{ password }`. Blocked while the prosumer has upcoming Pending/Approved bookings. Returns 204. |
+
+Management (web app):
+
+| Method | Path | Who | Description |
+|---|---|---|---|
+| GET | `/api/prosumers?status=&search=&page=&pageSize=` | Staff | List prosumers. |
+| GET | `/api/prosumers/pending-activations` | Backoffice | New sign-ups waiting for activation, oldest first. |
+| GET | `/api/prosumers/{nic}` | Staff | One prosumer. |
+| POST | `/api/prosumers` | Staff | Create a prosumer (same body as register). The account is **Active** at once. |
+| PUT | `/api/prosumers/{nic}` | Staff | Update a prosumer's details. |
+| POST | `/api/prosumers/{nic}/deactivate` | Staff | Deactivate an account, or reject a pending sign-up. |
+| POST | `/api/prosumers/{nic}/activate` | **Backoffice only** | Activate a sign-up or reactivate a deactivated account. |
+
+## Dashboards — *Malith*
+
+| Method | Path | Who | Description |
+|---|---|---|---|
+| GET | `/api/dashboard/summary` | Staff | Pending reservations, approved future reservations, today's bookings, stations, pending activations, active prosumers and the next 5 bookings. |
+| GET | `/api/dashboard/my-summary` | Prosumer | Own pending and approved-future counts, completed transfers, delivered kWh, next booking and the next 5 bookings. |
+| GET | `/api/dashboard/public` | anyone | Active stations, active prosumers, completed transfers and total kWh traded (for the home page). |
+
+All numbers are calculated from the database on every call. "Today" means today in Sri Lanka time.
+
 ## Health — *Ravindu*
 
 | Method | Path | Who | Description |

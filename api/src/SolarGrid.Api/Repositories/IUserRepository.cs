@@ -26,4 +26,7 @@ public interface IUserRepository
     Task UpdateAsync(User user);
 
     Task SetLastLoginAsync(string nic, DateTime loginTime);
+
+    // Added by Malith for the activation queue.
+    Task<IReadOnlyList<User>> ListByStatusAsync(UserRole role, AccountStatus status);
 }
