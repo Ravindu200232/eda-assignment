@@ -80,3 +80,49 @@ Authorization: Bearer {{token}}
 
 ### Public home page numbers
 GET {{host}}/api/dashboard/public
+
+### ---------- Stations and slots (Nimthara) ----------
+
+### All stations
+GET {{host}}/api/stations
+Authorization: Bearer {{token}}
+
+### Stations within 25 km of SLIIT Malabe
+GET {{host}}/api/stations/nearby?lat=6.9147&lng=79.9729&radiusKm=25
+Authorization: Bearer {{token}}
+
+### Register a station (Backoffice)
+# @name newStation
+POST {{host}}/api/stations
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "code": "SSG-KUR-01",
+  "name": "Kurunegala Lake Microgrid",
+  "address": "Lake Road, Kurunegala",
+  "latitude": 7.4818,
+  "longitude": 80.3609,
+  "solarCapacityKw": 110,
+  "storageCapacityKwh": 440,
+  "totalBatterySlots": 8
+}
+
+### Generate a week of 2-hour slots for the new station
+POST {{host}}/api/stations/{{newStation.response.body.$.id}}/slots/generate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "days": 7,
+  "slotMinutes": 120
+}
+
+### Take two battery slots out of service (Grid Operator or Backoffice)
+PATCH {{host}}/api/stations/{{newStation.response.body.$.id}}/battery-slots
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "availableBatterySlots": 6
+}

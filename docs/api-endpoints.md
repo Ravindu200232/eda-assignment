@@ -77,6 +77,35 @@ Management (web app):
 
 All numbers are calculated from the database on every call. "Today" means today in Sri Lanka time.
 
+## Stations — *Nimthara*
+
+| Method | Path | Who | Description |
+|---|---|---|---|
+| GET | `/api/stations?status=&search=` | any signed-in user | List stations. Prosumers always get active stations only. |
+| GET | `/api/stations/nearby?lat=&lng=&radiusKm=` | any signed-in user | Active stations within `radiusKm` (default 10, max 500), nearest first, with `distanceKm`. |
+| GET | `/api/stations/{id}` | any signed-in user | One station (inactive stations are hidden from prosumers). |
+| POST | `/api/stations` | Backoffice | Create a station: `{ code, name, address, latitude, longitude, solarCapacityKw, storageCapacityKwh, totalBatterySlots, schedule? }`. Without a schedule the station opens 06:00–18:00 every day. |
+| PUT | `/api/stations/{id}` | Backoffice | Update details and GPS location (schedule is changed separately). |
+| PUT | `/api/stations/{id}/schedule` | Backoffice | Replace the weekly hours: `{ schedule: [ { day, openTime, closeTime } ] }`. Times are local `HH:mm`; `24:00` means midnight; missing days are closed. |
+| PATCH | `/api/stations/{id}/battery-slots` | Staff | `{ availableBatterySlots }` — how many bays can be used now (0 to total). |
+| POST | `/api/stations/{id}/deactivate` | Backoffice | Blocked while the station has pending or approved reservations that have not ended. |
+| POST | `/api/stations/{id}/activate` | Backoffice | Bring a station back into service. |
+
+Each station response includes `bayCapacityKwh` (storage ÷ battery slots), the most energy one booking can use.
+
+## Energy slots — *Nimthara*
+
+| Method | Path | Who | Description |
+|---|---|---|---|
+| GET | `/api/stations/{id}/slots?from=&to=&onlyAvailable=` | any signed-in user | Slots between two local dates (default: today + 6 days, max 31 days). Prosumers only see open, future slots with free bays. |
+| POST | `/api/stations/{id}/slots` | Staff | One slot: `{ date: "2026-09-21", startTime: "08:00", endTime: "10:00", capacity? }`. Must be in the future, within 30 days, inside opening hours, 30 min–12 h long and not overlapping another slot. |
+| POST | `/api/stations/{id}/slots/generate` | Staff | `{ fromDate?, days (1–7), slotMinutes (30–480), capacity? }` — fills the opening hours; times already taken are skipped. |
+| GET | `/api/slots/{id}` | any signed-in user | One slot. |
+| PUT | `/api/slots/{id}` | Staff | `{ capacity, isOpen }` — capacity cannot go below booked bays or above the station's total; booked slots cannot be closed. |
+| DELETE | `/api/slots/{id}` | Staff | Only slots without bookings. Returns 204. |
+
+Slot responses contain UTC `startTime`/`endTime`, `capacity`, `bookedCount`, `availableBays` and `isOpen`.
+
 ## Health — *Ravindu*
 
 | Method | Path | Who | Description |

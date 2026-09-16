@@ -69,6 +69,24 @@ Test-Step "Prosumer list" {
     "$($page.total) prosumers"
 }
 
+# Added by Nimthara
+Test-Step "Station list" {
+    $stations = @(Invoke-RestMethod "$BaseUrl/api/stations" -Headers $script:headers)
+    if ($stations.Count -gt 0) { $script:firstStationId = $stations[0].id }
+    "$($stations.Count) stations"
+}
+
+Test-Step "Nearby stations (Malabe)" {
+    $nearby = @(Invoke-RestMethod "$BaseUrl/api/stations/nearby?lat=6.9147&lng=79.9729&radiusKm=50" -Headers $script:headers)
+    "$($nearby.Count) within 50 km"
+}
+
+Test-Step "Station slots" {
+    if (-not $script:firstStationId) { throw "no station to check" }
+    $slots = @(Invoke-RestMethod "$BaseUrl/api/stations/$($script:firstStationId)/slots" -Headers $script:headers)
+    "$($slots.Count) slots in the next 7 days"
+}
+
 if ($script:failures -gt 0) {
     Write-Host "`n$($script:failures) check(s) failed." -ForegroundColor Red
     exit 1
