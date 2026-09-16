@@ -295,6 +295,12 @@ public class ReservationService : IReservationService
             && reservation.StartTime - nowUtc >= ChangeNotice;
     }
 
+    // True once the booking's time window has ended.
+    public static bool HasEnded(EnergyReservation reservation, DateTime nowUtc)
+    {
+        return reservation.EndTime <= nowUtc;
+    }
+
     // Prosumers book for themselves; staff must say which prosumer the booking is for.
     private async Task<User> ResolveProsumerAsync(string? requestedNic, CurrentUser caller)
     {
@@ -392,10 +398,12 @@ public class ReservationService : IReservationService
         return await _reservations.GetByIdAsync(id) ?? throw new NotFoundException("Reservation not found.");
     }
 
-    // Adds the rule flags the apps use to enable or hide buttons.
+    // Adds the rule flags the apps use to enable or hide buttons and to label past bookings.
     private ReservationResponse ToResponse(EnergyReservation reservation)
     {
-        return reservation.ToResponse(CanChange(reservation, _clock.UtcNow), reservation.StartTime - ChangeNotice);
+        var now = _clock.UtcNow;
+        return reservation.ToResponse(CanChange(reservation, now), reservation.StartTime - ChangeNotice,
+            HasEnded(reservation, now));
     }
 
     // e.g. RSV-260920-K7P2Q
