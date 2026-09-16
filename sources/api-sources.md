@@ -140,3 +140,14 @@ Microsoft Learn articles are published under CC BY 4.0, with code samples under 
 | **Link** | https://www.mongodb.com/docs/drivers/csharp/current/indexes/ |
 | **How much we used** | `CreateIndexModel` with `Builders<T>.IndexKeys` (`Ascending`, `Geo2DSphere`) and `Unique = true`. Which fields are indexed is our own design. |
 | **Added by** | Ravindu |
+
+## API-13 · Adding up completed transfers (aggregation)
+
+| | |
+|---|---|
+| **What it does** | Explains MongoDB "aggregation pipelines", which filter documents (`$match`) and total them (`$group` with `$sum`) inside the database. |
+| **Where we used it** | `api/src/SolarGrid.Api/Repositories/ReservationRepository.cs` (`GetCompletedTotalsAsync`) |
+| **Sources** | MongoDB Docs — *Aggregation Pipeline Stages* (.NET/C# Driver); MongoDB Manual — *$group (aggregation stage)* |
+| **Links** | https://www.mongodb.com/docs/drivers/csharp/current/aggregation/stages/ · https://www.mongodb.com/docs/manual/reference/operator/aggregation/group/ |
+| **How much we used** | The `Aggregate().Match(...).Group(...)` builder calls. The totals we calculate (count and delivered kWh) are our own. |
+| **Added by** | Malith |

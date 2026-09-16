@@ -48,3 +48,35 @@ Content-Type: application/json
 {
   "isActive": false
 }
+
+### ---------- Prosumers and dashboards (Malith) ----------
+
+### Prosumer sign-up from the mobile app (account starts as Pending)
+POST {{host}}/api/prosumers/register
+Content-Type: application/json
+
+{
+  "nic": "200265601234",
+  "fullName": "Ishara Madushani",
+  "email": "ishara@example.com",
+  "phone": "0761234567",
+  "password": "Prosumer@123",
+  "address": "No. 5, Lake Drive, Kurunegala",
+  "meterNumber": "CEB-KUR-50123",
+  "solarCapacityKw": 3.5
+}
+
+### Sign-ups waiting for activation (Backoffice)
+GET {{host}}/api/prosumers/pending-activations
+Authorization: Bearer {{token}}
+
+### Activate the new prosumer (Backoffice)
+POST {{host}}/api/prosumers/200265601234/activate
+Authorization: Bearer {{token}}
+
+### Staff dashboard
+GET {{host}}/api/dashboard/summary
+Authorization: Bearer {{token}}
+
+### Public home page numbers
+GET {{host}}/api/dashboard/public

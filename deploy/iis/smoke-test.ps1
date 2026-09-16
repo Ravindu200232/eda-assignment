@@ -53,6 +53,22 @@ Test-Step "Staff users" {
     "$($page.total) staff accounts"
 }
 
+# Added by Malith
+Test-Step "Public summary" {
+    $summary = Invoke-RestMethod "$BaseUrl/api/dashboard/public"
+    "$($summary.activeStations) active stations, $($summary.totalEnergyTradedKwh) kWh traded"
+}
+
+Test-Step "Staff dashboard" {
+    $summary = Invoke-RestMethod "$BaseUrl/api/dashboard/summary" -Headers $script:headers
+    "$($summary.pendingReservations) pending, $($summary.pendingActivations) activations waiting"
+}
+
+Test-Step "Prosumer list" {
+    $page = Invoke-RestMethod "$BaseUrl/api/prosumers?pageSize=5" -Headers $script:headers
+    "$($page.total) prosumers"
+}
+
 if ($script:failures -gt 0) {
     Write-Host "`n$($script:failures) check(s) failed." -ForegroundColor Red
     exit 1
