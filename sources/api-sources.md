@@ -151,3 +151,14 @@ Microsoft Learn articles are published under CC BY 4.0, with code samples under 
 | **Links** | https://www.mongodb.com/docs/drivers/csharp/current/aggregation/stages/ · https://www.mongodb.com/docs/manual/reference/operator/aggregation/group/ |
 | **How much we used** | The `Aggregate().Match(...).Group(...)` builder calls. The totals we calculate (count and delivered kWh) are our own. |
 | **Added by** | Malith |
+
+## API-14 · Finding the nearest stations ($geoNear)
+
+| | |
+|---|---|
+| **What it does** | Describes MongoDB's `$geoNear` stage, which sorts places by distance from a GPS point, can limit the search radius (in metres) and returns each distance. It needs a 2dsphere index. |
+| **Where we used it** | `api/src/SolarGrid.Api/Repositories/StationRepository.cs` (`FindNearbyAsync`) |
+| **Sources** | MongoDB Manual — *$geoNear (aggregation stage)*; MongoDB Docs — *Aggregation Pipeline Stages* (.NET/C# Driver) |
+| **Links** | https://www.mongodb.com/docs/manual/reference/operator/aggregation/geoNear/ · https://www.mongodb.com/docs/drivers/csharp/current/aggregation/stages/ |
+| **How much we used** | The `$geoNear` options (`distanceField`, `maxDistance`, `spherical`, `query`) through the driver's `GeoNear` builder. Converting metres to kilometres and hiding inactive stations are our own. |
+| **Added by** | Nimthara |

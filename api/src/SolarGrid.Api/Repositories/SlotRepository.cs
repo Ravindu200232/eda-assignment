@@ -65,4 +65,12 @@ public class SlotRepository : ISlotRepository
     {
         return _slots.DeleteOneAsync(s => s.Id == id);
     }
+
+    // True when another slot at the station shares any part of the time window.
+    public async Task<bool> HasOverlapAsync(string stationId, DateTime startUtc, DateTime endUtc)
+    {
+        return await _slots
+            .Find(s => s.StationId == stationId && s.StartTime < endUtc && s.EndTime > startUtc)
+            .AnyAsync();
+    }
 }
