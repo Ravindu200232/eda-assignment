@@ -126,3 +126,44 @@ Content-Type: application/json
 {
   "availableBatterySlots": 6
 }
+
+### ---------- Reservations and QR codes (Hamnad) ----------
+
+### Pick the first station and its open slots
+# @name stations
+GET {{host}}/api/stations?status=Active
+Authorization: Bearer {{token}}
+
+###
+# @name slots
+GET {{host}}/api/stations/{{stations.response.body.$[0].id}}/slots?onlyAvailable=true
+Authorization: Bearer {{token}}
+
+### Book a slot for a prosumer (staff must give prosumerNic)
+# @name booking
+POST {{host}}/api/reservations
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "slotId": "{{slots.response.body.$[0].id}}",
+  "energyKwh": 8.5,
+  "tradeType": "Export",
+  "prosumerNic": "200034501234"
+}
+
+### Approve it (issues the QR code)
+POST {{host}}/api/reservations/{{booking.response.body.$.id}}/approve
+Authorization: Bearer {{token}}
+
+### QR text for the approved booking
+GET {{host}}/api/reservations/{{booking.response.body.$.id}}/qr
+Authorization: Bearer {{token}}
+
+### Bookings waiting for approval
+GET {{host}}/api/reservations?scope=pending
+Authorization: Bearer {{token}}
+
+### Search the history by reference number
+GET {{host}}/api/reservations?scope=history&search=RSV-DEMO
+Authorization: Bearer {{token}}

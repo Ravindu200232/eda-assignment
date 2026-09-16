@@ -162,3 +162,25 @@ Microsoft Learn articles are published under CC BY 4.0, with code samples under 
 | **Links** | https://www.mongodb.com/docs/manual/reference/operator/aggregation/geoNear/ · https://www.mongodb.com/docs/drivers/csharp/current/aggregation/stages/ |
 | **How much we used** | The `$geoNear` options (`distanceField`, `maxDistance`, `spherical`, `query`) through the driver's `GeoNear` builder. Converting metres to kilometres and hiding inactive stations are our own. |
 | **Added by** | Nimthara |
+
+## API-15 · Never overbooking a slot (atomic update with a condition)
+
+| | |
+|---|---|
+| **What it does** | Explains that MongoDB changes a single document in one indivisible step, and that putting the expected value in the update filter prevents two people from overwriting each other. `$expr` lets a filter compare two fields of the same document (booked bays < capacity). |
+| **Where we used it** | `api/src/SolarGrid.Api/Repositories/SlotRepository.cs` (`TryTakeBayAsync`), `api/src/SolarGrid.Api/Repositories/ReservationRepository.cs` (`ReplaceIfStatusAsync`) |
+| **Sources** | MongoDB Manual — *Atomicity and Transactions*; MongoDB Manual — *$expr (query predicate operator)* |
+| **Links** | https://www.mongodb.com/docs/manual/core/write-operations-atomicity/ · https://www.mongodb.com/docs/manual/reference/operator/query/expr/ |
+| **How much we used** | The idea of a conditional single-document update. Applying it to battery bays and booking status changes is our own. |
+| **Added by** | Hamnad |
+
+## API-16 · Signing the booking QR code (HMAC)
+
+| | |
+|---|---|
+| **What it does** | HMAC-SHA256 creates a "signature" from data and a secret key; anyone without the key cannot make a valid signature. `FixedTimeEquals` compares signatures without leaking timing information. |
+| **Where we used it** | `api/src/SolarGrid.Api/Security/QrTokenService.cs` |
+| **Sources** | Microsoft Learn — *HMACSHA256 Class*; Microsoft Learn — *CryptographicOperations.FixedTimeEquals Method* |
+| **Links** | https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.hmacsha256 · https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.cryptographicoperations.fixedtimeequals |
+| **How much we used** | `HMACSHA256.HashData` and `CryptographicOperations.FixedTimeEquals`. The QR text format (`SSG1.id.nonce.signature`) and the nonce idea are our own design. |
+| **Added by** | Hamnad |

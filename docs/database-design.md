@@ -133,8 +133,8 @@ A prosumer's booking of one bay in a slot.
 | `status` | string | `Pending`, `Approved`, `Rejected`, `Cancelled`, `Completed` |
 | `qrNonce` | string | random value inside the QR code; replaced when a booking changes |
 | `reason` | string | why it was rejected or cancelled |
-| `createdBy`, `approvedBy`, `cancelledBy`, `completedBy` | string | NIC of the person who acted |
-| `createdAt`, `updatedAt`, `approvedAt`, `cancelledAt`, `completedAt` | date | |
+| `createdBy`, `approvedBy`, `rejectedBy`, `cancelledBy`, `completedBy` | string | NIC of the person who acted |
+| `createdAt`, `updatedAt`, `approvedAt`, `rejectedAt`, `cancelledAt`, `completedAt` | date | |
 
 Indexes: `_id`, `ux_reference` (unique), `ix_prosumer_start`, `ix_station_status`, `ix_status_start`, `ix_slot`.
 
