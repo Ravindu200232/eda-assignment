@@ -80,6 +80,7 @@ public static class ServiceSetup
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IProsumerService, ProsumerService>();
         services.AddScoped<IDashboardService, DashboardService>();
+        services.AddScoped<IStationService, StationService>();
 
         return services;
     }
