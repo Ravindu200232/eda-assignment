@@ -167,3 +167,29 @@ Authorization: Bearer {{token}}
 ### Search the history by reference number
 GET {{host}}/api/reservations?scope=history&search=RSV-DEMO
 Authorization: Bearer {{token}}
+
+### ---------- Operator check-in (Ravindu) ----------
+
+### Scan the QR code of the approved booking (Grid Operator or Backoffice)
+# @name qr
+GET {{host}}/api/reservations/{{booking.response.body.$.id}}/qr
+Authorization: Bearer {{token}}
+
+###
+POST {{host}}/api/checkin/verify
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "payload": "{{qr.response.body.$.payload}}"
+}
+
+### Finish the energy transfer (works from 2 hours before the slot starts)
+POST {{host}}/api/checkin/{{booking.response.body.$.id}}/complete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "payload": "{{qr.response.body.$.payload}}",
+  "deliveredKwh": 8.2
+}
