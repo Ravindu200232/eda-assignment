@@ -1,2 +1,13 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Android build scripts: the Unix wrapper must keep LF, the Windows one CRLF.
+gradlew text eol=lf
+*.bat text eol=crlf
+*.kts text
+
+# Binary files used by the Android app and the docs.
+*.jar binary
+*.ttf binary
+*.png binary
+*.webp binary
