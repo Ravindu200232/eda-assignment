@@ -264,3 +264,12 @@ page. Each entry says what went wrong, why it happened, and what we changed.
 - **Fix:** Every screen asks the system how much room those bars need and pads itself by that much, so the content
   starts below the clock and ends above the gesture bar.
 - **Where:** `android/app/src/main/java/lk/sliit/solargrid/ui/common/BaseActivity.java`.
+
+### 38. The live test script started nothing
+- **Problem:** `android\scripts\run-e2e.ps1` said it was starting the API, then waited three minutes and gave up.
+- **Why:** The repository folder is `C:\eda assignment`, with a space in the name. PowerShell's `Start-Process` does not
+  put quotes around the values in `-ArgumentList`, so `dotnet` was told the project was `C:\eda`. The window was
+  hidden, so the message never reached the screen.
+- **Fix:** The project path is quoted, and the API now writes to a log file that the script prints when the server does
+  not answer in time.
+- **Where:** `android/scripts/run-e2e.ps1`.
