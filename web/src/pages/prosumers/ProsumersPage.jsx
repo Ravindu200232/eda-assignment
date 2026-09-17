@@ -7,7 +7,7 @@
  *          Backoffice users can also activate and reactivate them.
  */
 import { useState } from 'react'
-import { Eye, Pencil, UserPlus, UsersRound } from 'lucide-react'
+import { Pencil, UserPlus, UsersRound } from 'lucide-react'
 import { Link } from 'react-router'
 import { listProsumers } from '../../api/prosumers'
 import Button from '../../components/ui/Button'
@@ -20,7 +20,6 @@ import Pagination from '../../components/ui/Pagination'
 import SearchInput from '../../components/ui/SearchInput'
 import StatusBadge from '../../components/ui/StatusBadge'
 import Tabs from '../../components/ui/Tabs'
-import { buttonClasses } from '../../components/ui/styles'
 import { useToast } from '../../context/ToastContext'
 import { useApi } from '../../hooks/useApi'
 import { useDebouncedValue } from '../../hooks/useDebouncedValue'
@@ -100,7 +99,12 @@ export default function ProsumersPage() {
       ),
     },
     { key: 'status', header: 'Status', render: (prosumer) => <StatusBadge status={prosumer.status} /> },
-    { key: 'createdAt', header: 'Registered', className: 'whitespace-nowrap', render: (prosumer) => formatDate(prosumer.createdAt) },
+    {
+      key: 'createdAt',
+      header: 'Registered',
+      className: 'hidden whitespace-nowrap 2xl:table-cell',
+      render: (prosumer) => formatDate(prosumer.createdAt),
+    },
     {
       key: 'actions',
       header: '',
@@ -108,14 +112,6 @@ export default function ProsumersPage() {
         <div className="flex items-center justify-end gap-2">
           <ProsumerStatusActions prosumer={prosumer} onChanged={prosumers.reload} />
           <IconButton icon={Pencil} label={`Edit ${prosumer.fullName}`} onClick={() => setEditing(prosumer)} />
-          <Link
-            to={`/prosumers/${encodeURIComponent(prosumer.nic)}`}
-            aria-label={`View ${prosumer.fullName}`}
-            title={`View ${prosumer.fullName}`}
-            className={buttonClasses({ variant: 'ghost', size: 'sm', className: 'w-11 px-0' })}
-          >
-            <Eye aria-hidden="true" />
-          </Link>
         </div>
       ),
     },

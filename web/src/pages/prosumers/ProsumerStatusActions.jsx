@@ -105,7 +105,7 @@ export default function ProsumerStatusActions({ prosumer, onChanged, size = 'sm'
 
   return (
     <>
-      <div className="flex flex-wrap items-center justify-end gap-2">
+      <div className="flex items-center justify-end gap-2">
         {actions.map((action) => {
           const { label, icon, variant } = ACTIONS[action]
           return (

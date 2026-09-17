@@ -15,7 +15,7 @@ export const NAV_ITEMS = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, section: 'Overview', roles: BACKOFFICE_ONLY },
   { to: '/operations', label: 'Operations', icon: Gauge, section: 'Overview', roles: [Roles.GridOperator] },
   // Added by Ravindu
-  { to: '/check-in', label: 'QR check-in', icon: ScanLine, section: 'Operations', roles: STAFF_ROLES },
+  { to: '/check-in', label: 'QR check-in', icon: ScanLine, section: 'Daily work', roles: STAFF_ROLES },
   // Added by Malith
   { to: '/prosumers', label: 'Prosumers', icon: UsersRound, section: 'People', roles: STAFF_ROLES },
   { to: '/activations', label: 'Pending activations', icon: UserCheck, section: 'People', roles: BACKOFFICE_ONLY },

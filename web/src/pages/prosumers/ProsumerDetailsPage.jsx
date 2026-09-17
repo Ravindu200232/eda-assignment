@@ -19,7 +19,7 @@ import { PageLoader } from '../../components/ui/Spinner'
 import StatusBadge from '../../components/ui/StatusBadge'
 import { useToast } from '../../context/ToastContext'
 import { useApi } from '../../hooks/useApi'
-import { bookingStatus, formatDateTime, formatKw, formatKwh, formatSlot, initials } from '../../utils/format'
+import { bookingStatus, formatDate, formatDateTime, formatKw, formatKwh, formatTimeRange, initials } from '../../utils/format'
 import ProsumerFormModal from './ProsumerFormModal'
 import ProsumerStatusActions from './ProsumerStatusActions'
 
@@ -97,7 +97,7 @@ export default function ProsumerDetailsPage() {
         </Alert>
       )}
 
-      <div className="grid items-start gap-8 xl:grid-cols-3">
+      <div className="flex flex-col gap-8">
         <Card>
           <div className="flex items-center gap-4">
             <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-sky-500 font-heading text-2xl font-black text-white shadow-clay-button">
@@ -109,17 +109,19 @@ export default function ProsumerDetailsPage() {
             </div>
           </div>
 
-          <dl className="mt-6 flex flex-col gap-3">
+          <dl className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {details.map(({ icon: Icon, label, value }) => (
               <div key={label} className="flex items-start gap-3 rounded-tile bg-well/70 px-4 py-3">
                 <Icon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-accent" />
-                <dt className="w-28 shrink-0 font-heading text-sm font-extrabold text-muted">{label}</dt>
-                <dd className="min-w-0 font-medium break-words text-ink">{value}</dd>
+                <div className="min-w-0">
+                  <dt className="font-heading text-xs font-extrabold tracking-wide text-muted uppercase">{label}</dt>
+                  <dd className="mt-0.5 font-medium break-words text-ink">{value}</dd>
+                </div>
               </div>
             ))}
           </dl>
 
-          <dl className="mt-6 grid grid-cols-2 gap-4">
+          <dl className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
             {history.map(({ label, value }) => (
               <div key={label}>
                 <dt className="font-heading text-xs font-extrabold tracking-wide text-muted uppercase">{label}</dt>
@@ -147,6 +149,7 @@ function ProsumerBookings({ nic }) {
       key: 'referenceNo',
       header: 'Reference',
       primary: true,
+      className: 'whitespace-nowrap',
       render: (booking) => (
         <Link to={`/reservations/${booking.id}`} className="font-mono text-sm font-bold text-accent hover:underline">
           {booking.referenceNo}
@@ -154,7 +157,17 @@ function ProsumerBookings({ nic }) {
       ),
     },
     { key: 'stationName', header: 'Station' },
-    { key: 'slot', header: 'Slot', render: (booking) => formatSlot(booking.startTime, booking.endTime) },
+    {
+      key: 'slot',
+      header: 'Slot',
+      className: 'whitespace-nowrap',
+      render: (booking) => (
+        <span>
+          {formatDate(booking.startTime)}
+          <span className="block text-xs text-muted">{formatTimeRange(booking.startTime, booking.endTime)}</span>
+        </span>
+      ),
+    },
     {
       key: 'trade',
       header: 'Trade',
@@ -175,7 +188,6 @@ function ProsumerBookings({ nic }) {
       description="All energy bookings of this prosumer, latest first."
       icon={CalendarClock}
       iconColor="sky"
-      className="xl:col-span-2"
     >
       <DataTable
         caption="Prosumer bookings"
