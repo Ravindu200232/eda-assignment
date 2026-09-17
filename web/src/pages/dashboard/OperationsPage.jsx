@@ -18,6 +18,7 @@ import StatOrb from '../../components/ui/StatOrb'
 import { useApi } from '../../hooks/useApi'
 import { useAutoRefresh } from '../../hooks/useAutoRefresh'
 import { localDateKey } from '../../utils/format'
+import StationBaysCard from '../stations/StationBaysCard'
 import BookingList from './BookingList'
 import LiveStatus from './LiveStatus'
 
@@ -109,19 +110,23 @@ export default function OperationsPage() {
           </Card>
         </div>
 
-        <Card title="Quick actions" icon={Sparkles} iconColor="violet">
-          <div className="flex flex-col gap-3">
-            <Button to="/check-in" icon={ScanLine} fullWidth>
-              Open QR check-in
-            </Button>
-            <Button to="/stations" variant="secondary" icon={BatteryCharging} fullWidth>
-              Station battery bays
-            </Button>
-            <Button to="/prosumers" variant="secondary" icon={UsersRound} fullWidth>
-              Find a prosumer
-            </Button>
-          </div>
-        </Card>
+        <div className="flex flex-col gap-8">
+          <Card title="Quick actions" icon={Sparkles} iconColor="violet">
+            <div className="flex flex-col gap-3">
+              <Button to="/check-in" icon={ScanLine} fullWidth>
+                Open QR check-in
+              </Button>
+              <Button to="/stations" variant="secondary" icon={BatteryCharging} fullWidth>
+                Stations and slots
+              </Button>
+              <Button to="/prosumers" variant="secondary" icon={UsersRound} fullWidth>
+                Find a prosumer
+              </Button>
+            </div>
+          </Card>
+          {/* Added by Nimthara: battery bay shortcut */}
+          <StationBaysCard />
+        </div>
       </div>
     </>
   )

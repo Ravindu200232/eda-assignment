@@ -74,6 +74,16 @@ export const routes = [
         element: <RequireRole roles={[Roles.GridOperator]} />,
         children: [{ path: 'operations', lazy: page(() => import('../pages/dashboard/OperationsPage')) }],
       },
+      // Nimthara: stations, schedules, battery bays, slots and maps
+      { path: 'stations', lazy: page(() => import('../pages/stations/StationsPage')) },
+      { path: 'stations/:id', lazy: page(() => import('../pages/stations/StationDetailsPage')) },
+      {
+        element: <RequireRole roles={BACKOFFICE_ONLY} />,
+        children: [
+          { path: 'stations/new', lazy: page(() => import('../pages/stations/StationFormPage')) },
+          { path: 'stations/:id/edit', lazy: page(() => import('../pages/stations/StationFormPage')) },
+        ],
+      },
     ],
   },
   {

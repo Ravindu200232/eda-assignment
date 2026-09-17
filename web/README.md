@@ -12,7 +12,7 @@ by the Web API (`../api`), and the portal shows the API's answers.
 | Styling | Tailwind CSS 4, "clay" design tokens in `src/styles/theme.css` |
 | Routing | React Router 8 with hash addresses (`/#/users`) |
 | API calls | Axios (`src/api/`) |
-| Maps | Leaflet + OpenStreetMap |
+| Maps | Google Maps (when a key is set), otherwise Leaflet + OpenStreetMap |
 | QR codes | qrcode.react (show), ZXing (camera scan) |
 | Tests | Vitest + Testing Library (unit), Playwright (end-to-end) |
 
@@ -34,6 +34,15 @@ Open http://localhost:5173 and log in with a demo account:
 
 To use an API somewhere else, copy `.env.example` to `.env.local` and change `VITE_API_URL`.
 
+### Maps (optional Google Maps key)
+
+The station pages show Google Maps when `.env.local` contains `VITE_GOOGLE_MAPS_API_KEY`; without it they use
+OpenStreetMap. `.env.local` is ignored by Git, so the key never reaches GitHub. In Google Cloud, restrict the key to
+the Maps JavaScript API and to the web addresses the portal runs on: `http://localhost:5173/*` (development),
+`http://localhost:5174/*` (browser tests and screenshots) and `http://localhost:8081/*` (IIS).
+If Google refuses the key, the maps switch to OpenStreetMap and show a short note.
+`VITE_MAPS_PROVIDER=osm` always uses OpenStreetMap; unit tests and `npm run e2e` use this setting.
+
 ## Scripts
 
 | Command | What it does |
@@ -53,6 +62,7 @@ The first Playwright run needs the browser: `npx playwright install chromium`.
 src/
   api/          one file per API area (auth, users, checkin, ...) + client.js (token, errors)
   components/   ui/ = shared clay components (Button, Card, DataTable, Modal, ...)
+                maps/ = station map and location chooser (Google Maps or OpenStreetMap)
   context/      signed-in session and toast messages
   hooks/        useApi (loading/error/data), debounce, media query, page title
   layouts/      public frame, login frame, signed-in frame (side menu + top bar)

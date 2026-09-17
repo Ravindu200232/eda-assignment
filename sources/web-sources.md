@@ -172,6 +172,30 @@ Microsoft Learn and MDN pages are published under Creative Commons licences; the
 | **Licence** | Apache-2.0 |
 | **Added by** | Ravindu |
 
+## WEB-15 · Maps that work without an API key (Leaflet)
+
+| | |
+|---|---|
+| **What it does** | Leaflet is a small library for interactive maps. We use it when no Google Maps key is set, or when Google Maps cannot be used: it draws the stations as pins, lets a pin be clicked or reached with the keyboard, and lets staff click the map or drag a pin to choose a station's GPS position. |
+| **Where we used it** | `web/src/components/maps/leafletSetup.js`, `LeafletStationMap.jsx`, `LeafletPickerMap.jsx`, `LeafletStationMap.test.jsx` |
+| **Source** | Leaflet — *API reference (1.9.4)*: `L.map`, `L.marker` (`title`, `alt`, `keyboard`, `draggable`), `L.divIcon`, `L.layerGroup`, `bindTooltip`, `fitBounds`, the map `click` and marker `dragend` events; *Accessibility* guide (every pin needs its own title) |
+| **Link** | https://leafletjs.com/reference.html · https://leafletjs.com/examples/accessibility/ |
+| **How much we used** | The library calls listed above. The clay pin design, the "choose a location" behaviour and the switch between map services are our own. We use plain Leaflet instead of the `react-leaflet` wrapper, because that wrapper's Hippocratic licence adds conditions we did not want in a university project. |
+| **Licence** | BSD-2-Clause |
+| **Added by** | Nimthara |
+
+## WEB-16 · OpenStreetMap map pictures and credit
+
+| | |
+|---|---|
+| **What it does** | The OpenStreetMap map pictures (tiles) behind the Leaflet maps, and the rules for using them: show the "© OpenStreetMap contributors" credit, use the official tile address, and do not download tiles in bulk. |
+| **Where we used it** | `web/src/components/maps/leafletSetup.js` (tile address and credit link), the offline note in `LeafletStationMap.jsx` and `LeafletPickerMap.jsx` |
+| **Source** | OpenStreetMap Foundation — *Tile Usage Policy*; OpenStreetMap — *Copyright and License* |
+| **Link** | https://operations.osmfoundation.org/policies/tiles/ · https://www.openstreetmap.org/copyright |
+| **How much we used** | The tile address `https://tile.openstreetmap.org/{z}/{x}/{y}.png` and the credit text with its link. The maps only load the tiles a person is looking at; nothing is downloaded in advance. |
+| **Licence** | Map data: Open Database License (ODbL). The tile service may be used under the policy above. |
+| **Added by** | Nimthara |
+
 ## WEB-19 · Keyboard-friendly tabs
 
 | | |
@@ -261,3 +285,39 @@ Microsoft Learn and MDN pages are published under Creative Commons licences; the
 | **Link** | https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView |
 | **How much we used** | One call with the `behavior` option; it jumps instead of gliding when the user asked for reduced motion. |
 | **Added by** | Malith |
+
+## WEB-28 · Google Maps in the web portal
+
+| | |
+|---|---|
+| **What it does** | The Google Maps JavaScript API shows the station map and the location chooser when a key is set in `web/.env.local`. The official loader downloads the map code only when a map is opened. Coloured "advanced marker" pins show each station, a click or drag reports the position, and a special callback tells us when Google refuses the key. |
+| **Where we used it** | `web/src/components/maps/googleMaps.js`, `mapProvider.js`, `GoogleStationMap.jsx`, `GooglePickerMap.jsx`, `web/.env.example` |
+| **Source** | Google Maps Platform documentation — *Load the Maps JavaScript API* (`@googlemaps/js-api-loader`, `importLibrary`), *Get started with advanced markers* (map ID, `DEMO_MAP_ID`), *Basic marker customization* (`PinElement` colours), *Advanced markers reference* (`gmp-click`, `gmp-dragend`, `gmpClickable`, `gmpDraggable`), *Events* (`gm_authFailure`), *Error messages* (`RefererNotAllowedMapError`), *API security best practices* (website and API restrictions) |
+| **Link** | https://developers.google.com/maps/documentation/javascript/load-maps-js-api · https://developers.google.com/maps/documentation/javascript/advanced-markers/start · https://developers.google.com/maps/documentation/javascript/advanced-markers/basic-customization · https://developers.google.com/maps/documentation/javascript/reference/advanced-markers · https://developers.google.com/maps/documentation/javascript/events · https://developers.google.com/maps/documentation/javascript/error-messages · https://developers.google.com/maps/api-security-best-practices |
+| **How much we used** | The loader set-up (`setOptions`, `importLibrary`), the map, marker and pin options, the two marker events and the `gm_authFailure` callback. Choosing between Google Maps and OpenStreetMap, switching over when Google fails, and keeping the key out of Git are our own. The key is restricted to our local web addresses and to the Maps JavaScript API. |
+| **Licence** | Documentation: Creative Commons Attribution 4.0, code samples Apache-2.0. The loader package is Apache-2.0. Using the maps follows the Google Maps Platform Terms of Service. |
+| **Added by** | Nimthara |
+
+## WEB-29 · Keeping a map failure inside the map (error boundary)
+
+| | |
+|---|---|
+| **What it does** | A React error boundary catches errors thrown while a part of the page is drawn. If the Google map code fails, only the map is replaced (by OpenStreetMap) instead of the whole page showing the error screen. |
+| **Where we used it** | `web/src/components/maps/MapErrorBoundary.jsx`, used by `StationMap.jsx` and `PickerMap.jsx` |
+| **Source** | React documentation — *Component*: "Catching rendering errors with an error boundary" (`static getDerivedStateFromError`, `componentDidCatch`) |
+| **Link** | https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary |
+| **How much we used** | The class shape with the two methods (React has no function-component version). What the boundary shows and the switch to OpenStreetMap are our own. |
+| **Licence** | Documentation: Creative Commons Attribution 4.0; React is MIT |
+| **Added by** | Nimthara |
+
+## WEB-30 · Switches and bay meters for screen readers
+
+| | |
+|---|---|
+| **What it does** | The WAI-ARIA patterns say how an on/off switch and a meter should be marked up so screen readers announce them properly ("switch, on" and "8 of 12 bays available"). |
+| **Where we used it** | `web/src/components/ui/Switch.jsx` (opening days, open/closed slots), `web/src/pages/stations/BayMeter.jsx` (battery bays) |
+| **Source** | W3C WAI — ARIA Authoring Practices Guide: *Switch pattern* and *Meter pattern* |
+| **Link** | https://www.w3.org/WAI/ARIA/apg/patterns/switch/ · https://www.w3.org/WAI/ARIA/apg/patterns/meter/ |
+| **How much we used** | The roles and attributes: a `<button>` with `role="switch"` and `aria-checked`; `role="meter"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and `aria-valuetext`. The clay look is our own. |
+| **Licence** | W3C Software and Document License |
+| **Added by** | Nimthara |

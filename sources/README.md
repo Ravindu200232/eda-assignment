@@ -61,6 +61,8 @@ reader without a programming background, can see **what** we used, **where** we 
 | WEB-12 | Unit tests (Vitest, Testing Library) | Ravindu | Vitest, Testing Library |
 | WEB-13 | Browser tests (Playwright) | Ravindu | Playwright documentation |
 | WEB-14 | Removing the test database | Ravindu | MongoDB Node.js driver docs |
+| WEB-15 | Maps that work without an API key (Leaflet) | Nimthara | Leaflet documentation |
+| WEB-16 | OpenStreetMap map pictures and credit | Nimthara | OpenStreetMap Foundation |
 | WEB-19 | Keyboard-friendly tabs | Ravindu | W3C WAI-ARIA Authoring Practices |
 | WEB-20 | Logging out in every tab | Ravindu | MDN Web Docs |
 | WEB-22 | Reading QR codes with the camera | Ravindu | ZXing for JS (GitHub) |
@@ -69,6 +71,9 @@ reader without a programming background, can see **what** we used, **where** we 
 | WEB-25 | "3 days ago" style times | Malith | MDN Web Docs |
 | WEB-26 | Refreshing dashboards only when they are visible | Malith | MDN Web Docs |
 | WEB-27 | Scrolling to a section of the home page | Malith | MDN Web Docs |
+| WEB-28 | Google Maps in the web portal | Nimthara | Google Maps Platform documentation |
+| WEB-29 | Keeping a map failure inside the map | Nimthara | React documentation |
+| WEB-30 | Switches and bay meters for screen readers | Nimthara | W3C WAI-ARIA Authoring Practices |
 
 ## Glossary (plain English)
 
@@ -98,3 +103,6 @@ reader without a programming background, can see **what** we used, **where** we 
 | **Vite** | The tool that runs the web app while we develop it and builds the final files for IIS. |
 | **Hash routing** | Page addresses written after a `#` (for example `/#/users`), so the web server always serves the same single page. |
 | **Browser test** | An end-to-end test where a program clicks through the real web app in a real browser. |
+| **Map tiles** | The small square pictures a web map is made of; the map downloads the ones on screen. |
+| **API key** | A code that identifies our app to an online service such as Google Maps. It is kept out of Git and limited to our own web addresses. |
+| **Error boundary** | A React component that catches a crash in one part of the page and shows something else there, so the rest of the page keeps working. |
