@@ -6,7 +6,7 @@
  *          staff accounts; the API's rules are shown in the page.
  */
 import { expect, test } from '@playwright/test'
-import { API_URL, accounts, loginAs, openFromMenu, uniqueNic } from './helpers'
+import { API_URL, accounts, api, apiLogin, loginAs, openFromMenu, uniqueNic } from './helpers'
 
 test.beforeEach(async ({ page }) => {
   await loginAs(page, 'admin')
@@ -45,7 +45,10 @@ test('create, edit, deactivate and reactivate a Grid Operator', async ({ page, r
   await edit.getByLabel('New password (optional)').fill('Operator@789')
   await edit.getByRole('button', { name: 'Save changes' }).click()
   await expect(page.getByText(`${name} was updated.`)).toBeVisible()
-  await expect(row.getByText('+94719998877')).toBeVisible()
+  // The phone column is hidden on narrower screens, so the saved value is read from the API.
+  const adminToken = await apiLogin(request, 'admin')
+  const saved = await api(request, adminToken, 'GET', `/users/${nic}`)
+  expect(saved.phone).toBe('+94719998877')
 
   const newPassword = await request.post(`${API_URL}/api/auth/login`, { data: { username: email, password: 'Operator@789' } })
   expect(newPassword.status()).toBe(200)
