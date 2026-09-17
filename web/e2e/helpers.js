@@ -95,3 +95,28 @@ export async function createStaffUser(request, token, overrides = {}) {
   await api(request, token, 'POST', '/users', user)
   return { ...user, username: user.email }
 }
+
+// Added by Malith: signs a new prosumer up the way the mobile app does (status Pending).
+export async function registerProsumer(request, overrides = {}) {
+  const nic = uniqueNic()
+  const prosumer = {
+    nic,
+    fullName: `Test Prosumer ${nic.slice(-4)}`,
+    email: `prosumer.${nic}@test.solargrid.lk`,
+    phone: '0712223344',
+    password: 'Prosumer@123',
+    address: 'No. 1, Test Road, Colombo',
+    meterNumber: `CEB-TST-${nic.slice(-5)}`,
+    solarCapacityKw: 4.2,
+    ...overrides,
+  }
+  const response = await request.post(`${API_URL}/api/prosumers/register`, { data: prosumer })
+  expect(response.status(), await response.text()).toBe(201)
+  return { ...prosumer, username: prosumer.email }
+}
+
+// Added by Malith: tries a login and returns the HTTP status (200, 401 or 403).
+export async function loginStatus(request, username, password) {
+  const response = await request.post(`${API_URL}/api/auth/login`, { data: { username, password } })
+  return response.status()
+}

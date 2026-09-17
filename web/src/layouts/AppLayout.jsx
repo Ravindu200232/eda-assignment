@@ -9,6 +9,7 @@ import { useRef, useState } from 'react'
 import { Outlet, useNavigation } from 'react-router'
 import BackgroundBlobs from '../components/ui/BackgroundBlobs'
 import Drawer from '../components/ui/Drawer'
+import { useNavBadges } from '../context/NavBadgesContext'
 import Sidebar from './Sidebar'
 import TopBar from './TopBar'
 
@@ -17,7 +18,7 @@ export default function AppLayout() {
   const [menuOpen, setMenuOpen] = useState(false)
   const mainRef = useRef(null)
   const navigation = useNavigation()
-  const badges = {}
+  const { badges } = useNavBadges()
 
   return (
     <div className="min-h-dvh">

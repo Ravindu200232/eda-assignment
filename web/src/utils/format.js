@@ -42,6 +42,7 @@ const dayKeyFormat = new Intl.DateTimeFormat('en-CA', {
 })
 const dayChipFormat = new Intl.DateTimeFormat(LOCALE, { timeZone: 'UTC', weekday: 'short', day: 'numeric', month: 'short' })
 const numberFormat = new Intl.NumberFormat(LOCALE, { maximumFractionDigits: 2 })
+const relativeFormat = new Intl.RelativeTimeFormat(LOCALE, { numeric: 'auto' })
 
 // Turns an API value into a Date, or null when it is empty or invalid.
 function toDate(value) {
@@ -109,6 +110,31 @@ export function formatKwh(value) {
 // "150 kW"
 export function formatKw(value) {
   return value == null ? '—' : `${formatNumber(value)} kW`
+}
+
+// "3 days ago" or "in 2 hours" (added by Malith for the activation queue).
+// Source: WEB-25 (Intl.RelativeTimeFormat).
+export function formatTimeAgo(value, now = new Date()) {
+  const date = toDate(value)
+  if (!date) return '—'
+  const seconds = Math.round((date.getTime() - now.getTime()) / 1000)
+  const units = [
+    ['day', 86400],
+    ['hour', 3600],
+    ['minute', 60],
+  ]
+  for (const [unit, size] of units) {
+    if (Math.abs(seconds) >= size) return relativeFormat.format(Math.round(seconds / size), unit)
+  }
+  return relativeFormat.format(0, 'minute')
+}
+
+// Status to show for a booking. Pending or approved bookings whose time has
+// ended are shown as "Missed"; the API decides this with its isPast flag.
+// (Added by Malith for the prosumer booking list.)
+export function bookingStatus(booking) {
+  const open = booking.status === 'Pending' || booking.status === 'Approved'
+  return booking.isPast && open ? 'Missed' : booking.status
 }
 
 // Splits enum words for display: "GridOperator" -> "Grid Operator".

@@ -228,3 +228,36 @@ Microsoft Learn and MDN pages are published under Creative Commons licences; the
 | **How much we used** | The switch names `--use-fake-device-for-media-stream` and `--use-file-for-fake-video-capture`, and the Y4M header layout. The code that draws the QR code into video frames is our own. |
 | **Licence** | Chromium: BSD-3-Clause (we only used switch names, no code) |
 | **Added by** | Ravindu |
+
+## WEB-25 · "3 days ago" style times
+
+| | |
+|---|---|
+| **What it does** | `Intl.RelativeTimeFormat` writes how long ago something happened in plain words ("yesterday", "3 days ago"). |
+| **Where we used it** | `web/src/utils/format.js` (`formatTimeAgo`), shown on `web/src/pages/prosumers/PendingActivationsPage.jsx` |
+| **Source** | MDN Web Docs — *Intl.RelativeTimeFormat* |
+| **Link** | https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat |
+| **How much we used** | The formatter with `numeric: 'auto'`. Choosing days, hours or minutes is our own. |
+| **Added by** | Malith |
+
+## WEB-26 · Refreshing dashboards only when they are visible
+
+| | |
+|---|---|
+| **What it does** | The Page Visibility API tells a page whether its browser tab is shown. The dashboards refresh their numbers on a timer only while someone can see them, and at once when the user comes back. |
+| **Where we used it** | `web/src/hooks/useAutoRefresh.js` (used by the dashboards and the menu counter) |
+| **Source** | MDN Web Docs — *Page Visibility API* |
+| **Link** | https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API |
+| **How much we used** | `document.visibilityState` and the `visibilitychange` event. The timer hook is our own. |
+| **Added by** | Malith |
+
+## WEB-27 · Scrolling to a section of the home page
+
+| | |
+|---|---|
+| **What it does** | `scrollIntoView` moves the page to an element. The "How it works" button uses it because the router already uses the `#` part of the address. |
+| **Where we used it** | `web/src/pages/home/HomePage.jsx` |
+| **Source** | MDN Web Docs — *Element: scrollIntoView() method* |
+| **Link** | https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView |
+| **How much we used** | One call with the `behavior` option; it jumps instead of gliding when the user asked for reduced motion. |
+| **Added by** | Malith |

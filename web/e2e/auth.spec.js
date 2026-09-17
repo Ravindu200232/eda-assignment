@@ -138,5 +138,5 @@ test('unknown addresses show the not-found page', async ({ page }) => {
 
   await expect(page.getByRole('heading', { name: 'This page is off the grid' })).toBeVisible()
   await page.getByRole('link', { name: 'Go to the start page' }).click()
-  await expect(page.getByRole('button', { name: 'Log in' })).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Trade sunshine')
 })

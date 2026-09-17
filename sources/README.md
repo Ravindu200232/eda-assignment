@@ -66,6 +66,9 @@ reader without a programming background, can see **what** we used, **where** we 
 | WEB-22 | Reading QR codes with the camera | Ravindu | ZXing for JS (GitHub) |
 | WEB-23 | Camera permission and secure pages | Ravindu | MDN Web Docs |
 | WEB-24 | A pretend webcam for automatic tests | Ravindu | Chromium source, WebRTC.org |
+| WEB-25 | "3 days ago" style times | Malith | MDN Web Docs |
+| WEB-26 | Refreshing dashboards only when they are visible | Malith | MDN Web Docs |
+| WEB-27 | Scrolling to a section of the home page | Malith | MDN Web Docs |
 
 ## Glossary (plain English)
 

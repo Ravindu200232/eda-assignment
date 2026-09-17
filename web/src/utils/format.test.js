@@ -7,6 +7,7 @@
  */
 import { describe, expect, it } from 'vitest'
 import {
+  bookingStatus,
   formatDate,
   formatDateTime,
   formatDayKey,
@@ -15,6 +16,7 @@ import {
   formatLabel,
   formatSlot,
   formatTime,
+  formatTimeAgo,
   initials,
   localDateKey,
   nextLocalDates,
@@ -53,6 +55,29 @@ describe('dates and times (Asia/Colombo)', () => {
     expect(formatDateTime(null)).toBe('—')
     expect(formatTime('not a date')).toBe('—')
     expect(localDateKey(undefined)).toBe(localDateKey(new Date()))
+  })
+})
+
+describe('relative times (added by Malith)', () => {
+  const now = new Date('2026-09-17T06:00:00Z')
+
+  it('says how long ago something happened', () => {
+    expect(formatTimeAgo('2026-09-14T06:00:00Z', now)).toBe('3 days ago')
+    expect(formatTimeAgo('2026-09-17T04:00:00Z', now)).toBe('2 hours ago')
+    expect(formatTimeAgo('2026-09-17T05:55:00Z', now)).toBe('5 minutes ago')
+    expect(formatTimeAgo('2026-09-17T05:59:50Z', now)).toBe('this minute')
+    expect(formatTimeAgo('2026-09-16T06:00:00Z', now)).toBe('yesterday')
+    expect(formatTimeAgo(null, now)).toBe('—')
+  })
+})
+
+describe('booking status (added by Malith)', () => {
+  it('shows ended pending or approved bookings as missed', () => {
+    expect(bookingStatus({ status: 'Approved', isPast: true })).toBe('Missed')
+    expect(bookingStatus({ status: 'Pending', isPast: true })).toBe('Missed')
+    expect(bookingStatus({ status: 'Approved', isPast: false })).toBe('Approved')
+    expect(bookingStatus({ status: 'Completed', isPast: true })).toBe('Completed')
+    expect(bookingStatus({ status: 'Cancelled', isPast: true })).toBe('Cancelled')
   })
 })
 
