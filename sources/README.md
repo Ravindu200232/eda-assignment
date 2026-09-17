@@ -16,13 +16,15 @@ reader without a programming background, can see **what** we used, **where** we 
    // Source: API-04 (sources/api-sources.md) - hosting ASP.NET Core on IIS.
    ```
 
+   In the web app the code sits in the file header, for example `Source:  WEB-09 (MDN dialog element).`
+
 3. Search this folder for the code to find the full details: the link, what we took and the licence.
 
 | File | What it covers |
 |---|---|
 | [api-sources.md](api-sources.md) | The central Web API (C#, MongoDB, IIS) |
 | [libraries.md](libraries.md) | Every ready-made software package (library) we installed, with version and licence |
-| `web-sources.md` | The React web application (added when the web app is built) |
+| [web-sources.md](web-sources.md) | The React web application (staff portal) |
 | `android-sources.md` | The Android application (added when the mobile app is built) |
 
 ## All sources at a glance
@@ -45,6 +47,38 @@ reader without a programming background, can see **what** we used, **where** we 
 | API-14 | Finding the nearest stations ($geoNear) | Nimthara | MongoDB Manual |
 | API-15 | Never overbooking a slot (atomic update) | Hamnad | MongoDB Manual |
 | API-16 | Signing the booking QR code (HMAC) | Hamnad | Microsoft Learn |
+| WEB-01 | The "clay" look (design system) | Ravindu | Design Prompts (designprompts.dev) |
+| WEB-02 | Starting a React project with Vite | Ravindu | Vite documentation |
+| WEB-03 | Tailwind CSS with Vite and theme tokens | Ravindu | Tailwind CSS documentation |
+| WEB-04 | Page addresses (React Router) | Ravindu | React Router documentation |
+| WEB-05 | Talking to the API (Axios) | Ravindu | Axios documentation |
+| WEB-06 | Sharing the signed-in user between pages | Ravindu | React documentation |
+| WEB-07 | Fonts that work offline | Ravindu | Fontsource |
+| WEB-08 | Icons | Ravindu | Lucide |
+| WEB-09 | Dialog windows | Ravindu | MDN Web Docs |
+| WEB-10 | Showing Sri Lanka time | Ravindu | MDN Web Docs |
+| WEB-11 | Respecting "reduce motion" | Ravindu | MDN Web Docs |
+| WEB-12 | Unit tests (Vitest, Testing Library) | Ravindu | Vitest, Testing Library |
+| WEB-13 | Browser tests (Playwright) | Ravindu | Playwright documentation |
+| WEB-14 | Removing the test database | Ravindu | MongoDB Node.js driver docs |
+| WEB-15 | Maps that work without an API key (Leaflet) | Nimthara | Leaflet documentation |
+| WEB-16 | OpenStreetMap map pictures and credit | Nimthara | OpenStreetMap Foundation |
+| WEB-17 | Drawing booking QR codes (qrcode.react) | Hamnad | qrcode.react (GitHub) |
+| WEB-18 | Hosting the portal files on IIS | Ravindu | Microsoft Learn, Vite documentation |
+| WEB-19 | Keyboard-friendly tabs | Ravindu | W3C WAI-ARIA Authoring Practices |
+| WEB-20 | Logging out in every tab | Ravindu | MDN Web Docs |
+| WEB-21 | Printing a booking slip | Hamnad | MDN Web Docs |
+| WEB-22 | Reading QR codes with the camera | Ravindu | ZXing for JS (GitHub) |
+| WEB-23 | Camera permission and secure pages | Ravindu | MDN Web Docs |
+| WEB-24 | A pretend webcam for automatic tests | Ravindu | Chromium source, WebRTC.org |
+| WEB-25 | "3 days ago" style times | Malith | MDN Web Docs |
+| WEB-26 | Refreshing dashboards only when they are visible | Malith | MDN Web Docs |
+| WEB-27 | Scrolling to a section of the home page | Malith | MDN Web Docs |
+| WEB-28 | Google Maps in the web portal | Nimthara | Google Maps Platform documentation |
+| WEB-29 | Keeping a map failure inside the map | Nimthara | React documentation |
+| WEB-30 | Switches and bay meters for screen readers | Nimthara | W3C WAI-ARIA Authoring Practices |
+| WEB-31 | Keeping the chosen list in the address | Hamnad | React Router documentation |
+| WEB-32 | Copying the QR code text | Hamnad | MDN Web Docs |
 
 ## Glossary (plain English)
 
@@ -66,3 +100,14 @@ reader without a programming background, can see **what** we used, **where** we 
 | **E2E (end-to-end) test** | An automatic check that runs a full journey through the real API and database. |
 | **Library / package** | Ready-made code written by others that we install instead of writing it ourselves. |
 | **Licence** | The legal terms that say how a library or article may be reused. |
+| **Web app / SPA** | A single-page application: the browser downloads the app once and then swaps pages without reloading. |
+| **React / component** | React is the library that builds the web pages. A component is one reusable piece of a page, such as a button or a table. |
+| **JSX** | The HTML-like way of writing React components inside JavaScript files (`.jsx`). |
+| **Tailwind CSS** | A styling tool where short class names (for example `rounded-card`) describe how something looks. |
+| **Design tokens** | Named design values (colours, shadows, corner sizes) kept in one file so every page looks the same. |
+| **Vite** | The tool that runs the web app while we develop it and builds the final files for IIS. |
+| **Hash routing** | Page addresses written after a `#` (for example `/#/users`), so the web server always serves the same single page. |
+| **Browser test** | An end-to-end test where a program clicks through the real web app in a real browser. |
+| **Map tiles** | The small square pictures a web map is made of; the map downloads the ones on screen. |
+| **API key** | A code that identifies our app to an online service such as Google Maps. It is kept out of Git and limited to our own web addresses. |
+| **Error boundary** | A React component that catches a crash in one part of the page and shows something else there, so the rest of the page keeps working. |
