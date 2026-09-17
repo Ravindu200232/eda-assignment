@@ -196,6 +196,18 @@ Microsoft Learn and MDN pages are published under Creative Commons licences; the
 | **Licence** | Map data: Open Database License (ODbL). The tile service may be used under the policy above. |
 | **Added by** | Nimthara |
 
+## WEB-17 · Drawing booking QR codes (qrcode.react)
+
+| | |
+|---|---|
+| **What it does** | A React component that turns a text into a QR code picture (SVG). The booking page draws the signed code text that the API gives for an approved booking. |
+| **Where we used it** | `web/src/components/qr/QrCodeCard.jsx` |
+| **Source** | qrcode.react — README (`QRCodeSVG` and its `value`, `size`, `level`, `marginSize` and `title` props) |
+| **Link** | https://github.com/zpao/qrcode.react |
+| **How much we used** | One `QRCodeSVG` element with those props. The card around it, the booking details and the print and copy buttons are our own. |
+| **Licence** | ISC (the bundled QR generator is MIT) |
+| **Added by** | Hamnad |
+
 ## WEB-19 · Keyboard-friendly tabs
 
 | | |
@@ -217,6 +229,17 @@ Microsoft Learn and MDN pages are published under Creative Commons licences; the
 | **Link** | https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event |
 | **How much we used** | Listening for the event (a few lines). |
 | **Added by** | Ravindu |
+
+## WEB-21 · Printing a booking slip
+
+| | |
+|---|---|
+| **What it does** | `window.print()` opens the browser's print dialog, and CSS inside `@media print` decides what is printed. The booking page prints only the heading and the QR code card, so staff can hand the prosumer a paper slip. |
+| **Where we used it** | `web/src/components/qr/QrCodeCard.jsx` (Print button), `web/src/pages/reservations/ReservationDetailsPage.jsx` (`no-print` on the other cards), `web/src/styles/theme.css` (`@media print`) |
+| **Source** | MDN Web Docs — *Window: print() method*; *@media* (the `print` media type) |
+| **Link** | https://developer.mozilla.org/en-US/docs/Web/API/Window/print · https://developer.mozilla.org/en-US/docs/Web/CSS/@media#print |
+| **How much we used** | The `print()` call and a `print` media rule that hides everything marked `no-print`. Which parts of the page are printed is our own choice. |
+| **Added by** | Hamnad |
 
 ## WEB-22 · Reading QR codes with the camera (ZXing)
 
@@ -321,3 +344,26 @@ Microsoft Learn and MDN pages are published under Creative Commons licences; the
 | **How much we used** | The roles and attributes: a `<button>` with `role="switch"` and `aria-checked`; `role="meter"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and `aria-valuetext`. The clay look is our own. |
 | **Licence** | W3C Software and Document License |
 | **Added by** | Nimthara |
+
+## WEB-31 · Keeping the chosen list in the address
+
+| | |
+|---|---|
+| **What it does** | React Router's `useSearchParams` reads and changes the `?tab=` part of the address, so a dashboard number can open the right booking list and the browser's back button works. |
+| **Where we used it** | `web/src/pages/reservations/ReservationsPage.jsx` |
+| **Source** | React Router — *useSearchParams* (the `setSearchParams` navigate options, such as `replace`, are listed in the library's own type definition `SetURLSearchParams`) |
+| **Link** | https://reactrouter.com/api/hooks/useSearchParams |
+| **How much we used** | Reading `tab` and setting it with `{ replace: true }`. The tab names and what each tab asks the API for are our own. |
+| **Licence** | MIT |
+| **Added by** | Hamnad |
+
+## WEB-32 · Copying the QR code text
+
+| | |
+|---|---|
+| **What it does** | `navigator.clipboard.writeText()` puts text on the clipboard. Staff can copy a booking's code text and paste it on the check-in page when the prosumer cannot show the QR code. It only works on secure pages (such as `localhost`), so the page shows a message when copying is not allowed. |
+| **Where we used it** | `web/src/components/qr/QrCodeCard.jsx` |
+| **Source** | MDN Web Docs — *Clipboard: writeText() method* |
+| **Link** | https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText |
+| **How much we used** | One `writeText` call with error handling. |
+| **Added by** | Hamnad |

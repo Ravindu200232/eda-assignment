@@ -164,3 +164,48 @@ page. Each entry says what went wrong, why it happened, and what we changed.
 - **Fix:** Unit tests may take up to 15 seconds, and the prosumer test now waits for the bookings table first (fixed
   on Malith's branch).
 - **Where:** `web/vite.config.js`, `web/src/pages/prosumers/ProsumerDetailsPage.test.jsx`.
+
+### 25. Booking a slot on behalf of a prosumer
+- **Problem:** Staff bookings must name the prosumer (the API asks for the NIC), and only active accounts may book.
+  The first version listed the search results as radio buttons, so moving through them with the arrow keys
+  already picked a person.
+- **Fix:** The wizard searches active prosumers only and shows the matches as ordinary buttons; the chosen person
+  stays at the top with a "Choose someone else" button. When a booking is changed, the prosumer cannot change.
+- **Where:** `web/src/pages/reservations/BookingWizardPage.jsx`.
+
+### 26. Changing a booking whose slot is now full
+- **Problem:** The wizard only lists slots with a free bay. A booking in a full slot could not see its own slot, so
+  staff could not change just the energy or the trade type.
+- **Fix:** When a booking is changed, its own slot is always added to the list and marked "This booking's slot".
+- **Where:** `web/src/pages/reservations/BookingWizardPage.jsx` (`slotChoicesFor`).
+
+### 27. Slots of the previous day stayed on screen while loading
+- **Problem:** The data hook keeps the old answer while a new one loads, so after picking another day the old
+  day's slots could still be clicked for a moment.
+- **Fix:** Each slot answer is tagged with its station and day, and only an answer that matches the current choice
+  is shown; otherwise a loading placeholder appears.
+- **Where:** `web/src/pages/reservations/BookingWizardPage.jsx` (`loadFreeSlots`).
+
+### 28. Demo bookings change while the browser tests run
+- **Problem:** The demo bookings move with the clock, and other tests change them (the check-in test completes
+  `RSV-DEMO-0006`). Tests that edit them would fail depending on the order and the time of day.
+- **Fix:** The booking tests create their own active prosumers and bookings through the API and pick slots by time
+  ("starts within 11 hours", "starts after 36 hours"). The demo bookings are only read.
+- **Where:** `web/e2e/reservations.spec.js`, `web/e2e/helpers.js`.
+
+### 29. Dashboard numbers linked to pages that did not exist yet
+- **Problem:** The dashboards (built earlier) already linked to `/reservations?tab=pending` and `?tab=current`.
+- **Fix:** The booking list keeps its tab in the address, so these links open the right list, and the back button
+  returns to it. A browser test clicks the dashboard number to prove it.
+- **Where:** `web/src/pages/reservations/ReservationsPage.jsx`.
+
+### 30. The booking filters filled a phone screen
+- **Problem:** Five stacked filter fields pushed the bookings below the first screen on a phone.
+- **Fix:** On phones the filters fold away behind a "Filters" button that also shows how many are in use.
+- **Where:** `web/src/pages/reservations/ReservationsPage.jsx`.
+
+### 31. Printing only the QR code
+- **Problem:** Printing the booking page printed every card, not a slip the prosumer can take away.
+- **Fix:** Everything except the page heading and the QR code card is marked `no-print`, and the Print button opens
+  the browser's print dialog.
+- **Where:** `web/src/pages/reservations/ReservationDetailsPage.jsx`, `web/src/components/qr/QrCodeCard.jsx`.
