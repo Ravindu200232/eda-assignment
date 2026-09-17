@@ -36,6 +36,7 @@ public class MainActivity extends BaseActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        leaveRoomForSystemBars(binding.getRoot());
 
         binding.bottomNav.setOnItemSelectedListener(item -> {
             showTab(item.getItemId());

@@ -37,6 +37,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        leaveRoomForSystemBars(binding.getRoot());
 
         // The address is a help while developing and testing; a release build
         // does not show where the server lives.

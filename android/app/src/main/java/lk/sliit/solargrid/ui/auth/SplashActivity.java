@@ -11,6 +11,7 @@ package lk.sliit.solargrid.ui.auth;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 
@@ -32,7 +33,9 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(ActivitySplashBinding.inflate(getLayoutInflater()).getRoot());
+        View root = ActivitySplashBinding.inflate(getLayoutInflater()).getRoot();
+        setContentView(root);
+        leaveRoomForSystemBars(root);
 
         sessions().load(this::decideWhereToGo);
     }

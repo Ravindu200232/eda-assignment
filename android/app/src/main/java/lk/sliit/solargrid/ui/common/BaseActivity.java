@@ -9,9 +9,15 @@
 package lk.sliit.solargrid.ui.common;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -25,6 +31,31 @@ import lk.sliit.solargrid.ui.operator.OperatorActivity;
 import lk.sliit.solargrid.ui.prosumer.MainActivity;
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+    /**
+     * Newer Android versions draw the app behind the status bar and the
+     * navigation bar, so every screen says it will leave room for them itself.
+     */
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+    }
+
+    /**
+     * Keeps the content clear of the status bar, the navigation bar, a camera
+     * notch and the keyboard. Each screen calls this with the view it filled
+     * the window with.
+     */
+    protected void leaveRoomForSystemBars(View root) {
+        ViewCompat.setOnApplyWindowInsetsListener(root, (view, windowInsets) -> {
+            Insets bars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()
+                    | WindowInsetsCompat.Type.displayCutout()
+                    | WindowInsetsCompat.Type.ime());
+            view.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+    }
 
     /** The shared objects of the app (API, database, session). */
     protected AppContainer app() {

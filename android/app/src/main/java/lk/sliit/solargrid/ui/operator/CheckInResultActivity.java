@@ -53,6 +53,7 @@ public class CheckInResultActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCheckInResultBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        leaveRoomForSystemBars(binding.getRoot());
 
         payload = getIntent().getStringExtra(EXTRA_PAYLOAD);
         if (Texts.isBlank(payload)) {
