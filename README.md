@@ -192,13 +192,13 @@ npm run e2e       # browser tests (Playwright) against a temporary API and datab
 ```powershell
 cd android
 .\gradlew lintDebug testDebugUnitTest
-.\gradlew connectedDebugAndroidTest "-Pandroid.testInstrumentationRunnerArguments.notAnnotation=lk.sliit.solargrid.live.LiveApi,lk.sliit.solargrid.screens.Screens"
+.\gradlew connectedDebugAndroidTest "-Pandroid.testInstrumentationRunnerArguments.notAnnotation=lk.sliit.solargrid.live.LiveApi"
 ```
 
 - **Android unit tests** run on the computer (Robolectric): the SQLite session table, the error reader,
   the repositories against a stand-in server and the Sri Lankan time formatting.
-- **Android emulator tests** (Espresso) sign in as each role and walk the operator check-in, also against
-  a stand-in server, so they need no API.
+- **Android emulator tests** (Espresso) sign in as each role, walk the operator check-in and open every screen
+  for the report pictures, also against a stand-in server, so they need no API.
 - **Live tests:** `android\scripts\run-e2e.ps1` starts the real API on port 5090 with a temporary MongoDB
   database, runs the tests marked `@LiveApi` on the emulator and deletes the database afterwards.
 - **Screenshots:** `android\scripts\take-screenshots.ps1` saves every app screen to `docs/screenshots/android/`.
