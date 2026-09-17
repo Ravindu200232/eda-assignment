@@ -41,8 +41,17 @@ Licences were read from each package's `package.json` in `web/node_modules`.
 | @zxing/browser | 0.2.1 | Web app (check-in) | Reads QR codes from the camera | MIT | https://www.npmjs.com/package/@zxing/browser |
 | @zxing/library | 0.23.0 | Web app, browser tests | Barcode engine used by @zxing/browser; our tests also use it to draw QR codes | Apache-2.0 | https://www.npmjs.com/package/@zxing/library |
 | qrcode.react | 4.2.0 | Web app (bookings) | Draws a booking's QR code | ISC | https://www.npmjs.com/package/qrcode.react |
-| leaflet | 1.9.4 | Web app (stations) | Interactive maps | BSD-2-Clause | https://www.npmjs.com/package/leaflet |
-| react-leaflet | 5.0.0 | Web app (stations) | Leaflet maps as React components | Hippocratic-2.1 (free to use, but forbids use that harms human rights) | https://www.npmjs.com/package/react-leaflet |
+| leaflet | 1.9.4 | Web app (stations) | Interactive OpenStreetMap maps when Google Maps is not used | BSD-2-Clause | https://www.npmjs.com/package/leaflet |
+| @googlemaps/js-api-loader | 2.1.1 | Web app (stations) | Loads the Google Maps code only when a map is opened | Apache-2.0 | https://www.npmjs.com/package/@googlemaps/js-api-loader |
+
+We first installed `react-leaflet` (Leaflet maps as React components). Its Hippocratic-2.1 licence adds conditions beyond the usual open-source terms, so it was removed and the maps use plain Leaflet.
+
+## Online services used by the web app
+
+| Service | Used for | Terms |
+|---|---|---|
+| Google Maps JavaScript API | Station map and location chooser when `VITE_GOOGLE_MAPS_API_KEY` is set in `web/.env.local` | Google Maps Platform Terms of Service; the key is restricted to our local web addresses |
+| OpenStreetMap tile service | Map pictures for the Leaflet maps | OSMF Tile Usage Policy; data under the Open Database License |
 
 ## Web app tests and build tools
 
