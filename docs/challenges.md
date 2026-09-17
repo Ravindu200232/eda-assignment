@@ -110,3 +110,57 @@ page. Each entry says what went wrong, why it happened, and what we changed.
 - **Fix:** The star is now drawn with CSS, so the label's name stays "Password". The field is still marked as
   required for screen readers.
 - **Where:** `web/src/components/ui/Field.jsx`.
+
+### 17. A map library's licence did not suit the project
+- **Problem:** `react-leaflet` (Leaflet maps as React components) uses the Hippocratic licence, which adds conditions
+  beyond the usual open-source terms.
+- **Fix:** It was removed. The maps use plain Leaflet (BSD licence) through two small components of our own.
+- **Where:** `web/src/components/maps/LeafletStationMap.jsx`, `LeafletPickerMap.jsx`, `sources/libraries.md`.
+
+### 18. Keeping the Google Maps key out of GitHub
+- **Problem:** Google Maps needs an API key, and a key pushed to GitHub can be copied and misused.
+- **Fix:** The key lives only in `web/.env.local`, which Git ignores; `web/.env.example` explains the setting. A key
+  in a web page can always be read in the browser, so it is also restricted in Google Cloud to our local web
+  addresses and to the Maps JavaScript API. Without a key the portal uses OpenStreetMap.
+- **Where:** `web/.env.example`, `web/src/components/maps/mapProvider.js`.
+
+### 19. The page crashed when Google refused the key
+- **Problem:** The browser tests run on port 5174, which was not in the key's list of allowed addresses. Google
+  reported `RefererNotAllowedMapError`, and removing its broken pins then threw an error that took down the whole page.
+- **Fix:** Google's `gm_authFailure` callback now switches every map to OpenStreetMap with a short note, pins are
+  removed safely, and an error boundary replaces a failing Google map with OpenStreetMap. Normal test runs use
+  OpenStreetMap on purpose (`VITE_MAPS_PROVIDER=osm`), so they do not depend on Google or use the key's free quota;
+  only the screenshot run tries Google Maps.
+- **Where:** `web/src/components/maps/googleMaps.js`, `MapErrorBoundary.jsx`, `web/playwright.config.js`.
+
+### 20. Testing maps without a real browser
+- **Problem:** Unit tests run in jsdom, which cannot load Google Maps.
+- **Fix:** Leaflet works in jsdom, so its tests use the real library. The Google map components are tested with a
+  small pretend Google library that records pins, clicks and drags.
+- **Where:** `web/src/components/maps/LeafletStationMap.test.jsx`, `GoogleMaps.test.jsx`, `web/src/test/fakeGoogleMaps.js`.
+
+### 21. A 24-hour station made a very long page
+- **Problem:** Malabe is open all day, so its seven days hold 84 slots and the details page became several screens long.
+- **Fix:** The slots card shows one day at a time with day tabs (each with its number of slots). It opens on the first
+  day that still has slots to come, and jumps to the day of a slot that was just added.
+- **Where:** `web/src/pages/stations/SlotsPanel.jsx`.
+
+### 22. Layout problems found in the screenshots
+- **Problem:** The "switched to OpenStreetMap" note became its own grid column beside the map, and full-page
+  screenshots showed the sticky top bar in the middle of the page after the test had scrolled.
+- **Fix:** The map component wraps the note and the map in one box, and the screenshot helper scrolls back to the
+  top before taking a picture.
+- **Where:** `web/src/components/maps/StationMap.jsx`, `web/e2e/screens.js`.
+
+### 23. The code checker rejected reading the clock while drawing
+- **Problem:** The React rules in ESLint do not allow `Date.now()` while a component is drawn, because the result
+  changes on every draw.
+- **Fix:** Whether a slot has already ended is worked out once, when the slots are loaded.
+- **Where:** `web/src/pages/stations/SlotsPanel.jsx` (`loadSlots`).
+
+### 24. Tests that failed only on a busy computer
+- **Problem:** Long station forms typed key by key needed more than the default 5 seconds when all test files ran
+  together, and one prosumer test checked the bookings request before the page had started it.
+- **Fix:** Unit tests may take up to 15 seconds, and the prosumer test now waits for the bookings table first (fixed
+  on Malith's branch).
+- **Where:** `web/vite.config.js`, `web/src/pages/prosumers/ProsumerDetailsPage.test.jsx`.

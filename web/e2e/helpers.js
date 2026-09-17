@@ -120,3 +120,32 @@ export async function loginStatus(request, username, password) {
   const response = await request.post(`${API_URL}/api/auth/login`, { data: { username, password } })
   return response.status()
 }
+
+// Added by Nimthara: a Sri Lanka calendar date as "YYYY-MM-DD" (0 = today).
+// Sri Lanka is always UTC+05:30, so a fixed offset is enough.
+export function colomboDate(daysAhead = 0) {
+  const offset = (5.5 * 60 + daysAhead * 24 * 60) * 60 * 1000
+  return new Date(Date.now() + offset).toISOString().slice(0, 10)
+}
+
+// Added by Nimthara: creates an active station through the API (open 06:00-18:00 every day).
+export async function createStation(request, token, overrides = {}) {
+  const suffix = `${String(Date.now()).slice(-5)}${(counter += 1) % 10}`
+  const station = {
+    code: `E2E-${suffix}`,
+    name: `Test Station ${suffix}`,
+    address: 'No. 10, Station Road, Homagama',
+    latitude: 6.8421,
+    longitude: 80.0034,
+    solarCapacityKw: 40,
+    storageCapacityKwh: 160,
+    totalBatterySlots: 4,
+    schedule: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => ({
+      day,
+      openTime: '06:00',
+      closeTime: '18:00',
+    })),
+    ...overrides,
+  }
+  return api(request, token, 'POST', '/stations', station)
+}

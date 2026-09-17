@@ -31,5 +31,9 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.js'],
     include: ['src/**/*.test.{js,jsx}'],
     restoreMocks: true,
+    // Long forms typed key by key need more than the default 5 seconds when all files run together.
+    testTimeout: 15000,
+    // Unit tests never call Google Maps; the map pages use OpenStreetMap here.
+    env: { VITE_MAPS_PROVIDER: 'osm' },
   },
 })

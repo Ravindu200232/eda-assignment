@@ -15,6 +15,10 @@ import { defineConfig, devices } from '@playwright/test'
 const API_PORT = 5090
 const WEB_PORT = 5174
 
+// The screenshot run shows the real Google map when web/.env.local has a key. Normal test
+// runs use OpenStreetMap, so they do not depend on Google or use the key's free quota.
+const screenshotRun = process.argv.includes('@screens') && !process.argv.includes('--grep-invert')
+
 // Worker processes read the same values, so they are kept in environment variables.
 process.env.E2E_DB_NAME ??= `SolarGridDb_WebE2E_${Date.now()}`
 process.env.E2E_API_URL ??= `http://localhost:${API_PORT}`
@@ -64,7 +68,10 @@ export default defineConfig({
       url: process.env.E2E_WEB_URL,
       timeout: 120_000,
       reuseExistingServer: false,
-      env: { VITE_API_URL: process.env.E2E_API_URL },
+      env: {
+        VITE_API_URL: process.env.E2E_API_URL,
+        VITE_MAPS_PROVIDER: screenshotRun ? 'auto' : 'osm',
+      },
     },
   ],
 })
