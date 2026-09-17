@@ -32,6 +32,11 @@ public class FakeApi {
         server.shutdown();
     }
 
+    /** The address of the stand-in server, for a test that changes it back. */
+    public String address() {
+        return server.url("/").toString();
+    }
+
     /** Adds one answer with a JSON body. */
     public void willAnswer(int status, String body) {
         server.enqueue(new MockResponse()

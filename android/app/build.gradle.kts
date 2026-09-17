@@ -115,4 +115,8 @@ dependencies {
     androidTestImplementation(libs.espresso.intents)
     androidTestImplementation(libs.uiautomator)
     androidTestImplementation(libs.okhttp.mockwebserver)
+
+    // Lets the screenshot test hand its pictures to the test runner, which
+    // copies them off the phone into app/build/outputs.
+    androidTestUtil(libs.androidx.test.services)
 }
