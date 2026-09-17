@@ -16,6 +16,7 @@ import OperationsPage from './OperationsPage'
 
 vi.mock('../../api/auth', () => ({ login: vi.fn(), getCurrentUser: vi.fn(() => new Promise(() => {})), changePassword: vi.fn() }))
 vi.mock('../../api/dashboard', () => ({ getPublicSummary: vi.fn(), getStaffSummary: vi.fn(), getBookingsForDay: vi.fn() }))
+vi.mock('../../api/stations', () => ({ listStations: vi.fn(async () => []), setBatterySlots: vi.fn() }))
 
 const todays = [
   booking({ id: 'late', referenceNo: 'RSV-LATE', prosumerName: 'Late Booking', startTime: '2026-09-17T10:30:00Z', status: 'Pending' }),
