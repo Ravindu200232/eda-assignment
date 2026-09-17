@@ -84,6 +84,11 @@ export const routes = [
           { path: 'stations/:id/edit', lazy: page(() => import('../pages/stations/StationFormPage')) },
         ],
       },
+      // Hamnad: reservations, the booking wizard and booking QR codes
+      { path: 'reservations', lazy: page(() => import('../pages/reservations/ReservationsPage')) },
+      { path: 'reservations/new', lazy: page(() => import('../pages/reservations/BookingWizardPage')) },
+      { path: 'reservations/:id', lazy: page(() => import('../pages/reservations/ReservationDetailsPage')) },
+      { path: 'reservations/:id/edit', lazy: page(() => import('../pages/reservations/BookingWizardPage')) },
     ],
   },
   {

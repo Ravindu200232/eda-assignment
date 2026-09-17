@@ -63,6 +63,7 @@ src/
   api/          one file per API area (auth, users, checkin, ...) + client.js (token, errors)
   components/   ui/ = shared clay components (Button, Card, DataTable, Modal, ...)
                 maps/ = station map and location chooser (Google Maps or OpenStreetMap)
+                qr/ = booking QR code card (print and copy)
   context/      signed-in session and toast messages
   hooks/        useApi (loading/error/data), debounce, media query, page title
   layouts/      public frame, login frame, signed-in frame (side menu + top bar)
