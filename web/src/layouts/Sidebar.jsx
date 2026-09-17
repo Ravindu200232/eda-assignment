@@ -71,6 +71,7 @@ function MenuLink({ to, icon: Icon, label, badge, onClick }) {
     <NavLink
       to={to}
       onClick={onClick}
+      aria-label={badge > 0 ? `${label} (${badge} waiting)` : undefined}
       className={({ isActive }) =>
         cn(
           'flex h-12 items-center gap-3 rounded-control px-4 font-heading font-bold transition-all duration-200',
@@ -83,9 +84,8 @@ function MenuLink({ to, icon: Icon, label, badge, onClick }) {
       <Icon aria-hidden="true" className="size-5 shrink-0" />
       <span className="flex-1 truncate">{label}</span>
       {badge > 0 && (
-        <span className="min-w-6 rounded-full bg-accent-alt px-2 py-0.5 text-center text-xs font-black text-white">
+        <span aria-hidden="true" className="min-w-6 rounded-full bg-accent-alt px-2 py-0.5 text-center text-xs font-black text-white">
           {badge}
-          <span className="sr-only"> waiting</span>
         </span>
       )}
     </NavLink>
