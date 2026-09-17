@@ -50,6 +50,15 @@ Each member owns one feature from end to end — in the API, the web app and the
 | **Nimthara** | `stations/*`, `slots/*` | Station codes, GPS, capacity and schedule validation, battery slot availability, deactivation blocked by active bookings, nearby search with `$geoNear`, slot creation and weekly generation inside opening hours |
 | **Hamnad** | `reservations/*` | 7-day booking window, 12-hour change and cancel notice, atomic bay counter (no overbooking), overlap check, approval and rejection, signed QR codes, current/pending/history lists and search |
 
+### Web app contributions
+
+| Member | Pages | Other work |
+|---|---|---|
+| **Ravindu** | Login, Staff users, My account, QR check-in (camera, USB scanner or pasted code), not-found and not-allowed pages | Project set-up (Vite, Tailwind CSS, ESLint, Vitest, Playwright), the clay design system and shared components, layouts and menu, API client and session handling, role guards, test helpers and the screenshot run, IIS hosting of the portal |
+| **Malith** | Home page, Backoffice dashboard, Operations page, Prosumers (list and details), Pending activations | Live numbers that refresh while visible, waiting sign-ups badge in the menu, "Missed" booking status, prosumer create, edit, deactivate and Backoffice-only activation |
+| **Nimthara** | Stations (list and map), New / edit station, Station details | Google Maps with an OpenStreetMap fallback, location chooser, weekly opening hours editor, battery bays, slots per day with add, generate, change and delete, bay shortcut on the Operations page |
+| **Hamnad** | Reservations (lists), New / change booking wizard, Booking page | Tabs kept in the address for dashboard links, filters and search, approve / reject / cancel dialogs, 12-hour lock, booking timeline, booking QR code with print and copy |
+
 Every source file starts with a header that names its owner.
 
 ## Branches
@@ -78,8 +87,8 @@ How work reaches `main`:
 api/        C# Web API solution (src + unit tests + end-to-end tests)
 web/        React web application (staff portal for Backoffice and Grid Operators)
 android/    Android Studio project (Java)    (added in the Android phase)
-deploy/iis/ Scripts to host the API on IIS and check it
-docs/       Database design, API endpoints, deployment guide
+deploy/iis/ Scripts to host the API and the web portal on IIS and check them
+docs/       Database design, API endpoints, web pages, deployment guide, demo script, screenshots
 sources/    Every outside source and library we used, explained in plain English
 ```
 
@@ -126,7 +135,14 @@ npm run dev
 Open **http://localhost:5173** and log in with the Backoffice or Grid Operator demo account.
 Prosumer accounts are refused on purpose — prosumers use the Android app.
 If the API runs somewhere else, copy `web/.env.example` to `web/.env.local` and change `VITE_API_URL`.
+An optional Google Maps key in the same file shows Google Maps; without it the maps use OpenStreetMap.
 More detail: [web/README.md](web/README.md).
+
+To host the portal on IIS (http://localhost:8081), run `deploy\iis\deploy-web.ps1` as Administrator — see
+[docs/deployment.md](docs/deployment.md). Every page and what each role may do is listed in
+[docs/web-pages.md](docs/web-pages.md).
+
+![Home page of the web portal](docs/screenshots/web/00-home.png)
 
 ## Tests
 
@@ -150,12 +166,17 @@ npm run e2e       # browser tests (Playwright) against a temporary API and datab
 - **Web unit tests** check the shared components, the session handling and each page with a fake API.
 - **Web browser tests** build the web app, start the real API on port 5090 with a temporary MongoDB database,
   click through the portal in Chromium (including a pretend webcam for QR check-in) and delete the database afterwards.
+- **Screenshots:** `npm run e2e:screens` saves every page at desktop and phone size to `docs/screenshots/web/`.
+- **IIS check:** `deploy\iis\smoke-test-web.ps1` tests the hosted portal and its connection to the API.
 
 ## Documentation
 
 - [Database design](docs/database-design.md)
 - [API endpoints](docs/api-endpoints.md)
+- [Web pages and permissions](docs/web-pages.md)
 - [Deployment guide](docs/deployment.md)
+- [Demo video script](docs/demo-script.md)
+- [Screenshots](docs/screenshots/web/)
 - [Challenges and how we solved them](docs/challenges.md)
 - [Code sources and libraries](sources/README.md)
 
