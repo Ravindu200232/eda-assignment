@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    strings.xml
+  Module:  Core
+  Owner:   Ravindu
+  Purpose: Every word shown on the shared screens (app name, sign-in,
+           messages and operator check-in). Each member adds the texts of
+           their own screens here.
+-->
+<resources>
+    <string name="app_name">SolarGrid</string>
+    <string name="app_tagline">Smart Microgrid</string>
+
+    <!-- Shared words -->
+    <string name="action_retry">Try again</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_close">Close</string>
+    <string name="action_ok">OK</string>
+    <string name="action_back">Back</string>
+    <string name="loading">Loading…</string>
+    <string name="offline_title">No connection</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_network">Cannot reach the server. Check that the API is running and try again.</string>
+    <string name="error_timeout">The server took too long to answer. Please try again.</string>
+
+    <!-- Sign in -->
+    <string name="login_title">Welcome back</string>
+    <string name="login_subtitle">Sign in to book energy slots or to run a station.</string>
+    <string name="login_username">NIC or email</string>
+    <string name="login_password">Password</string>
+    <string name="login_action">Log in</string>
+    <string name="login_missing_username">Enter your NIC or email.</string>
+    <string name="login_missing_password">Enter your password.</string>
+    <string name="login_backoffice">Backoffice accounts use the web portal, not this app.</string>
+    <string name="login_signed_in_as">Signed in as %1$s</string>
+    <string name="session_expired">Your session has ended. Please log in again.</string>
+
+    <!-- Start-up -->
+    <string name="splash_loading">Getting things ready…</string>
+    <string name="api_address">API: %1$s</string>
+
+    <!-- Bottom bars -->
+    <string name="nav_home">Home</string>
+    <string name="nav_map">Map</string>
+    <string name="nav_bookings">Bookings</string>
+    <string name="nav_account">Account</string>
+
+    <!-- Screens another member is still building -->
+    <string name="placeholder_title">Being built</string>
+    <string name="placeholder_message">%1$s is on its way. Until then the rest of the app works as usual.</string>
+
+    <!-- Account -->
+    <string name="account_title">My account</string>
+    <string name="account_status">Status</string>
+    <string name="account_app_title">About this app</string>
+    <string name="account_version">App version</string>
+    <string name="account_server">Server</string>
+    <string name="account_role">Role</string>
+    <string name="role_prosumer">Prosumer</string>
+    <string name="role_operator">Grid Operator</string>
+    <string name="role_backoffice">Backoffice</string>
+
+    <string name="account_nic">NIC</string>
+    <string name="account_email">Email</string>
+    <string name="account_phone">Phone</string>
+    <string name="account_logout">Log out</string>
+    <string name="account_logout_question">Log out of SolarGrid?</string>
+    <string name="account_change_password">Change password</string>
+    <string name="account_current_password">Current password</string>
+    <string name="account_new_password">New password</string>
+    <string name="account_password_changed">Your password was changed.</string>
+
+    <!-- Operator mode -->
+    <string name="operator_home_title">Station desk</string>
+    <string name="operator_scan_tab">Scan</string>
+    <string name="operator_account_tab">Account</string>
+    <string name="operator_scan_title">Check in a booking</string>
+    <string name="operator_scan_subtitle">Scan the QR code in the prosumer\'s app, or type the code text.</string>
+    <string name="operator_scan_action">Scan QR code</string>
+    <string name="operator_manual_code">Booking code text</string>
+    <string name="operator_check_action">Check code</string>
+    <string name="operator_camera_needed">Camera permission is needed to scan a QR code. You can also paste the code text.</string>
+    <string name="operator_scan_cancelled">Scanning was cancelled.</string>
+    <string name="operator_booking_title">Booking</string>
+    <string name="operator_delivered_kwh">Delivered energy (kWh)</string>
+    <string name="operator_complete_action">Complete transfer</string>
+    <string name="operator_complete_question">Finish this energy transfer?</string>
+    <string name="operator_completed_title">Transfer completed</string>
+    <string name="operator_completed_message">%1$s is done. %2$s was recorded for %3$s.</string>
+    <string name="operator_next_booking">Check in another booking</string>
+    <string name="operator_window">Check-in is open from %1$s to %2$s</string>
+    <string name="operator_phone">Prosumer phone: %1$s</string>
+    <string name="operator_scan_prompt">Point the camera at the booking QR code</string>
+    <string name="operator_scan_permission_title">Camera</string>
+    <string name="operator_today_tab">Today</string>
+    <string name="operator_bays_tab">Bays</string>
+    <string name="operator_today_screen">The list of bookings at this station today</string>
+    <string name="operator_bays_screen">The battery bay counter</string>
+    <string name="operator_eyebrow">Operator mode</string>
+    <string name="operator_scan_helper">The server checks the code: it must be an approved booking for your station, inside the check-in window.</string>
+    <string name="operator_manual_missing">Scan a QR code or type the code text.</string>
+    <string name="checkin_checking">Checking the code…</string>
+    <string name="checkin_ready_title">Ready to complete</string>
+    <string name="checkin_blocked_title">Cannot complete yet</string>
+    <string name="checkin_reference">Reference</string>
+    <string name="checkin_prosumer">Prosumer</string>
+    <string name="checkin_station">Station</string>
+    <string name="checkin_slot">Slot</string>
+    <string name="checkin_energy">Energy booked</string>
+    <string name="checkin_trade">Direction</string>
+    <string name="checkin_status">Status</string>
+    <string name="checkin_delivered_missing">Enter the delivered energy.</string>
+    <string name="checkin_delivered_invalid">Delivered energy must be more than 0 kWh.</string>
+    <string name="checkin_call_prosumer">Call the prosumer</string>
+    <string name="checkin_no_phone_app">This device cannot make calls.</string>
+
+    <!-- Screens another member is still building: the words for their tabs -->
+    <string name="home_screen">The dashboard with your booking counts</string>
+    <string name="map_screen">The map of nearby stations</string>
+    <string name="bookings_screen">Your bookings and the booking form</string>
+
+    <!-- Booking words used on several screens -->
+    <string name="trade_export">Export</string>
+    <string name="trade_import">Import</string>
+    <string name="kwh_value">%1$s kWh</string>
+    <string name="status_pending">Pending</string>
+    <string name="status_approved">Approved</string>
+    <string name="status_rejected">Rejected</string>
+    <string name="status_cancelled">Cancelled</string>
+    <string name="status_completed">Completed</string>
+    <string name="status_missed">Missed</string>
+</resources>
