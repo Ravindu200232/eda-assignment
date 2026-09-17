@@ -76,7 +76,7 @@ How work reaches `main`:
 
 ```
 api/        C# Web API solution (src + unit tests + end-to-end tests)
-web/        React web application            (added in the web phase)
+web/        React web application (staff portal for Backoffice and Grid Operators)
 android/    Android Studio project (Java)    (added in the Android phase)
 deploy/iis/ Scripts to host the API on IIS and check it
 docs/       Database design, API endpoints, deployment guide
@@ -113,6 +113,21 @@ The demo data also contains bookings in every status. Booking `RSV-DEMO-0006` is
 two hours of the first start-up, so its QR code can be checked in straight away. Delete the `SolarGridDb`
 database in MongoDB Compass and restart the API to get fresh demo data.
 
+## Running the web app
+
+Requirements: Node.js 22 or newer and the API running (IIS on port 8080 by default).
+
+```powershell
+cd web
+npm install
+npm run dev
+```
+
+Open **http://localhost:5173** and log in with the Backoffice or Grid Operator demo account.
+Prosumer accounts are refused on purpose — prosumers use the Android app.
+If the API runs somewhere else, copy `web/.env.example` to `web/.env.local` and change `VITE_API_URL`.
+More detail: [web/README.md](web/README.md).
+
 ## Tests
 
 ```powershell
@@ -125,11 +140,23 @@ dotnet test
   call it over HTTP and delete the database afterwards.
 - **IIS check:** `deploy\iis\smoke-test.ps1` tests the hosted API.
 
+```powershell
+cd web
+npm run lint
+npm test          # unit tests (Vitest)
+npm run e2e       # browser tests (Playwright) against a temporary API and database
+```
+
+- **Web unit tests** check the shared components, the session handling and each page with a fake API.
+- **Web browser tests** build the web app, start the real API on port 5090 with a temporary MongoDB database,
+  click through the portal in Chromium (including a pretend webcam for QR check-in) and delete the database afterwards.
+
 ## Documentation
 
 - [Database design](docs/database-design.md)
 - [API endpoints](docs/api-endpoints.md)
 - [Deployment guide](docs/deployment.md)
+- [Challenges and how we solved them](docs/challenges.md)
 - [Code sources and libraries](sources/README.md)
 
 ## Demo video
