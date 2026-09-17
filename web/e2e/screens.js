@@ -37,6 +37,8 @@ export async function shoot(page, size, name) {
   await page.waitForLoadState('networkidle')
   // Sticky bars are drawn where the page is scrolled to, so full-page pictures start from the top.
   await page.evaluate(() => window.scrollTo(0, 0))
+  // Moves the mouse away so no hover effects or map tooltips are captured.
+  await page.mouse.move(0, 0)
   const path = join(folder, `${name}.png`)
   await page.screenshot({ path, fullPage: true, animations: 'disabled' })
   return path
