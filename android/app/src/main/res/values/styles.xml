@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    styles.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: Text styles, corner shapes and the clay widget styles (buttons,
+           cards, inputs, chips, bottom bar) used by every screen.
+  Source:  AND-02 (clay design system), AND-05 (Material Components styles).
+-->
+<resources>
+
+    <!-- Text -->
+    <style name="TextAppearance.SolarGrid.Title" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">@font/heading_black</item>
+        <item name="fontFamily">@font/heading_black</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+
+    <style name="TextAppearance.SolarGrid.CardTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">@font/heading</item>
+        <item name="fontFamily">@font/heading</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextAppearance.SolarGrid.Subtitle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">@font/heading</item>
+        <item name="fontFamily">@font/heading</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.SolarGrid.Body" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:fontFamily">@font/body</item>
+        <item name="fontFamily">@font/body</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="TextAppearance.SolarGrid.Muted" parent="TextAppearance.SolarGrid.Body">
+        <item name="android:fontFamily">@font/body_medium</item>
+        <item name="fontFamily">@font/body_medium</item>
+        <item name="android:textColor">@color/muted</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.SolarGrid.Eyebrow" parent="TextAppearance.SolarGrid.Body">
+        <item name="android:fontFamily">@font/heading</item>
+        <item name="fontFamily">@font/heading</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">0.12</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextAppearance.SolarGrid.Label" parent="TextAppearance.SolarGrid.Body">
+        <item name="android:fontFamily">@font/heading</item>
+        <item name="fontFamily">@font/heading</item>
+        <item name="android:textColor">@color/muted</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">0.06</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextAppearance.SolarGrid.Number" parent="TextAppearance.SolarGrid.Title">
+        <item name="android:textColor">@color/on_accent</item>
+        <item name="android:textSize">34sp</item>
+    </style>
+
+    <style name="TextAppearance.SolarGrid.Button" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:fontFamily">@font/heading</item>
+        <item name="fontFamily">@font/heading</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- Corners -->
+    <style name="ShapeAppearance.SolarGrid.Control" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_control</item>
+    </style>
+
+    <style name="ShapeAppearance.SolarGrid.Tile" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_tile</item>
+    </style>
+
+    <style name="ShapeAppearance.SolarGrid.Card" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_card</item>
+    </style>
+
+    <style name="ShapeAppearance.SolarGrid.Sheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_sheet</item>
+    </style>
+
+    <style name="ShapeAppearance.SolarGrid.Pill" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- Buttons: gradient primary, white secondary, text-only ghost. -->
+    <style name="Widget.SolarGrid.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/button_height</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.SolarGrid.Button</item>
+        <item name="android:textColor">@color/on_accent</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:background">@drawable/bg_button_primary</item>
+        <item name="iconTint">@color/on_accent</item>
+        <item name="iconGravity">textStart</item>
+        <item name="android:elevation">@dimen/elevation_button</item>
+        <item name="android:outlineAmbientShadowColor">@color/shadow_violet</item>
+        <item name="android:outlineSpotShadowColor">@color/shadow_violet</item>
+        <item name="android:stateListAnimator">@animator/clay_press</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SolarGrid.Control</item>
+    </style>
+
+    <style name="Widget.SolarGrid.Button.Secondary">
+        <item name="android:background">@drawable/bg_button_secondary</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="iconTint">@color/accent</item>
+        <item name="android:outlineAmbientShadowColor">@color/shadow_ink</item>
+        <item name="android:outlineSpotShadowColor">@color/shadow_ink</item>
+    </style>
+
+    <style name="Widget.SolarGrid.Button.Danger">
+        <item name="android:background">@drawable/bg_button_danger</item>
+    </style>
+
+    <style name="Widget.SolarGrid.Button.Ghost" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">@dimen/touch_target</item>
+        <item name="android:textAppearance">@style/TextAppearance.SolarGrid.Button</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="iconTint">@color/accent</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SolarGrid.Control</item>
+    </style>
+
+    <!-- Cards: translucent white, very round, soft violet shadow. -->
+    <style name="Widget.SolarGrid.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/card</item>
+        <item name="cardElevation">@dimen/elevation_card</item>
+        <item name="android:outlineAmbientShadowColor">@color/shadow_violet</item>
+        <item name="android:outlineSpotShadowColor">@color/shadow_violet</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SolarGrid.Card</item>
+        <item name="contentPadding">@dimen/space_l</item>
+        <item name="cardPreventCornerOverlap">false</item>
+    </style>
+
+    <style name="Widget.SolarGrid.Card.Row">
+        <item name="cardElevation">3dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SolarGrid.Tile</item>
+        <item name="contentPadding">@dimen/space_m</item>
+    </style>
+
+    <!-- Inputs: recessed "well" boxes without an underline. -->
+    <style name="Widget.SolarGrid.TextInput" parent="Widget.Material3.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@color/well</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxStrokeColor">@color/accent</item>
+        <item name="boxCornerRadiusTopStart">@dimen/radius_control</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_control</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_control</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_control</item>
+        <item name="hintTextColor">@color/accent</item>
+        <item name="android:textColorHint">@color/muted</item>
+        <item name="errorTextColor">@color/danger</item>
+        <item name="errorIconTint">@color/danger</item>
+        <item name="startIconTint">@color/accent</item>
+        <item name="endIconTint">@color/muted</item>
+    </style>
+
+    <style name="Widget.SolarGrid.Chip" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/chip_filter_background</item>
+        <item name="android:textColor">@color/chip_filter_text</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SolarGrid.Pill</item>
+        <item name="android:textAppearance">@style/TextAppearance.SolarGrid.Button</item>
+        <item name="chipMinHeight">44dp</item>
+        <item name="checkedIconVisible">false</item>
+    </style>
+
+    <style name="Widget.SolarGrid.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
+        <item name="backgroundTint">@color/card_solid</item>
+        <item name="itemActiveIndicatorStyle">@style/SolarGrid.NavIndicator</item>
+        <item name="itemIconTint">@color/nav_item</item>
+        <item name="itemTextColor">@color/nav_item</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.SolarGrid.NavLabel</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.SolarGrid.NavLabel</item>
+        <item name="android:elevation">12dp</item>
+        <item name="android:outlineSpotShadowColor">@color/shadow_violet</item>
+    </style>
+
+    <style name="SolarGrid.NavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/accent_soft</item>
+    </style>
+
+    <style name="TextAppearance.SolarGrid.NavLabel" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:fontFamily">@font/heading</item>
+        <item name="fontFamily">@font/heading</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Widget.SolarGrid.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="shapeAppearance">@style/ShapeAppearance.SolarGrid.Control</item>
+        <item name="backgroundTint">@color/ink</item>
+    </style>
+
+    <!-- Small coloured status pill. -->
+    <style name="Widget.SolarGrid.StatusChip" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:fontFamily">@font/heading</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:background">@drawable/bg_status_chip</item>
+    </style>
+
+</resources>

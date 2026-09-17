@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    bg_blobs.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: Soft colour clouds behind the sign-in and home screens.
+  Source:  AND-02 (clay design system).
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/canvas" />
+    <item
+        android:gravity="top|end"
+        android:width="320dp"
+        android:height="320dp"
+        android:top="-120dp"
+        android:right="-90dp">
+        <shape android:shape="oval">
+            <gradient
+                android:centerColor="#22A78BFA"
+                android:endColor="#00A78BFA"
+                android:gradientRadius="160dp"
+                android:startColor="@color/blob_violet"
+                android:type="radial" />
+        </shape>
+    </item>
+    <item
+        android:gravity="bottom|start"
+        android:width="300dp"
+        android:height="300dp"
+        android:bottom="-140dp"
+        android:left="-110dp">
+        <shape android:shape="oval">
+            <gradient
+                android:centerColor="#18F472B6"
+                android:endColor="#00F472B6"
+                android:gradientRadius="150dp"
+                android:startColor="@color/blob_pink"
+                android:type="radial" />
+        </shape>
+    </item>
+</layer-list>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    bg_well.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: Recessed well background for inputs, code boxes and quiet rows.
+  Source:  AND-02 (clay design system).
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <corners android:radius="@dimen/radius_control" />
+    <solid android:color="@color/well" />
+</shape>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    ic_launcher_monochrome.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: One-colour version of the app icon for themed home screens.
+  Source:  AND-07 (adaptive launcher icons).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M54,26v-9M54,91v-9M26,54h-9M91,54h-9M34.2,34.2l-6.4,-6.4M80.2,80.2l-6.4,-6.4M34.2,73.8l-6.4,6.4M80.2,27.8l-6.4,6.4"
+        android:strokeWidth="6"
+        android:strokeColor="#FF000000"
+        android:strokeLineCap="round" />
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M36,54a18,18 0 1,0 36,0a18,18 0 1,0 -36,0z" />
+</vector>

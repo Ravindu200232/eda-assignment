@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    body.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: DM Sans Regular for normal text.
+  Source:  AND-04 (bundled variable fonts, SIL Open Font License).
+-->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font
+        android:font="@font/dm_sans"
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:fontVariationSettings="'wght' 400"
+        app:font="@font/dm_sans"
+        app:fontStyle="normal"
+        app:fontWeight="400"
+        app:fontVariationSettings="'wght' 400" />
+</font-family>

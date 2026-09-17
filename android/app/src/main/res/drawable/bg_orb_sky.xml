@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    bg_orb_sky.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: Round sky gradient used behind big numbers and icons.
+  Source:  AND-02 (clay design system).
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <gradient
+        android:angle="315"
+        android:endColor="#0284C7"
+        android:startColor="#38BDF8"
+        android:type="linear" />
+</shape>

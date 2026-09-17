@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    bg_launch.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: Plain canvas with the app icon while the app starts.
+  Source:  AND-02 (clay design system).
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/canvas" />
+    <item
+        android:gravity="center"
+        android:width="120dp"
+        android:height="120dp"
+        android:drawable="@mipmap/ic_launcher" />
+</layer-list>
