@@ -1,0 +1,170 @@
+/*
+ * File:    theme.css
+ * Module:  Core UI (design system)
+ * Owner:   Ravindu
+ * Purpose: All design tokens for the "clay" look in one place: colours, shadows,
+ *          corner radii, fonts and motion. Pages and components only use these
+ *          tokens, never their own colours or shadows.
+ * Source:  WEB-01 (claymorphism design system), WEB-03 (Tailwind v4 @theme),
+ *          WEB-11 (prefers-reduced-motion).
+ */
+@import 'tailwindcss';
+
+@theme {
+  /* Fonts: Nunito for headings and numbers, DM Sans for everything else. */
+  --font-heading: 'Nunito Variable', ui-rounded, system-ui, sans-serif;
+  --font-sans: 'DM Sans Variable', ui-sans-serif, system-ui, sans-serif;
+
+  /* Colours ("candy shop" palette). Muted text is never lighter than #635F69. */
+  --color-canvas: #f4f1fa;
+  --color-well: #efebf5;
+  --color-ink: #332f3a;
+  --color-muted: #635f69;
+  --color-accent: #7c3aed;
+  --color-accent-light: #a78bfa;
+  --color-accent-alt: #db2777;
+  --color-info: #0ea5e9;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #db2777;
+
+  /* Corner radii. The smallest control radius is 20px. */
+  --radius-control: 20px;
+  --radius-tile: 24px;
+  --radius-card: 32px;
+  --radius-panel: 48px;
+  --radius-hero: 60px;
+
+  /* Four-layer clay shadows. */
+  --shadow-clay-deep:
+    30px 30px 60px #cdc6d9, -30px -30px 60px #ffffff,
+    inset 10px 10px 20px rgb(139 92 246 / 0.05), inset -10px -10px 20px rgb(255 255 255 / 0.8);
+  --shadow-clay-card:
+    16px 16px 32px rgb(160 150 180 / 0.2), -10px -10px 24px rgb(255 255 255 / 0.9),
+    inset 6px 6px 12px rgb(139 92 246 / 0.03), inset -6px -6px 12px rgb(255 255 255 / 1);
+  --shadow-clay-card-hover:
+    20px 24px 44px rgb(160 150 180 / 0.3), -12px -12px 28px rgb(255 255 255 / 0.95),
+    inset 6px 6px 12px rgb(139 92 246 / 0.05), inset -6px -6px 12px rgb(255 255 255 / 1);
+  --shadow-clay-button:
+    12px 12px 24px rgb(139 92 246 / 0.3), -8px -8px 16px rgb(255 255 255 / 0.4),
+    inset 4px 4px 8px rgb(255 255 255 / 0.4), inset -4px -4px 8px rgb(0 0 0 / 0.1);
+  --shadow-clay-button-hover:
+    16px 18px 30px rgb(139 92 246 / 0.4), -10px -10px 20px rgb(255 255 255 / 0.5),
+    inset 4px 4px 8px rgb(255 255 255 / 0.5), inset -4px -4px 8px rgb(0 0 0 / 0.1);
+  --shadow-clay-button-pink:
+    12px 12px 24px rgb(219 39 119 / 0.28), -8px -8px 16px rgb(255 255 255 / 0.4),
+    inset 4px 4px 8px rgb(255 255 255 / 0.4), inset -4px -4px 8px rgb(0 0 0 / 0.1);
+  --shadow-clay-pressed: inset 10px 10px 20px #d9d4e3, inset -10px -10px 20px #ffffff;
+  --shadow-clay-row: 0 8px 20px rgb(160 150 180 / 0.12), inset 0 1px 0 rgb(255 255 255 / 0.9);
+  --shadow-clay-pressed-sm: inset 5px 5px 10px #d9d4e3, inset -5px -5px 10px #ffffff;
+  /* Dims the camera picture around the QR scan frame. */
+  --shadow-scan-frame: 0 0 0 999px rgb(51 47 58 / 0.35);
+
+  /* Motion: slow floating blobs, breathing numbers and a soft pop-in. */
+  --animate-clay-float: clay-float 8s ease-in-out infinite;
+  --animate-clay-float-delayed: clay-float-delayed 10s ease-in-out infinite;
+  --animate-clay-float-slow: clay-float-slow 12s ease-in-out infinite;
+  --animate-clay-breathe: clay-breathe 6s ease-in-out infinite;
+  --animate-clay-pop: clay-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+
+  @keyframes clay-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
+  }
+
+  @keyframes clay-float-delayed {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(-2deg); }
+  }
+
+  @keyframes clay-float-slow {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-30px) rotate(5deg); }
+  }
+
+  @keyframes clay-breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+
+  @keyframes clay-pop {
+    from { opacity: 0; transform: translateY(12px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+}
+
+/* Staggered start times for the floating blobs. */
+@utility animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+@utility animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Gradient text. Only used on very large headings for readability. */
+@utility clay-text-gradient {
+  background-image: linear-gradient(
+    120deg,
+    var(--color-ink) 20%,
+    var(--color-accent) 60%,
+    var(--color-accent-alt)
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+  }
+
+  ::selection {
+    background-color: rgb(124 58 237 / 0.2);
+  }
+
+  /* Visible focus for anything that does not set its own ring. */
+  :focus-visible {
+    outline: 3px solid rgb(124 58 237 / 0.45);
+    outline-offset: 3px;
+  }
+
+  dialog::backdrop {
+    background-color: rgb(51 47 58 / 0.35);
+    backdrop-filter: blur(6px);
+  }
+}
+
+/* Switch off movement for people who asked their system for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Printing keeps only the content (used for QR codes and booking slips). */
+@media print {
+  body {
+    background: #ffffff;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
