@@ -64,6 +64,7 @@ reader without a programming background, can see **what** we used, **where** we 
 | WEB-15 | Maps that work without an API key (Leaflet) | Nimthara | Leaflet documentation |
 | WEB-16 | OpenStreetMap map pictures and credit | Nimthara | OpenStreetMap Foundation |
 | WEB-17 | Drawing booking QR codes (qrcode.react) | Hamnad | qrcode.react (GitHub) |
+| WEB-18 | Hosting the portal files on IIS | Ravindu | Microsoft Learn, Vite documentation |
 | WEB-19 | Keyboard-friendly tabs | Ravindu | W3C WAI-ARIA Authoring Practices |
 | WEB-20 | Logging out in every tab | Ravindu | MDN Web Docs |
 | WEB-21 | Printing a booking slip | Hamnad | MDN Web Docs |

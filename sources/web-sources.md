@@ -208,6 +208,18 @@ Microsoft Learn and MDN pages are published under Creative Commons licences; the
 | **Licence** | ISC (the bundled QR generator is MIT) |
 | **Added by** | Hamnad |
 
+## WEB-18 · Hosting the portal files on IIS
+
+| | |
+|---|---|
+| **What it does** | IIS only sends files whose extension has a MIME type, and its `clientCache` setting decides the `Cache-Control` header. The deploy script adds missing types (such as `.woff2` for the fonts), turns caching off for the pages and lets the hashed files in `/assets` be cached for a year. |
+| **Where we used it** | `deploy/iis/deploy-web.ps1`, `deploy/iis/smoke-test-web.ps1`, `docs/deployment.md` (sections 5 and 6) |
+| **Source** | Microsoft Learn — IIS configuration reference: *Adding Static Content MIME Mappings `<mimeMap>`* and *Client Cache `<clientCache>`* (the `appcmd` examples); Vite — *Deploying a Static Site* (`npm run build` writes the app to `dist`) |
+| **Link** | https://learn.microsoft.com/en-us/iis/configuration/system.webserver/staticcontent/mimemap · https://learn.microsoft.com/en-us/iis/configuration/system.webserver/staticcontent/clientcache · https://vite.dev/guide/static-deploy |
+| **How much we used** | The `appcmd set config ... -section:system.webServer/staticContent` commands for a MIME type and for `cacheControlMode` (`DisableCache`, `UseMaxAge`) and `cacheControlMaxAge`. Checking first, writing to `applicationHost.config` and the smoke test are our own. |
+| **Licence** | Microsoft Learn documentation: Creative Commons Attribution 4.0; Vite documentation: MIT |
+| **Added by** | Ravindu |
+
 ## WEB-19 · Keyboard-friendly tabs
 
 | | |
