@@ -149,3 +149,26 @@ export async function createStation(request, token, overrides = {}) {
   }
   return api(request, token, 'POST', '/stations', station)
 }
+
+// Added by Hamnad: a new prosumer account that Backoffice has already activated.
+export async function activeProsumer(request, adminToken) {
+  const prosumer = await registerProsumer(request)
+  await api(request, adminToken, 'POST', `/prosumers/${prosumer.nic}/activate`)
+  return prosumer
+}
+
+// Added by Hamnad: a station found by its code (for example "SSG-MAL-01").
+export async function stationByCode(request, token, code) {
+  const stations = await api(request, token, 'GET', `/stations?search=${encodeURIComponent(code)}`)
+  const station = stations.find((item) => item.code === code)
+  expect(station, `station ${code}`).toBeTruthy()
+  return station
+}
+
+// Added by Hamnad: the first bookable slot of a station that matches `accept(slot)`.
+export async function findFreeSlot(request, token, stationId, accept) {
+  const slots = await api(request, token, 'GET', `/stations/${stationId}/slots?onlyAvailable=true`)
+  const slot = slots.find(accept)
+  expect(slot, `free slot at station ${stationId}`).toBeTruthy()
+  return slot
+}

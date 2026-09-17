@@ -63,8 +63,10 @@ reader without a programming background, can see **what** we used, **where** we 
 | WEB-14 | Removing the test database | Ravindu | MongoDB Node.js driver docs |
 | WEB-15 | Maps that work without an API key (Leaflet) | Nimthara | Leaflet documentation |
 | WEB-16 | OpenStreetMap map pictures and credit | Nimthara | OpenStreetMap Foundation |
+| WEB-17 | Drawing booking QR codes (qrcode.react) | Hamnad | qrcode.react (GitHub) |
 | WEB-19 | Keyboard-friendly tabs | Ravindu | W3C WAI-ARIA Authoring Practices |
 | WEB-20 | Logging out in every tab | Ravindu | MDN Web Docs |
+| WEB-21 | Printing a booking slip | Hamnad | MDN Web Docs |
 | WEB-22 | Reading QR codes with the camera | Ravindu | ZXing for JS (GitHub) |
 | WEB-23 | Camera permission and secure pages | Ravindu | MDN Web Docs |
 | WEB-24 | A pretend webcam for automatic tests | Ravindu | Chromium source, WebRTC.org |
@@ -74,6 +76,8 @@ reader without a programming background, can see **what** we used, **where** we 
 | WEB-28 | Google Maps in the web portal | Nimthara | Google Maps Platform documentation |
 | WEB-29 | Keeping a map failure inside the map | Nimthara | React documentation |
 | WEB-30 | Switches and bay meters for screen readers | Nimthara | W3C WAI-ARIA Authoring Practices |
+| WEB-31 | Keeping the chosen list in the address | Hamnad | React Router documentation |
+| WEB-32 | Copying the QR code text | Hamnad | MDN Web Docs |
 
 ## Glossary (plain English)
 
