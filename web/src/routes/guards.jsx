@@ -26,7 +26,7 @@ export function RequireAuth({ children }) {
 // Shows the "not allowed" page when the user's role may not open these routes.
 export function RequireRole({ roles }) {
   const { user } = useAuth()
-  return hasRole(user, roles) ? <Outlet /> : <ForbiddenPage />
+  return hasRole(user, roles) ? <Outlet /> : <ForbiddenPage roles={roles} />
 }
 
 // Moves signed-in staff from the login page to where they wanted to go.
