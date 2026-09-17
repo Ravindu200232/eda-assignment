@@ -17,7 +17,10 @@ const WEB_PORT = 5174
 
 // The screenshot run shows the real Google map when web/.env.local has a key. Normal test
 // runs use OpenStreetMap, so they do not depend on Google or use the key's free quota.
+// E2E_MAPS_PROVIDER=osm also takes the screenshots with OpenStreetMap (for example when the
+// key does not allow http://localhost:5174).
 const screenshotRun = process.argv.includes('@screens') && !process.argv.includes('--grep-invert')
+const mapsProvider = process.env.E2E_MAPS_PROVIDER || (screenshotRun ? 'auto' : 'osm')
 
 // Worker processes read the same values, so they are kept in environment variables.
 process.env.E2E_DB_NAME ??= `SolarGridDb_WebE2E_${Date.now()}`
@@ -70,7 +73,7 @@ export default defineConfig({
       reuseExistingServer: false,
       env: {
         VITE_API_URL: process.env.E2E_API_URL,
-        VITE_MAPS_PROVIDER: screenshotRun ? 'auto' : 'osm',
+        VITE_MAPS_PROVIDER: mapsProvider,
       },
     },
   ],

@@ -52,7 +52,7 @@ If Google refuses the key, the maps switch to OpenStreetMap and show a short not
 | `npm run lint` | Code checks (ESLint) |
 | `npm test` | Unit tests (Vitest) |
 | `npm run e2e` | Browser tests (Playwright). Starts its own API on port 5090 with a throw-away database, and the web app on port 5174. Needs MongoDB on `localhost:27017` and the .NET SDK. |
-| `npm run e2e:screens` | Saves desktop and phone screenshots of every page to `docs/screenshots/web/` |
+| `npm run e2e:screens` | Saves desktop and phone screenshots of every page to `docs/screenshots/web/`. The maps use Google Maps when the key allows `http://localhost:5174/*`; set `E2E_MAPS_PROVIDER=osm` first for OpenStreetMap pictures |
 
 The first Playwright run needs the browser: `npx playwright install chromium`.
 

@@ -209,3 +209,18 @@ page. Each entry says what went wrong, why it happened, and what we changed.
 - **Fix:** Everything except the page heading and the QR code card is marked `no-print`, and the Print button opens
   the browser's print dialog.
 - **Where:** `web/src/pages/reservations/ReservationDetailsPage.jsx`, `web/src/components/qr/QrCodeCard.jsx`.
+
+### 32. Serving the portal files from IIS
+- **Problem:** IIS only sends files whose extension it knows, and without cache settings a browser may keep an old
+  `index.html` after a new deployment, which then asks for script files that no longer exist.
+- **Fix:** `deploy-web.ps1` checks the MIME types the portal needs and adds missing ones, sends pages with
+  `Cache-Control: no-cache` and lets the hashed files in `/assets` be cached for a year. The web smoke test checks
+  the page, every script, style sheet and font, both cache headers, the API address and CORS.
+- **Where:** `deploy/iis/deploy-web.ps1`, `deploy/iis/smoke-test-web.ps1`.
+
+### 33. Clean screenshots for the report
+- **Problem:** The Google Maps key did not allow the test address (`http://localhost:5174`), so the map pictures showed
+  the "switched to OpenStreetMap" note, and a map tooltip stayed visible where the mouse had clicked.
+- **Fix:** `E2E_MAPS_PROVIDER=osm` takes the screenshots with OpenStreetMap on purpose (Google Maps is used once the
+  key allows that address), and the screenshot helper moves the mouse away before each picture.
+- **Where:** `web/playwright.config.js`, `web/e2e/screens.js`.
