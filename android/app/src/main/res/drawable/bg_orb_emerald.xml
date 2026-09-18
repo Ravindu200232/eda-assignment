@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    bg_orb_emerald.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: Round emerald gradient used behind big numbers and icons.
+  Source:  AND-02 (clay design system).
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <gradient
+        android:angle="315"
+        android:endColor="#059669"
+        android:startColor="#34D399"
+        android:type="linear" />
+</shape>

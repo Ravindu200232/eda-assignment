@@ -224,3 +224,65 @@ page. Each entry says what went wrong, why it happened, and what we changed.
 - **Fix:** `E2E_MAPS_PROVIDER=osm` takes the screenshots with OpenStreetMap on purpose (Google Maps is used once the
   key allows that address), and the screenshot helper moves the mouse away before each picture.
 - **Where:** `web/playwright.config.js`, `web/e2e/screens.js`.
+
+## Android app
+
+### 34. The clay look needs Android 9
+- **Problem:** The app was set to run from Android 8.0, but lint reported errors: the coloured shadows
+  (`outlineAmbientShadowColor`, `outlineSpotShadowColor`) and the variable font weights (`fontVariationSettings`)
+  only work from Android 9.
+- **Why:** Those attributes were added in API 28. On Android 8 the shadows would be grey and every heading would fall
+  back to one weight, so the app would not match the web portal.
+- **Fix:** The lowest supported version is Android 9 (minSdk 28). It still covers the phones people use, and the design
+  is the same on every one of them.
+- **Where:** `android/app/build.gradle.kts`.
+
+### 35. Icons drawn in a browser did not draw on Android
+- **Problem:** Some screens crashed with *"a needs to be followed by a multiple of 7 floats. However, 6 float(s) are
+  found"* while the layout was being inflated.
+- **Why:** The icons are the Lucide set used by the web portal. In SVG the two yes/no flags of an arc may be written
+  without a separator (`a1.5 1.5 0 00-2.4-1.5`). Browsers accept that; Android's path reader counts six numbers instead
+  of seven and refuses the whole file.
+- **Fix:** The converter now reads each path command itself and writes every number with a space in between, treating
+  the two arc flags as single digits. All icons were made again with it.
+- **Where:** `android/scripts/make-icons.mjs`, `android/app/src/main/res/drawable/ic_*.xml`.
+
+### 36. Saving the screenshots off the phone
+- **Problem:** The screenshot test ran and passed, but no pictures arrived on the computer.
+- **Why:** The test asked Android for the app's own folder on the shared storage, and on this emulator that folder is
+  not given out, so the pictures were written to a read-only place. The failure was silent because the screenshot call
+  only returns true or false.
+- **Fix:** The test now hands each picture to the test runner's own storage (the AndroidX test services), which copies
+  it into `app/build/outputs`, and the script moves the files into `docs/screenshots/android`. A picture that cannot be
+  saved now fails the test instead of being lost.
+- **Where:** `android/app/src/androidTest/java/lk/sliit/solargrid/screens/ScreensTest.java`,
+  `android/scripts/take-screenshots.ps1`.
+
+### 37. The title sat under the phone's clock
+- **Problem:** On the check-in screen the back arrow and the title were drawn behind the status bar.
+- **Why:** From Android 15 an app is always drawn edge to edge, behind the status bar and the navigation bar.
+- **Fix:** Every screen asks the system how much room those bars need and pads itself by that much, so the content
+  starts below the clock and ends above the gesture bar.
+- **Where:** `android/app/src/main/java/lk/sliit/solargrid/ui/common/BaseActivity.java`.
+
+### 38. The live test script started nothing
+- **Problem:** `android\scripts\run-e2e.ps1` said it was starting the API, then waited three minutes and gave up.
+- **Why:** The repository folder is `C:\eda assignment`, with a space in the name. PowerShell's `Start-Process` does not
+  put quotes around the values in `-ArgumentList`, so `dotnet` was told the project was `C:\eda`. The window was
+  hidden, so the message never reached the screen.
+- **Fix:** The project path is quoted, and the API now writes to a log file that the script prints when the server does
+  not answer in time.
+- **Where:** `android/scripts/run-e2e.ps1`.
+
+### 39. The app could not reach the API that the emulator could
+- **Problem:** Against a real server, every request from the app ran for 20 seconds and then failed with
+  *"failed to connect to /10.0.2.2 (port 8080)"*, although the emulator itself reached the same port at once.
+- **Why:** From Android 17, an app that targets it may not connect to the local network (private addresses such as
+  `10.0.2.2` or `192.168.x.x`) until the user allows the "Nearby devices" permission `ACCESS_LOCAL_NETWORK`. The
+  blocked connection does not fail quickly; it just never answers. Our tests with the stand-in server passed because
+  that server runs on the phone itself, which does not count as the local network.
+- **Fix:** The app declares the permission and asks for it before its first request when the API address is on the
+  local network; an API on the internet needs nothing. If the user says no, the login screen explains how to allow it.
+  The live tests grant the permission before they start.
+- **Where:** `android/app/src/main/java/lk/sliit/solargrid/util/LocalNetwork.java`, `ui/common/BaseActivity.java`,
+  `ui/auth/LoginActivity.java`, `ui/auth/SplashActivity.java`, `AndroidManifest.xml`.

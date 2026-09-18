@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    bg_button_secondary.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: Secondary button: white pill with a soft violet ripple.
+  Source:  AND-02 (clay design system).
+-->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android" android:color="#227C3AED">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/radius_control" />
+            <solid android:color="@color/card_solid" />
+        </shape>
+    </item>
+</ripple>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    body_medium.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: DM Sans Medium for labels and hints.
+  Source:  AND-04 (bundled variable fonts, SIL Open Font License).
+-->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font
+        android:font="@font/dm_sans"
+        android:fontStyle="normal"
+        android:fontWeight="500"
+        android:fontVariationSettings="'wght' 500"
+        app:font="@font/dm_sans"
+        app:fontStyle="normal"
+        app:fontWeight="500"
+        app:fontVariationSettings="'wght' 500" />
+</font-family>

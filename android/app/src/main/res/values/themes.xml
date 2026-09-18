@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    themes.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: The app theme: Material 3 components dressed in the clay look
+           (lavender canvas, violet accent, very round corners, soft shadows,
+           Nunito headings and DM Sans text).
+  Source:  AND-02 (clay design system), AND-05 (Material Components theming).
+-->
+<resources>
+
+    <style name="Theme.SolarGrid" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorOnPrimary">@color/on_accent</item>
+        <item name="colorPrimaryContainer">@color/accent_soft</item>
+        <item name="colorOnPrimaryContainer">@color/accent</item>
+        <item name="colorSecondary">@color/accent_alt</item>
+        <item name="colorOnSecondary">@color/on_accent</item>
+        <item name="colorTertiary">@color/info</item>
+        <item name="colorError">@color/danger</item>
+        <item name="android:colorBackground">@color/canvas</item>
+        <item name="colorSurface">@color/card_solid</item>
+        <item name="colorOnSurface">@color/ink</item>
+        <item name="colorOnSurfaceVariant">@color/muted</item>
+        <item name="colorSurfaceContainerLowest">@color/card_solid</item>
+        <item name="colorSurfaceContainerLow">@color/canvas</item>
+        <item name="colorSurfaceContainer">@color/well</item>
+        <item name="colorOutline">@color/accent_light</item>
+        <item name="android:windowBackground">@color/canvas</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:navigationBarColor">@color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+
+        <item name="android:fontFamily">@font/body</item>
+        <item name="fontFamily">@font/body</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SolarGrid.Title</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.SolarGrid.CardTitle</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.SolarGrid.Subtitle</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.SolarGrid.Body</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SolarGrid.Body</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.SolarGrid.Button</item>
+
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.SolarGrid.Control</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.SolarGrid.Card</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.SolarGrid.Sheet</item>
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.SolarGrid.Control</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.SolarGrid.Tile</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.SolarGrid.Card</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.SolarGrid.Sheet</item>
+
+        <item name="materialButtonStyle">@style/Widget.SolarGrid.Button</item>
+        <item name="materialCardViewStyle">@style/Widget.SolarGrid.Card</item>
+        <item name="textInputStyle">@style/Widget.SolarGrid.TextInput</item>
+        <item name="bottomNavigationStyle">@style/Widget.SolarGrid.BottomNavigation</item>
+        <item name="chipStyle">@style/Widget.SolarGrid.Chip</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.SolarGrid.Dialog</item>
+        <item name="snackbarStyle">@style/Widget.SolarGrid.Snackbar</item>
+    </style>
+
+    <!-- Launch screen: plain canvas with the sun tile while the app starts. -->
+    <style name="Theme.SolarGrid.Starting" parent="Theme.SolarGrid">
+        <item name="android:windowBackground">@drawable/bg_launch</item>
+    </style>
+
+    <style name="ThemeOverlay.SolarGrid.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.SolarGrid.Sheet</item>
+        <item name="colorSurface">@color/card_solid</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/SolarGrid.DialogTitle</item>
+    </style>
+
+    <style name="SolarGrid.DialogTitle" parent="MaterialAlertDialog.Material3.Title.Text">
+        <item name="android:fontFamily">@font/heading</item>
+        <item name="android:textColor">@color/ink</item>
+    </style>
+
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    bg_card_soft.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: Rounded card background for panels drawn without MaterialCardView.
+  Source:  AND-02 (clay design system).
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <corners android:radius="@dimen/radius_card" />
+    <solid android:color="@color/card" />
+</shape>

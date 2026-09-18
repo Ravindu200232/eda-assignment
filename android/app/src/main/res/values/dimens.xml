@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    dimens.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: Spacing, corner and elevation sizes shared by every screen.
+  Source:  AND-02 (clay design system).
+-->
+<resources>
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_s">8dp</dimen>
+    <dimen name="space_m">16dp</dimen>
+    <dimen name="space_l">24dp</dimen>
+    <dimen name="space_xl">32dp</dimen>
+    <dimen name="screen_padding">20dp</dimen>
+
+    <dimen name="radius_control">20dp</dimen>
+    <dimen name="radius_tile">24dp</dimen>
+    <dimen name="radius_card">28dp</dimen>
+    <dimen name="radius_sheet">32dp</dimen>
+
+    <dimen name="elevation_card">8dp</dimen>
+    <dimen name="elevation_button">6dp</dimen>
+
+    <dimen name="touch_target">48dp</dimen>
+    <dimen name="button_height">56dp</dimen>
+    <dimen name="orb_size">92dp</dimen>
+    <dimen name="icon_orb_size">44dp</dimen>
+</resources>

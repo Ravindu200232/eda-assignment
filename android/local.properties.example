@@ -1,0 +1,13 @@
+# Copy this file to local.properties (Git ignores that file) and fill in the values.
+# Android Studio adds sdk.dir by itself when it opens the project.
+sdk.dir=C\:\\Users\\<you>\\AppData\\Local\\Android\\Sdk
+
+# Google Maps key for Android. In Google Cloud restrict it to:
+#   Android apps -> package lk.sliit.solargrid + the SHA-1 of your debug keystore
+#   API restriction -> Maps SDK for Android
+MAPS_API_KEY=
+
+# Web API address. The emulator reaches the PC as 10.0.2.2 (IIS: port 8080).
+# For a real phone use http://<PC IP address>:8080/ and add that IP to
+# app/src/main/res/xml/network_security_config.xml.
+API_BASE_URL=http://10.0.2.2:8080/

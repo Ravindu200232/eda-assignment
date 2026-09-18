@@ -86,7 +86,7 @@ How work reaches `main`:
 ```
 api/        C# Web API solution (src + unit tests + end-to-end tests)
 web/        React web application (staff portal for Backoffice and Grid Operators)
-android/    Android Studio project (Java)    (added in the Android phase)
+android/    Android Studio project (Java + XML + SQLite) for prosumers and Grid Operators
 deploy/iis/ Scripts to host the API and the web portal on IIS and check them
 docs/       Database design, API endpoints, web pages, deployment guide, demo script, screenshots
 sources/    Every outside source and library we used, explained in plain English
@@ -144,6 +144,26 @@ To host the portal on IIS (http://localhost:8081), run `deploy\iis\deploy-web.ps
 
 ![Home page of the web portal](docs/screenshots/web/00-home.png)
 
+## Running the Android app
+
+Requirements: Android Studio (it brings Java and the Android SDK), an emulator or a phone with
+Android 9 or newer, and the API running.
+
+```powershell
+cd android
+copy local.properties.example local.properties
+.\gradlew installDebug
+```
+
+Open `local.properties` and fill in `sdk.dir`, the Google Maps key and `API_BASE_URL`.
+The default address is `http://10.0.2.2:8080/`, which is how an emulator reaches the API on this
+computer. For a real phone, use the computer's address on the same Wi-Fi (for example
+`http://192.168.1.5:8080/`) and add that host to `app/src/main/res/xml/network_security_config.xml`.
+The file is ignored by Git, so no key is ever committed.
+
+Log in with the prosumer or Grid Operator demo account; Backoffice accounts are refused on purpose,
+because Backoffice staff work in the web portal.
+
 ## Tests
 
 ```powershell
@@ -168,6 +188,20 @@ npm run e2e       # browser tests (Playwright) against a temporary API and datab
   click through the portal in Chromium (including a pretend webcam for QR check-in) and delete the database afterwards.
 - **Screenshots:** `npm run e2e:screens` saves every page at desktop and phone size to `docs/screenshots/web/`.
 - **IIS check:** `deploy\iis\smoke-test-web.ps1` tests the hosted portal and its connection to the API.
+
+```powershell
+cd android
+.\gradlew lintDebug testDebugUnitTest
+.\gradlew connectedDebugAndroidTest "-Pandroid.testInstrumentationRunnerArguments.notAnnotation=lk.sliit.solargrid.live.LiveApi"
+```
+
+- **Android unit tests** run on the computer (Robolectric): the SQLite session table, the error reader,
+  the repositories against a stand-in server and the Sri Lankan time formatting.
+- **Android emulator tests** (Espresso) sign in as each role, walk the operator check-in and open every screen
+  for the report pictures, also against a stand-in server, so they need no API.
+- **Live tests:** `android\scripts\run-e2e.ps1` starts the real API on port 5090 with a temporary MongoDB
+  database, runs the tests marked `@LiveApi` on the emulator and deletes the database afterwards.
+- **Screenshots:** `android\scripts\take-screenshots.ps1` saves every app screen to `docs/screenshots/android/`.
 
 ## Documentation
 
