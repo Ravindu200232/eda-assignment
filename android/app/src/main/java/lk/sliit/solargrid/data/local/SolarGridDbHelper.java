@@ -24,14 +24,16 @@ public class SolarGridDbHelper extends SQLiteOpenHelper {
      * Version 1: the signed-in session (Ravindu).
      * Version 2: the prosumer profile (Malith).
      * Version 3: the stations for the map and the station list (Nimthara).
+     * Version 4: the bookings of the signed-in prosumer (Hamnad).
      */
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
 
     /** Every "CREATE TABLE IF NOT EXISTS" script in the app. */
     private static final String[] TABLES = {
             SessionDao.CREATE_TABLE,
             ProfileDao.CREATE_TABLE,
             StationDao.CREATE_TABLE,
+            ReservationDao.CREATE_TABLE,
     };
 
     /**
@@ -41,6 +43,7 @@ public class SolarGridDbHelper extends SQLiteOpenHelper {
     private static final String[] PERSONAL_TABLES = {
             SessionDao.TABLE,
             ProfileDao.TABLE,
+            ReservationDao.TABLE,
     };
 
     /** Opens (or creates) solargrid.db for this app. */

@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import lk.sliit.solargrid.data.local.ProfileDao;
+import lk.sliit.solargrid.data.local.ReservationDao;
 import lk.sliit.solargrid.data.local.SolarGridDbHelper;
 import lk.sliit.solargrid.data.local.StationDao;
 import lk.sliit.solargrid.data.remote.ApiClient;
@@ -23,6 +24,7 @@ import lk.sliit.solargrid.data.repo.AuthRepository;
 import lk.sliit.solargrid.data.repo.CheckInRepository;
 import lk.sliit.solargrid.data.repo.DashboardRepository;
 import lk.sliit.solargrid.data.repo.ProsumerRepository;
+import lk.sliit.solargrid.data.repo.ReservationRepository;
 import lk.sliit.solargrid.data.repo.StationRepository;
 import lk.sliit.solargrid.session.SessionStore;
 import lk.sliit.solargrid.util.LocationFinder;
@@ -38,6 +40,7 @@ public final class AppContainer {
 
     private final ProfileDao profileDao;
     private final StationDao stationDao;
+    private final ReservationDao reservationDao;
     private LocationFinder locationFinder = new LocationFinder.Fused();
 
     private String baseUrl;
@@ -47,6 +50,7 @@ public final class AppContainer {
     private ProsumerRepository prosumerRepository;
     private DashboardRepository dashboardRepository;
     private StationRepository stationRepository;
+    private ReservationRepository reservationRepository;
 
     /** Builds everything the app shares. Only AppContainer.init() calls this. */
     private AppContainer(Context context) {
@@ -56,6 +60,7 @@ public final class AppContainer {
         this.sessionStore = new SessionStore(dbHelper, worker);
         this.profileDao = new ProfileDao(dbHelper);
         this.stationDao = new StationDao(dbHelper);
+        this.reservationDao = new ReservationDao(dbHelper);
         useBaseUrl(BuildConfig.API_BASE_URL);
     }
 
@@ -88,6 +93,7 @@ public final class AppContainer {
         this.prosumerRepository = new ProsumerRepository(api, sessionStore, profileDao, worker);
         this.dashboardRepository = new DashboardRepository(api);
         this.stationRepository = new StationRepository(api, stationDao, worker);
+        this.reservationRepository = new ReservationRepository(api, reservationDao, worker);
     }
 
     /** The API address the app is using. */
@@ -123,6 +129,11 @@ public final class AppContainer {
     /** Stations, their slots and battery bays. */
     public synchronized StationRepository stations() {
         return stationRepository;
+    }
+
+    /** Bookings: the lists, making, changing and cancelling, and the QR code. */
+    public synchronized ReservationRepository reservations() {
+        return reservationRepository;
     }
 
     /** Where the phone is, for the map of nearby stations. */
