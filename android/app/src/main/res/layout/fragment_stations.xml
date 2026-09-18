@@ -151,6 +151,7 @@
         </LinearLayout>
 
         <!-- The card of the station tapped on the map. -->
+        <!-- Solid, so the map under it does not show through the words. -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/station_card"
             android:layout_width="match_parent"
@@ -158,6 +159,7 @@
             android:layout_gravity="bottom"
             android:layout_margin="@dimen/screen_padding"
             android:visibility="gone"
+            app:cardBackgroundColor="@color/card_solid"
             tools:visibility="visible">
 
             <LinearLayout

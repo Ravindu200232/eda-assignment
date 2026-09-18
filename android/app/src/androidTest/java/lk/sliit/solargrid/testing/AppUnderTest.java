@@ -17,6 +17,7 @@ import org.junit.runners.model.Statement;
 
 import lk.sliit.solargrid.AppContainer;
 import lk.sliit.solargrid.data.remote.dto.UserDto;
+import lk.sliit.solargrid.util.LocationFinder;
 
 public class AppUnderTest implements TestRule {
 
@@ -40,6 +41,7 @@ public class AppUnderTest implements TestRule {
                     test.evaluate();
                 } finally {
                     AppContainer.get().session().clear();
+                    AppContainer.get().useLocationFinder(new LocationFinder.Fused());
                     api.stop();
                     IdlingRegistry.getInstance().unregister(idling);
                 }
