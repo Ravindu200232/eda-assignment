@@ -42,6 +42,7 @@ public class LoginFlowTest {
     @Test
     public void prosumerGoesToTheProsumerHome() {
         app.api.willAnswer(200, Samples.login(Roles.PROSUMER));
+        app.api.willAnswer(200, Samples.dashboard());
 
         ActivityScenario.launch(LoginActivity.class);
         signIn("kasun@example.com", "Prosumer@123");

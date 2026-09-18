@@ -14,6 +14,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -40,7 +41,11 @@ import lk.sliit.solargrid.data.model.Roles;
 import lk.sliit.solargrid.testing.AppUnderTest;
 import lk.sliit.solargrid.testing.Samples;
 import lk.sliit.solargrid.ui.auth.LoginActivity;
+import lk.sliit.solargrid.ui.auth.RegisterActivity;
+import lk.sliit.solargrid.ui.common.ChangePasswordActivity;
 import lk.sliit.solargrid.ui.operator.OperatorActivity;
+import lk.sliit.solargrid.ui.prosumer.MainActivity;
+import lk.sliit.solargrid.ui.prosumer.ProfileActivity;
 
 @Screens
 @LargeTest
@@ -76,6 +81,7 @@ public class ScreensTest {
     @Test
     public void captureProsumerTabs() {
         app.api.willAnswer(200, Samples.login(Roles.PROSUMER));
+        app.api.willAnswer(200, Samples.dashboard());
 
         ActivityScenario.launch(LoginActivity.class);
         onView(withId(R.id.login_username)).perform(replaceText("kasun@example.com"), closeSoftKeyboard());
@@ -88,6 +94,51 @@ public class ScreensTest {
         AppContainer.get().useBaseUrl("http://10.0.2.2:8080/");
         onView(withId(R.id.tab_account)).perform(click());
         shoot("04-prosumer-account");
+    }
+
+    /** Malith: the sign-up form and the "waiting for activation" screen. */
+    @Test
+    public void captureSignUp() {
+        app.api.willAnswer(201, Samples.profile("0712345678", "Pending"));
+
+        ActivityScenario.launch(RegisterActivity.class);
+        onView(withId(R.id.register_nic)).perform(replaceText("200034501234"), closeSoftKeyboard());
+        onView(withId(R.id.register_name)).perform(replaceText("Kasun Perera"), closeSoftKeyboard());
+        onView(withId(R.id.register_email)).perform(replaceText("kasun@example.com"), closeSoftKeyboard());
+        shoot("09-register");
+
+        onView(withId(R.id.register_phone)).perform(scrollTo(), replaceText("0712345678"), closeSoftKeyboard());
+        onView(withId(R.id.register_address)).perform(scrollTo(), replaceText("No. 12, Temple Road, Malabe"),
+                closeSoftKeyboard());
+        onView(withId(R.id.register_password)).perform(scrollTo(), replaceText("Prosumer@123"), closeSoftKeyboard());
+        onView(withId(R.id.register_confirm)).perform(scrollTo(), replaceText("Prosumer@123"), closeSoftKeyboard());
+        onView(withId(R.id.register_submit)).perform(scrollTo(), click());
+        shoot("10-register-waiting");
+    }
+
+    /** Malith: the profile form, the password form and the deactivation check. */
+    @Test
+    public void captureAccountScreens() {
+        app.signIn(Roles.PROSUMER);
+        app.api.willAnswer(200, Samples.profile("0712345678", "Active"));
+
+        ActivityScenario<ProfileActivity> profile = ActivityScenario.launch(ProfileActivity.class);
+        shoot("11-profile");
+        profile.close();
+
+        ActivityScenario<ChangePasswordActivity> password = ActivityScenario.launch(ChangePasswordActivity.class);
+        onView(withId(R.id.password_current)).perform(replaceText("Prosumer@123"), closeSoftKeyboard());
+        shoot("12-change-password");
+        password.close();
+
+        app.api.willAnswer(200, Samples.emptyDashboard());
+        ActivityScenario.launch(MainActivity.class);
+        shoot("13-home-nothing-booked");
+        // The account tab names the server, so the picture shows the real address.
+        AppContainer.get().useBaseUrl("http://10.0.2.2:8080/");
+        onView(withId(R.id.tab_account)).perform(click());
+        onView(withId(R.id.account_deactivate)).perform(scrollTo(), click());
+        shoot("14-deactivate-confirm");
     }
 
     /** The operator screens: scanning, a booking ready to finish, and the summary. */
