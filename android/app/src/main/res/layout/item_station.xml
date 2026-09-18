@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    item_station.xml
+  Module:  Stations
+  Owner:   Nimthara
+  Purpose: One station in the list view of the Map tab and in the operator
+           station picker: name, address, distance and free bays.
+  Source:  AND-02 (clay design system).
+-->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.SolarGrid.Card.Row"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/space_s"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="@dimen/icon_orb_size"
+            android:layout_height="@dimen/icon_orb_size"
+            android:background="@drawable/bg_orb_amber">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_sun_medium"
+                app:tint="@color/on_accent" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_m"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/station_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle"
+                tools:text="SLIIT Malabe Campus Microgrid" />
+
+            <TextView
+                android:id="@+id/station_where"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
+                tools:text="New Kandy Road, Malabe · 1.2 km away" />
+
+            <TextView
+                android:id="@+id/station_bays"
+                style="@style/Widget.SolarGrid.StatusChip"
+                android:layout_marginTop="@dimen/space_xs"
+                tools:text="9 of 12 bays free" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="@dimen/space_s"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="@color/muted" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

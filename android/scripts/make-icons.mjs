@@ -58,6 +58,16 @@ const ICONS = {
   'user-x': 'Malith',
   'user-plus': 'Malith',
   'hourglass': 'Malith',
+  // Nimthara: map, stations and battery bays
+  'map': 'Nimthara',
+  'list': 'Nimthara',
+  'search': 'Nimthara',
+  'minus': 'Nimthara',
+  'plus': 'Nimthara',
+  'navigation': 'Nimthara',
+  'battery': 'Nimthara',
+  'locate-fixed': 'Nimthara',
+  'sun-medium': 'Nimthara',
 }
 
 /*

@@ -96,7 +96,6 @@
     <string name="operator_today_tab">Today</string>
     <string name="operator_bays_tab">Bays</string>
     <string name="operator_today_screen">The list of bookings at this station today</string>
-    <string name="operator_bays_screen">The battery bay counter</string>
     <string name="operator_eyebrow">Operator mode</string>
     <string name="operator_scan_helper">The server checks the code: it must be an approved booking for your station, inside the check-in window.</string>
     <string name="operator_manual_missing">Scan a QR code or type the code text.</string>
@@ -180,8 +179,61 @@
     <string name="home_book_action">Book a slot</string>
     <string name="booking_summary_line">%1$s · %2$s · %3$s</string>
 
+    <!-- Nimthara: map, stations, slots and battery bays -->
+    <string name="stations_eyebrow">Solar stations</string>
+    <string name="stations_title">Stations near you</string>
+    <string name="stations_show_map">Show the map</string>
+    <string name="stations_show_list">Show the list</string>
+    <string name="stations_search">Search by name, code or town</string>
+    <string name="stations_see_slots">See the free slots</string>
+    <string name="stations_no_location">Location is off, so the map starts in Colombo. Allow location to see the stations nearest to you.</string>
+    <string name="stations_far_away">You seem to be outside Sri Lanka, so the map starts in Colombo.</string>
+    <string name="stations_no_maps_key">The Google Maps key is not set on this build, so the stations are shown as a list.</string>
+    <string name="stations_offline">%1$s These are the stations saved on this phone.</string>
+    <string name="stations_none_found">No stations were found.</string>
+    <string name="station_title">Station</string>
+    <string name="station_where">%1$s · %2$s km away</string>
+    <string name="station_energy">Up to %1$s kWh per booking</string>
+    <string name="station_today">Today: %1$s</string>
+    <string name="station_closed_today">Closed today</string>
+    <string name="station_closed">Closed</string>
+    <string name="station_inactive">Not taking bookings</string>
+    <string name="station_full">All bays in use</string>
+    <plurals name="station_bays_free">
+        <item quantity="one">%1$d of %2$d bay free</item>
+        <item quantity="other">%1$d of %2$d bays free</item>
+    </plurals>
+    <string name="station_energy_label">Energy per booking</string>
+    <string name="station_solar_label">Solar panels</string>
+    <string name="station_storage_label">Battery storage</string>
+    <string name="station_code_label">Station code</string>
+    <string name="station_slots_title">Slots</string>
+    <string name="station_hours_title">Opening hours</string>
+    <string name="station_no_slots">No slots on this day.</string>
+    <string name="station_offline">%1$s The details below were saved on this phone earlier; the slots need a connection.</string>
+    <plurals name="slot_bays_free">
+        <item quantity="one">%1$d of %2$d bay free</item>
+        <item quantity="other">%1$d of %2$d bays free</item>
+    </plurals>
+    <string name="slot_full">Full</string>
+    <string name="slot_closed">Closed</string>
+    <string name="day_today">Today</string>
+    <string name="day_tomorrow">Tomorrow</string>
+    <string name="kw_value">%1$s kW</string>
+    <string name="bays_title">Battery bays</string>
+    <string name="bays_subtitle">When a bay breaks or is repaired, set how many are free, so prosumers only book bays that work.</string>
+    <string name="bays_station">Station</string>
+    <string name="bays_minus">One bay fewer</string>
+    <string name="bays_plus">One bay more</string>
+    <string name="bays_out_of">bays free out of %1$d</string>
+    <string name="bays_choose_station">Choose a station first</string>
+    <string name="bays_save">Save the free bays</string>
+    <plurals name="bays_saved">
+        <item quantity="one">Saved: %1$d of %2$d bay is free at %3$s.</item>
+        <item quantity="other">Saved: %1$d of %2$d bays are free at %3$s.</item>
+    </plurals>
+
     <!-- Screens another member is still building: the words for their tabs -->
-    <string name="map_screen">The map of nearby stations</string>
     <string name="bookings_screen">Your bookings and the booking form</string>
 
     <!-- Booking words used on several screens -->
