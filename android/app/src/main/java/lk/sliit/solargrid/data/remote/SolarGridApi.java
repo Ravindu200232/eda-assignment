@@ -14,13 +14,18 @@ import lk.sliit.solargrid.data.remote.dto.CompleteTransferRequest;
 import lk.sliit.solargrid.data.remote.dto.HealthDto;
 import lk.sliit.solargrid.data.remote.dto.LoginRequest;
 import lk.sliit.solargrid.data.remote.dto.LoginResponse;
+import lk.sliit.solargrid.data.remote.dto.PasswordRequests;
+import lk.sliit.solargrid.data.remote.dto.ProsumerDashboardDto;
+import lk.sliit.solargrid.data.remote.dto.RegisterProsumerRequest;
 import lk.sliit.solargrid.data.remote.dto.ReservationDto;
+import lk.sliit.solargrid.data.remote.dto.UpdateProsumerRequest;
 import lk.sliit.solargrid.data.remote.dto.UserDto;
 import lk.sliit.solargrid.data.remote.dto.VerifyQrRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface SolarGridApi {
@@ -49,4 +54,30 @@ public interface SolarGridApi {
     @POST("api/checkin/{reservationId}/complete")
     Call<ReservationDto> completeTransfer(@Path("reservationId") String reservationId,
                                           @Body CompleteTransferRequest request);
+
+    // ----- Malith: prosumer accounts and the dashboard -----
+
+    /** Creates a prosumer account, which then waits for Backoffice activation. */
+    @POST("api/prosumers/register")
+    Call<UserDto> registerProsumer(@Body RegisterProsumerRequest request);
+
+    /** The full profile of the signed-in prosumer. */
+    @GET("api/prosumers/me")
+    Call<UserDto> myProfile();
+
+    /** Replaces the profile of the signed-in prosumer. */
+    @PUT("api/prosumers/me")
+    Call<UserDto> updateMyProfile(@Body UpdateProsumerRequest request);
+
+    /** Closes the account of the signed-in prosumer; only Backoffice can open it again. */
+    @POST("api/prosumers/me/deactivate")
+    Call<Void> deactivateMyAccount(@Body PasswordRequests.Deactivate request);
+
+    /** Changes the password of whoever is signed in. */
+    @POST("api/auth/change-password")
+    Call<Void> changePassword(@Body PasswordRequests.ChangePassword request);
+
+    /** The numbers and the coming bookings for the prosumer home screen. */
+    @GET("api/dashboard/my-summary")
+    Call<ProsumerDashboardDto> myDashboard();
 }

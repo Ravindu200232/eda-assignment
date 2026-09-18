@@ -8,6 +8,9 @@
  */
 package lk.sliit.solargrid.testing;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 public final class Samples {
 
     /** Nobody builds this class; it only holds text. */
@@ -55,5 +58,55 @@ public final class Samples {
     /** The error body the API sends when a login is refused. */
     public static String problem(String title, int status, String detail) {
         return "{\"title\":\"" + title + "\",\"status\":" + status + ",\"detail\":\"" + detail + "\"}";
+    }
+
+    // ----- Malith: prosumer accounts and the dashboard -----
+
+    /** A full prosumer profile, as GET and PUT api/prosumers/me send it. */
+    public static String profile(String phone, String status) {
+        return "{\"nic\":\"200034501234\",\"fullName\":\"Kasun Perera\","
+                + "\"email\":\"kasun@example.com\",\"phone\":\"" + phone + "\","
+                + "\"role\":\"Prosumer\",\"status\":\"" + status + "\","
+                + "\"address\":\"No. 12, Temple Road, Malabe\",\"meterNumber\":\"CEB-MLB-10021\","
+                + "\"solarCapacityKw\":5.5,\"createdAt\":\"2026-08-01T04:00:00Z\"}";
+    }
+
+    /** A validation answer that names one field, the way ASP.NET Core writes it. */
+    public static String fieldProblem(String field, String message) {
+        return "{\"title\":\"One or more validation errors occurred.\",\"status\":400,"
+                + "\"errors\":{\"" + field + "\":[\"" + message + "\"]}}";
+    }
+
+    /**
+     * The prosumer dashboard with two coming bookings. Their times are worked
+     * out from now (3 hours and 1 day ahead), because the API only lists
+     * bookings that have not started and the screenshots show "in 3 hours".
+     */
+    public static String dashboard() {
+        Instant soon = Instant.now().truncatedTo(ChronoUnit.HOURS).plus(3, ChronoUnit.HOURS);
+        Instant tomorrow = soon.plus(1, ChronoUnit.DAYS);
+        return "{\"pendingCount\":2,\"approvedFutureCount\":3,\"completedCount\":7,"
+                + "\"totalDeliveredKwh\":86.5,"
+                + "\"nextReservation\":" + summary("RSV-260918-HURV8", "Malabe Solar Hub", "Approved", soon) + ","
+                + "\"upcomingReservations\":["
+                + summary("RSV-260918-HURV8", "Malabe Solar Hub", "Approved", soon) + ","
+                + summary("RSV-260919-KDY42", "Kandy Lake Microgrid", "Pending", tomorrow) + "],"
+                + "\"generatedAt\":\"" + Instant.now().truncatedTo(ChronoUnit.SECONDS) + "\"}";
+    }
+
+    /** The dashboard of a prosumer who has not booked anything yet. */
+    public static String emptyDashboard() {
+        return "{\"pendingCount\":0,\"approvedFutureCount\":0,\"completedCount\":0,"
+                + "\"totalDeliveredKwh\":0,\"nextReservation\":null,\"upcomingReservations\":[],"
+                + "\"generatedAt\":\"2026-09-18T02:00:00Z\"}";
+    }
+
+    /** One short booking line of the dashboard: a two-hour slot from the given start. */
+    private static String summary(String reference, String station, String status, Instant start) {
+        return "{\"id\":\"66eb1f2c9a2b4c0012ab34cd\",\"referenceNo\":\"" + reference + "\","
+                + "\"prosumerNic\":\"200034501234\",\"prosumerName\":\"Kasun Perera\","
+                + "\"stationName\":\"" + station + "\","
+                + "\"startTime\":\"" + start + "\",\"endTime\":\"" + start.plus(2, ChronoUnit.HOURS) + "\","
+                + "\"tradeType\":\"Export\",\"energyKwh\":12.5,\"status\":\"" + status + "\"}";
     }
 }

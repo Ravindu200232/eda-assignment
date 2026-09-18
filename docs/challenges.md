@@ -286,3 +286,13 @@ page. Each entry says what went wrong, why it happened, and what we changed.
   The live tests grant the permission before they start.
 - **Where:** `android/app/src/main/java/lk/sliit/solargrid/util/LocalNetwork.java`, `ui/common/BaseActivity.java`,
   `ui/auth/LoginActivity.java`, `ui/auth/SplashActivity.java`, `AndroidManifest.xml`.
+
+### 40. The last boxes of the sign-up form could not be reached
+- **Problem:** On the sign-up screen the tests could not scroll to the solar panel box: *"Scrolling to view was attempted,
+  but the view is not displayed"*.
+- **Why:** The screen leaves room for the status bar, the navigation bar and the keyboard by adding padding. That
+  padding was put on the ScrollView itself, but a ScrollView ignores its own padding when it works out how far to
+  scroll, so a box could end up hidden behind the keyboard.
+- **Fix:** The screens whose top view is a ScrollView now have a plain frame around it. The frame takes the padding, so
+  the scrolling area itself becomes shorter and every box can be scrolled into view.
+- **Where:** `android/app/src/main/res/layout/activity_login.xml`, `activity_register.xml`, `activity_registered.xml`.

@@ -115,8 +115,72 @@
     <string name="checkin_call_prosumer">Call the prosumer</string>
     <string name="checkin_no_phone_app">This device cannot make calls.</string>
 
+    <!-- Malith: shared form words -->
+    <string name="field_required">This box is needed.</string>
+    <string name="optional">Optional</string>
+    <string name="number_needed">Enter a number, for example 5.5.</string>
+    <string name="password_mismatch">The two passwords are not the same.</string>
+    <string name="password_rule">At least 8 characters, with letters and numbers.</string>
+    <string name="form_check_marked">Please check the boxes marked in pink.</string>
+
+    <!-- Malith: sign-up -->
+    <string name="login_register">New here? Create an account</string>
+    <string name="register_title">Create your account</string>
+    <string name="register_subtitle">Sign up to sell your solar energy or charge from the grid. The Backoffice checks every new account before it can book.</string>
+    <string name="register_about_you">About you</string>
+    <string name="register_about_panels">About your solar panels</string>
+    <string name="register_about_password">Your password</string>
+    <string name="register_nic">NIC number</string>
+    <string name="register_nic_help">Old (123456789V) or new (200012345678) format.</string>
+    <string name="register_full_name">Full name</string>
+    <string name="register_email">Email</string>
+    <string name="register_phone">Phone</string>
+    <string name="register_phone_help">For example 0771234567.</string>
+    <string name="register_address">Address</string>
+    <string name="register_meter">Meter number</string>
+    <string name="register_solar">Solar panel size (kW)</string>
+    <string name="register_confirm_password">Password again</string>
+    <string name="register_action">Create account</string>
+    <string name="register_have_account">Already have an account? Log in</string>
+    <string name="registered_title">Almost there</string>
+    <string name="registered_message">Thank you, %1$s. Your account %2$s has been created and is waiting for the Backoffice to check it.</string>
+    <string name="registered_steps">What happens next\n1. The Backoffice checks your details.\n2. They activate your account.\n3. Log in with your NIC or email and book your first slot.</string>
+    <string name="registered_back_to_login">Back to log in</string>
+
+    <!-- Malith: profile, password and deactivation -->
+    <string name="account_edit_profile">Edit my profile</string>
+    <string name="account_deactivate">Deactivate my account</string>
+    <string name="account_status_active">Active</string>
+    <string name="account_status_pending">Waiting for activation</string>
+    <string name="account_status_deactivated">Deactivated</string>
+    <string name="profile_title">My profile</string>
+    <string name="profile_save">Save changes</string>
+    <string name="profile_saved">Your profile was saved.</string>
+    <string name="profile_offline">%1$s The details below are the ones saved on this phone.</string>
+    <string name="password_intro">Type your current password first, then the new one twice.</string>
+    <string name="password_save">Change password</string>
+    <string name="deactivate_title">Deactivate your account?</string>
+    <string name="deactivate_message">You will be logged out and cannot book energy any more. Only the Backoffice can turn the account back on. Type your password to confirm.</string>
+    <string name="deactivate_password_needed">Type your password to confirm.</string>
+    <string name="deactivate_done">Your account has been deactivated. Ask the Backoffice if you want to use it again.</string>
+
+    <!-- Malith: home dashboard -->
+    <string name="home_eyebrow">Your energy</string>
+    <string name="home_greeting">Hello, %1$s</string>
+    <string name="home_greeting_plain">Hello</string>
+    <string name="home_subtitle">Here is where your bookings stand. Pull down to refresh.</string>
+    <string name="home_pending_label">Waiting for approval</string>
+    <string name="home_approved_label">Approved and coming up</string>
+    <string name="home_completed_label">Transfers done</string>
+    <string name="home_delivered_label">kWh delivered</string>
+    <string name="home_next_title">Next booking</string>
+    <string name="home_upcoming_title">After that</string>
+    <string name="home_empty_title">Nothing booked yet</string>
+    <string name="home_empty_message">Book a slot at a nearby station to sell your solar energy or charge from the grid.</string>
+    <string name="home_book_action">Book a slot</string>
+    <string name="booking_summary_line">%1$s · %2$s · %3$s</string>
+
     <!-- Screens another member is still building: the words for their tabs -->
-    <string name="home_screen">The dashboard with your booking counts</string>
     <string name="map_screen">The map of nearby stations</string>
     <string name="bookings_screen">Your bookings and the booking form</string>
 

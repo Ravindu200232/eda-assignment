@@ -33,6 +33,7 @@ public class SessionStore {
         void onLoaded(@Nullable Session session);
     }
 
+    private final SolarGridDbHelper database;
     private final SessionDao dao;
     private final Executor worker;
     private final Handler mainThread = new Handler(Looper.getMainLooper());
@@ -43,6 +44,7 @@ public class SessionStore {
 
     /** Needs the database and the background thread it should use. */
     public SessionStore(SolarGridDbHelper helper, Executor worker) {
+        this.database = helper;
         this.dao = new SessionDao(helper);
         this.worker = worker;
     }
@@ -115,11 +117,14 @@ public class SessionStore {
         worker.execute(() -> dao.save(fresh));
     }
 
-    /** Forgets the session after the user taps "Log out". */
+    /**
+     * Forgets the session after the user taps "Log out", together with the
+     * profile and any other data of that user kept on the phone.
+     */
     public void clear() {
         this.session = null;
         this.loaded = true;
-        worker.execute(dao::clear);
+        worker.execute(database::clearPersonalData);
     }
 
     /**

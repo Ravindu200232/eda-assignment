@@ -115,8 +115,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Sends the user to the login screen when the API refused the token.
      * Returns true when it did, so the caller can stop working on the answer.
+     * Tabs call it through their activity as well.
      */
-    protected boolean handledSessionEnd(ApiError error) {
+    public boolean handledSessionEnd(ApiError error) {
         if (error == null || !error.isSessionEnded()) {
             return false;
         }

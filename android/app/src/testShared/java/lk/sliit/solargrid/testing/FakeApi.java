@@ -15,14 +15,22 @@ import java.util.concurrent.TimeUnit;
 import lk.sliit.solargrid.AppContainer;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.QueueDispatcher;
 import okhttp3.mockwebserver.RecordedRequest;
 
 public class FakeApi {
 
     private final MockWebServer server = new MockWebServer();
 
-    /** Starts the server and points the app at it. */
+    /**
+     * Starts the server and points the app at it. A request the test did not
+     * prepare an answer for gets "404" at once, instead of waiting until the
+     * app gives up after 20 seconds.
+     */
     public void start() throws IOException {
+        QueueDispatcher answers = new QueueDispatcher();
+        answers.setFailFast(true);
+        server.setDispatcher(answers);
         server.start();
         AppContainer.get().useBaseUrl(server.url("/").toString());
     }
