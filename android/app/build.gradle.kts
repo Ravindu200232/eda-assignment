@@ -73,6 +73,9 @@ android {
         unitTests {
             isIncludeAndroidResources = true
         }
+        // A tap during a window animation can be lost, so the emulator tests
+        // run with animations switched off, as the Espresso guide advises.
+        animationsDisabled = true
     }
 
     lint {

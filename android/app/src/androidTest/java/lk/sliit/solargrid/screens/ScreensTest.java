@@ -65,7 +65,7 @@ public class ScreensTest {
     private static final String CODE = "SSG1.66eb1f2c9a2b4c0012ab34cd.7f3a91.2b8c4d6e";
 
     /** Time for Google to download and draw the map tiles. */
-    private static final long MAP_DRAWING_MILLIS = 4_000;
+    private static final long MAP_DRAWING_MILLIS = 12_000;
 
     @Rule
     public AppUnderTest app = new AppUnderTest();
