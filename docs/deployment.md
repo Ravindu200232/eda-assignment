@@ -1,11 +1,13 @@
 # Deployment Guide
 
-This guide runs the Web API and the web portal locally and hosts both on **IIS** with **MongoDB**.
+This guide runs the Web API and the web portal locally, hosts both on **IIS** with **MongoDB**, and installs the
+Android app on an emulator or a phone.
 
 | Part | IIS site | Address |
 |---|---|---|
 | Web API | `SolarGridApi` | `http://localhost:8080` (Swagger at `/swagger`) |
 | Web portal (Backoffice and Grid Operators) | `SolarGridWeb` | `http://localhost:8081` |
+| Android app (prosumers and Grid Operators) | — (installed on the phone) | Calls the API at `http://10.0.2.2:8080/` from the emulator |
 
 ## 1. Prerequisites
 
@@ -162,12 +164,58 @@ no URL Rewrite module is needed.
 
 7. Browse to `http://localhost:8081` and log in with a staff account.
 
-## 7. Reaching the API from the Android app
+## 7. The Android app
 
-| Where the app runs | API address to use |
+The app is a normal Android project in `android/`. It needs no server of its own: it calls the Web API on IIS.
+
+### 7.1 What is needed
+
+| Software | Version used | Notes |
+|---|---|---|
+| Android Studio | 2026.1 | Brings Java (JBR), the Android SDK and the emulator |
+| Android SDK platform | 37 | Installed from Android Studio's SDK Manager |
+| Emulator or phone | Android 9 (API 28) or newer | We tested on a Pixel 10 emulator with Android 17 (API 37) |
+
+### 7.2 Settings (`android/local.properties`)
+
+```powershell
+cd android
+copy local.properties.example local.properties
+```
+
+| Setting | Value |
+|---|---|
+| `sdk.dir` | The Android SDK folder (Android Studio fills it in) |
+| `MAPS_API_KEY` | The Google Maps key for Android. The file is ignored by Git, so the key is never committed |
+| `API_BASE_URL` | Where the app finds the API (see below) |
+
+| Where the app runs | `API_BASE_URL` |
 |---|---|
 | Android emulator | `http://10.0.2.2:8080/` (the emulator's name for the PC) |
-| Real phone on the same Wi-Fi | `http://<PC IP address>:8080/` — find the IP with `ipconfig`, and deploy with `-OpenFirewall` |
+| Real phone on the same Wi-Fi | `http://<PC IP address>:8080/` — find the IP with `ipconfig`, deploy the API with `-OpenFirewall`, and add the IP to `app/src/main/res/xml/network_security_config.xml` (plain HTTP is only allowed for the listed addresses) |
+
+On Android 17 the app asks for **Nearby devices** before it first calls an API on the local network; allow it.
+
+### 7.3 The Google Maps key
+
+In Google Cloud, restrict the Android key so that only this app can use it:
+
+1. **Application restriction:** Android apps → package `lk.sliit.solargrid` and the SHA-1 of the debug keystore
+   (run `.\gradlew signingReport` in `android` and copy the SHA1 of the `debug` variant).
+2. **API restriction:** Maps SDK for Android.
+
+Without a key the map tab shows the station list instead, and everything else works.
+
+### 7.4 Build and install
+
+```powershell
+cd android
+.\gradlew assembleDebug        # builds app\build\outputs\apk\debug\app-debug.apk
+.\gradlew installDebug         # installs it on the running emulator or the phone
+```
+
+The APK can also be copied to a phone and opened there (allow "install unknown apps" for the file manager). APK files
+are kept out of Git; the submission zip carries a copy.
 
 ## 8. Troubleshooting
 
@@ -179,6 +227,8 @@ no URL Rewrite module is needed.
 | **405** on PUT/DELETE | WebDAV module handles the request | Re-run the deploy script (step 7) or remove WebDAV for the site as shown above; the smoke test checks this |
 | `/api/health` returns **503** | MongoDB service stopped | `Start-Service MongoDB` |
 | Phone cannot connect | Firewall or wrong address | Deploy with `-OpenFirewall`; use the PC's LAN IP, not `localhost` |
+| The app waits and then says it cannot reach the server | "Nearby devices" refused (Android 17), or a wrong `API_BASE_URL` | Allow Nearby devices in the app settings; check `API_BASE_URL` in `android/local.properties` and rebuild |
+| The map tab shows only the list, or a grey map | No Maps key in `local.properties`, or the key does not allow this app | Add `MAPS_API_KEY`; in Google Cloud allow package `lk.sliit.solargrid` with the debug SHA-1 and the Maps SDK for Android |
 | Portal shows an old version | The browser kept the old `index.html` | Re-run `deploy-web.ps1` (it turns caching off for pages) and refresh once |
 | Portal says "Cannot reach the server" | API stopped, wrong API address in the build, or CORS | Run `smoke-test-web.ps1`; rebuild with `-ApiUrl`; add the portal address to `Cors:AllowedOrigins` in the API settings |
 | Fonts look plain, or **404** for `.woff2` | IIS does not know the `.woff2` type | Re-run `deploy-web.ps1` (step 5) or add the MIME type by hand |
