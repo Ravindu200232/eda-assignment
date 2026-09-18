@@ -9,6 +9,9 @@
  */
 package lk.sliit.solargrid.data.remote;
 
+import java.util.List;
+
+import lk.sliit.solargrid.data.remote.dto.BatterySlotsRequest;
 import lk.sliit.solargrid.data.remote.dto.CheckInResponse;
 import lk.sliit.solargrid.data.remote.dto.CompleteTransferRequest;
 import lk.sliit.solargrid.data.remote.dto.HealthDto;
@@ -18,15 +21,19 @@ import lk.sliit.solargrid.data.remote.dto.PasswordRequests;
 import lk.sliit.solargrid.data.remote.dto.ProsumerDashboardDto;
 import lk.sliit.solargrid.data.remote.dto.RegisterProsumerRequest;
 import lk.sliit.solargrid.data.remote.dto.ReservationDto;
+import lk.sliit.solargrid.data.remote.dto.SlotDto;
+import lk.sliit.solargrid.data.remote.dto.StationDto;
 import lk.sliit.solargrid.data.remote.dto.UpdateProsumerRequest;
 import lk.sliit.solargrid.data.remote.dto.UserDto;
 import lk.sliit.solargrid.data.remote.dto.VerifyQrRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface SolarGridApi {
 
@@ -80,4 +87,28 @@ public interface SolarGridApi {
     /** The numbers and the coming bookings for the prosumer home screen. */
     @GET("api/dashboard/my-summary")
     Call<ProsumerDashboardDto> myDashboard();
+
+    // ----- Nimthara: stations, slots and battery bays -----
+
+    /** The stations, optionally filtered by a name, code or address. */
+    @GET("api/stations")
+    Call<List<StationDto>> stations(@Query("search") String search);
+
+    /** Up to 20 stations around a point, nearest first. */
+    @GET("api/stations/nearby")
+    Call<List<StationDto>> nearbyStations(@Query("lat") String latitude, @Query("lng") String longitude,
+                                          @Query("radiusKm") String radiusKm);
+
+    /** One station with its weekly schedule. */
+    @GET("api/stations/{id}")
+    Call<StationDto> station(@Path("id") String stationId);
+
+    /** The slots of a station between two Sri Lankan dates (both included). */
+    @GET("api/stations/{id}/slots")
+    Call<List<SlotDto>> stationSlots(@Path("id") String stationId, @Query("from") String fromDate,
+                                     @Query("to") String toDate);
+
+    /** Sets how many battery bays are free now (Grid Operators). */
+    @PATCH("api/stations/{id}/battery-slots")
+    Call<StationDto> updateBatterySlots(@Path("id") String stationId, @Body BatterySlotsRequest request);
 }

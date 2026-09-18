@@ -20,6 +20,7 @@ import lk.sliit.solargrid.databinding.ActivityMainBinding;
 import lk.sliit.solargrid.ui.common.AccountFragment;
 import lk.sliit.solargrid.ui.common.BaseActivity;
 import lk.sliit.solargrid.ui.common.PlaceholderFragment;
+import lk.sliit.solargrid.ui.map.StationsFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -70,7 +71,7 @@ public class MainActivity extends BaseActivity {
     private Fragment fragmentFor(int itemId) {
         if (itemId == R.id.tab_map) {
             // Nimthara: the nearby stations map.
-            return PlaceholderFragment.of(R.string.map_screen);
+            return new StationsFragment();
         }
         if (itemId == R.id.tab_bookings) {
             // Hamnad: the booking list and the booking form.

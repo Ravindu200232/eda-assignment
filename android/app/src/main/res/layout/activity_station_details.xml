@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    activity_station_details.xml
+  Module:  Stations
+  Owner:   Nimthara
+  Purpose: One station: its bays and energy per booking, the weekly opening
+           hours, and the slots of each of the next seven days.
+  Source:  AND-02 (clay design system).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_s"
+        android:paddingTop="@dimen/space_s"
+        android:paddingEnd="@dimen/screen_padding"
+        android:paddingBottom="@dimen/space_s">
+
+        <ImageButton
+            android:id="@+id/station_back"
+            android:layout_width="@dimen/touch_target"
+            android:layout_height="@dimen/touch_target"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/action_back"
+            android:src="@drawable/ic_arrow_left"
+            app:tint="@color/ink" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_s"
+            android:layout_weight="1"
+            android:text="@string/station_title"
+            android:textAppearance="@style/TextAppearance.SolarGrid.CardTitle" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/station_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/screen_padding"
+        android:layout_marginEnd="@dimen/screen_padding"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/accent"
+        android:visibility="invisible" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/screen_padding"
+            android:paddingEnd="@dimen/screen_padding"
+            android:paddingBottom="@dimen/screen_padding">
+
+            <TextView
+                android:id="@+id/station_notice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_m"
+                android:background="@drawable/bg_well"
+                android:drawablePadding="@dimen/space_s"
+                android:gravity="center_vertical"
+                android:padding="@dimen/space_m"
+                android:textAppearance="@style/TextAppearance.SolarGrid.Body"
+                android:visibility="gone"
+                app:drawableStartCompat="@drawable/ic_wifi_off"
+                app:drawableTint="@color/warning" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/station_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.CardTitle"
+                        tools:text="SLIIT Malabe Campus Microgrid" />
+
+                    <TextView
+                        android:id="@+id/station_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
+                        tools:text="New Kandy Road, Malabe" />
+
+                    <TextView
+                        android:id="@+id/station_bays"
+                        style="@style/Widget.SolarGrid.StatusChip"
+                        android:layout_marginTop="@dimen/space_s"
+                        tools:text="9 of 12 bays free" />
+
+                    <include
+                        android:id="@+id/station_energy_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s" />
+
+                    <include
+                        android:id="@+id/station_solar_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/station_storage_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/station_code_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/station_slots_title"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:scrollbars="none">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/station_days"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:selectionRequired="true"
+                            app:singleLine="true"
+                            app:singleSelection="true" />
+                    </HorizontalScrollView>
+
+                    <LinearLayout
+                        android:id="@+id/station_slots"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:orientation="vertical" />
+
+                    <TextView
+                        android:id="@+id/station_slots_empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:text="@string/station_no_slots"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/station_hours_title"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle" />
+
+                    <LinearLayout
+                        android:id="@+id/station_hours"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:orientation="vertical" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

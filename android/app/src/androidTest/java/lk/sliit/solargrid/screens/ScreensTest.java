@@ -20,13 +20,22 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 
+import android.Manifest;
 import android.graphics.Bitmap;
+import android.os.SystemClock;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.io.PlatformTestStorageRegistry;
+import androidx.test.rule.GrantPermissionRule;
+import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.UiDevice;
+import androidx.test.uiautomator.UiObject2;
+import androidx.test.uiautomator.Until;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -43,6 +52,7 @@ import lk.sliit.solargrid.testing.Samples;
 import lk.sliit.solargrid.ui.auth.LoginActivity;
 import lk.sliit.solargrid.ui.auth.RegisterActivity;
 import lk.sliit.solargrid.ui.common.ChangePasswordActivity;
+import lk.sliit.solargrid.ui.map.StationDetailsActivity;
 import lk.sliit.solargrid.ui.operator.OperatorActivity;
 import lk.sliit.solargrid.ui.prosumer.MainActivity;
 import lk.sliit.solargrid.ui.prosumer.ProfileActivity;
@@ -54,8 +64,15 @@ public class ScreensTest {
 
     private static final String CODE = "SSG1.66eb1f2c9a2b4c0012ab34cd.7f3a91.2b8c4d6e";
 
+    /** Time for Google to download and draw the map tiles. */
+    private static final long MAP_DRAWING_MILLIS = 12_000;
+
     @Rule
     public AppUnderTest app = new AppUnderTest();
+
+    @Rule
+    public GrantPermissionRule location = GrantPermissionRule.grant(
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);
 
     /** The sign-in screen, empty and with a refusal from the API. */
     @Test
@@ -139,6 +156,59 @@ public class ScreensTest {
         onView(withId(R.id.tab_account)).perform(click());
         onView(withId(R.id.account_deactivate)).perform(scrollTo(), click());
         shoot("14-deactivate-confirm");
+    }
+
+    /**
+     * Nimthara: the map with the nearby stations, the card of one station and
+     * the list view. The phone is placed in Malabe. Google draws the map tiles
+     * on its own, so the walk waits a few seconds before the picture.
+     */
+    @Test
+    public void captureStations() {
+        app.signIn(Roles.PROSUMER);
+        AppContainer.get().useLocationFinder((context, answer) -> answer.onFound(new LatLng(6.9147, 79.9729)));
+        app.api.willAnswerPath("/api/dashboard", 200, Samples.dashboard());
+        app.api.willAnswerPath("/api/stations/nearby", 200, Samples.nearbyStations());
+
+        ActivityScenario.launch(MainActivity.class);
+        onView(withId(R.id.tab_map)).perform(click());
+        SystemClock.sleep(MAP_DRAWING_MILLIS);
+        shoot("15-stations-map");
+
+        // Markers are read out by their titles, which is how UiAutomator finds one.
+        UiDevice device = UiDevice.getInstance(getInstrumentation());
+        UiObject2 marker = device.wait(Until.findObject(By.descContains("SLIIT Malabe")), MAP_DRAWING_MILLIS);
+        if (marker != null) {
+            marker.click();
+            SystemClock.sleep(1_000);
+            shoot("16-station-card");
+        }
+
+        onView(withId(R.id.stations_show_list)).perform(click());
+        shoot("17-stations-list");
+    }
+
+    /** Nimthara: the page of one station with its slots and hours. */
+    @Test
+    public void captureStationPage() {
+        app.signIn(Roles.PROSUMER);
+        app.api.willAnswerPath("/api/stations/st-mal/slots", 200, Samples.slotsToday());
+        app.api.willAnswerPath("/api/stations/st-mal", 200, Samples.malabeStation(9));
+
+        ActivityScenario.launch(StationDetailsActivity.intentFor(
+                getInstrumentation().getTargetContext(), "st-mal"));
+        shoot("18-station-details");
+    }
+
+    /** Nimthara: the operator bay counter. */
+    @Test
+    public void captureOperatorBays() {
+        app.signIn(Roles.GRID_OPERATOR);
+        app.api.willAnswer(200, "[" + Samples.malabeStation(9) + "]");
+
+        ActivityScenario.launch(OperatorActivity.class);
+        onView(withId(R.id.tab_bays)).perform(click());
+        shoot("19-operator-bays");
     }
 
     /** The operator screens: scanning, a booking ready to finish, and the summary. */

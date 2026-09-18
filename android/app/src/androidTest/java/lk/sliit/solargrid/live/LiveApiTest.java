@@ -20,12 +20,16 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import android.Manifest;
+
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.GrantPermissionRule;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.junit.After;
 import org.junit.Before;
@@ -42,6 +46,7 @@ import lk.sliit.solargrid.testing.ApiIdlingResource;
 import lk.sliit.solargrid.ui.auth.LoginActivity;
 import lk.sliit.solargrid.ui.auth.RegisterActivity;
 import lk.sliit.solargrid.util.LocalNetwork;
+import lk.sliit.solargrid.util.LocationFinder;
 
 @LiveApi
 @LargeTest
@@ -53,9 +58,13 @@ public class LiveApiTest {
 
     private final ApiIdlingResource idling = new ApiIdlingResource();
 
-    /** The test API lives on the computer, which Android 17 counts as the local network. */
+    /**
+     * The test API lives on the computer, which Android 17 counts as the local
+     * network; the map needs the location as well.
+     */
     @Rule
-    public GrantPermissionRule localNetwork = GrantPermissionRule.grant(LocalNetwork.PERMISSION);
+    public GrantPermissionRule permissions = GrantPermissionRule.grant(LocalNetwork.PERMISSION,
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION);
 
     /** Points the app at the test API and signs nobody in. */
     @Before
@@ -66,11 +75,12 @@ public class LiveApiTest {
         IdlingRegistry.getInstance().register(idling);
     }
 
-    /** Puts the app back to its normal address. */
+    /** Puts the app back to its normal address and location finder. */
     @After
     public void tearDown() {
         AppContainer.get().session().clear();
         AppContainer.get().useBaseUrl(BuildConfig.API_BASE_URL);
+        AppContainer.get().useLocationFinder(new LocationFinder.Fused());
         IdlingRegistry.getInstance().unregister(idling);
     }
 
@@ -147,6 +157,22 @@ public class LiveApiTest {
 
         signIn(email, "Solar2026x");
         onView(withId(R.id.login_notice)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Nimthara: the nearby search of the real API finds the demo stations
+     * around Malabe, and the list view shows them with their free bays.
+     */
+    @Test
+    public void prosumerSeesNearbyStations() {
+        AppContainer.get().useLocationFinder((context, answer) -> answer.onFound(new LatLng(6.9147, 79.9729)));
+        ActivityScenario.launch(LoginActivity.class);
+        signIn("kasun@example.com", "Prosumer@123");
+
+        onView(withId(R.id.tab_map)).perform(click());
+        onView(withId(R.id.stations_show_list)).perform(click());
+
+        onView(withText("SLIIT Malabe Campus Microgrid")).check(matches(isDisplayed()));
     }
 
     /** Scrolls to a box and types into it. */

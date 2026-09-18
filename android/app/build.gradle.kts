@@ -40,6 +40,8 @@ android {
 
         manifestPlaceholders["mapsApiKey"] = mapsApiKey
         buildConfigField("String", "API_BASE_URL", "\"$apiBaseUrl\"")
+        // Lets the map screen explain a missing key instead of showing an empty map.
+        buildConfigField("boolean", "HAS_MAPS_KEY", mapsApiKey.isNotBlank().toString())
     }
 
     buildTypes {
@@ -71,6 +73,9 @@ android {
         unitTests {
             isIncludeAndroidResources = true
         }
+        // A tap during a window animation can be lost, so the emulator tests
+        // run with animations switched off, as the Espresso guide advises.
+        animationsDisabled = true
     }
 
     lint {
@@ -97,6 +102,8 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
     implementation(libs.gson)
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
     implementation(libs.zxing.android.embedded)
     implementation(libs.zxing.core)
 
