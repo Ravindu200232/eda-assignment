@@ -6,7 +6,7 @@
   Purpose: The same rule as data_extraction_rules.xml, written the way phones
            before Android 12 expect it: nothing from this app is copied into a
            backup, because the database holds a login token.
-  Source:  AND-08 (Android data safety settings).
+  Source:  AND-24 (Android backup and data extraction rules).
 -->
 <full-backup-content>
     <exclude domain="database" path="." />

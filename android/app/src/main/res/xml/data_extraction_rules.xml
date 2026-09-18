@@ -7,7 +7,7 @@
            token and cached bookings, so nothing is copied to a cloud backup or
            handed to a new phone during device transfer. The user signs in
            again on the new phone instead.
-  Source:  AND-08 (Android data safety settings).
+  Source:  AND-24 (Android backup and data extraction rules).
 -->
 <data-extraction-rules>
 

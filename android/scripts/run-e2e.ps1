@@ -109,7 +109,9 @@ try {
     $testsPassed = ($LASTEXITCODE -eq 0)
 } finally {
     if ($api -and -not $api.HasExited) {
-        Stop-Process -Id $api.Id -Force
+        # "dotnet run" starts the API as a second process, so the whole tree
+        # is stopped; stopping only the first one leaves the API running.
+        & taskkill /PID $api.Id /T /F | Out-Null
         Write-Host "Stopped the API"
     }
     if ($KeepDatabase) {
