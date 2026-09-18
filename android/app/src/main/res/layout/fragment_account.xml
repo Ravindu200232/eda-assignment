@@ -107,12 +107,44 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <!-- Malith adds edit, change password and deactivate here. -->
+                <!-- Malith: profile, password and deactivation. -->
                 <LinearLayout
                     android:id="@+id/account_extra_actions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+                    android:layout_marginTop="@dimen/space_m"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/account_edit_profile"
+                        style="@style/Widget.SolarGrid.Button.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/account_edit_profile"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_pencil" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/account_change_password"
+                        style="@style/Widget.SolarGrid.Button.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:text="@string/account_change_password"
+                        app:icon="@drawable/ic_lock" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/account_deactivate"
+                        style="@style/Widget.SolarGrid.Button.Ghost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:text="@string/account_deactivate"
+                        android:textColor="@color/danger"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_user_x"
+                        app:iconTint="@color/danger" />
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
