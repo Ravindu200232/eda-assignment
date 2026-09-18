@@ -98,11 +98,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    /** Selects a tab from inside another screen, for example "Book a slot" on Home. */
-    public void openTab(int itemId) {
-        binding.bottomNav.setSelectedItemId(itemId);
-    }
-
     /** Puts the screen of the chosen tab on top, unless it is already there. */
     private void showTab(int itemId) {
         FragmentManager manager = getSupportFragmentManager();

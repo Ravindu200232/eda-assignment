@@ -45,6 +45,7 @@ import lk.sliit.solargrid.data.remote.ApiError;
 import lk.sliit.solargrid.data.remote.dto.StationDto;
 import lk.sliit.solargrid.data.repo.CachedCallback;
 import lk.sliit.solargrid.databinding.FragmentStationsBinding;
+import lk.sliit.solargrid.ui.booking.BookingWizardActivity;
 import lk.sliit.solargrid.ui.common.BaseActivity;
 import lk.sliit.solargrid.ui.common.Forms;
 import lk.sliit.solargrid.util.LocationFinder;
@@ -245,6 +246,9 @@ public class StationsFragment extends Fragment {
         binding.stationCardEnergy.setText(StationTexts.energy(requireContext(), station));
         StationTexts.paintBays(binding.stationCardBays, station);
         binding.stationCardDetails.setOnClickListener(view -> openStation(station));
+        // Hamnad: the booking form starts at this station.
+        binding.stationCardBook.setOnClickListener(view ->
+                startActivity(BookingWizardActivity.forNewBooking(requireContext(), station.id)));
         binding.stationCard.setVisibility(View.VISIBLE);
     }
 

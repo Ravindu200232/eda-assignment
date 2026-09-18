@@ -24,6 +24,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import lk.sliit.solargrid.R;
+import lk.sliit.solargrid.data.model.Roles;
 import lk.sliit.solargrid.data.remote.ApiCallback;
 import lk.sliit.solargrid.data.remote.ApiError;
 import lk.sliit.solargrid.data.remote.dto.SlotDto;
@@ -31,6 +32,7 @@ import lk.sliit.solargrid.data.remote.dto.StationDto;
 import lk.sliit.solargrid.data.repo.CachedCallback;
 import lk.sliit.solargrid.databinding.ActivityStationDetailsBinding;
 import lk.sliit.solargrid.databinding.ViewDetailRowBinding;
+import lk.sliit.solargrid.ui.booking.BookingWizardActivity;
 import lk.sliit.solargrid.ui.common.BaseActivity;
 import lk.sliit.solargrid.util.OpeningHours;
 import lk.sliit.solargrid.util.Texts;
@@ -129,6 +131,12 @@ public class StationDetailsActivity extends BaseActivity {
                 getString(R.string.kw_value, Texts.number(station.solarCapacityKw)));
         row(binding.stationStorageRow, R.string.station_storage_label, Texts.kwh(station.storageCapacityKwh));
         row(binding.stationCodeRow, R.string.station_code_label, station.code);
+
+        // Hamnad: prosumers can book a slot here while the station takes bookings.
+        boolean canBook = Roles.isProsumer(sessions().role()) && "Active".equals(station.status);
+        binding.stationBook.setVisibility(canBook ? View.VISIBLE : View.GONE);
+        binding.stationBook.setOnClickListener(view ->
+                startActivity(BookingWizardActivity.forNewBooking(this, station.id)));
 
         binding.stationHours.removeAllViews();
         int today = Times.today().getDayOfWeek().getValue();
