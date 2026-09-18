@@ -25,6 +25,7 @@ import lk.sliit.solargrid.data.remote.dto.RegisterProsumerRequest;
 import lk.sliit.solargrid.data.remote.dto.ReservationDto;
 import lk.sliit.solargrid.data.remote.dto.ReservationPageDto;
 import lk.sliit.solargrid.data.remote.dto.SlotDto;
+import lk.sliit.solargrid.data.remote.dto.StaffDashboardDto;
 import lk.sliit.solargrid.data.remote.dto.StationDto;
 import lk.sliit.solargrid.data.remote.dto.UpdateProsumerRequest;
 import lk.sliit.solargrid.data.remote.dto.UserDto;
@@ -143,4 +144,8 @@ public interface SolarGridApi {
     /** The signed QR text of an approved booking. */
     @GET("api/reservations/{id}/qr")
     Call<QrCodeDto> reservationQr(@Path("id") String id);
+
+    /** The staff numbers for the operator "Today" tab (Grid Operators and Backoffice only). */
+    @GET("api/dashboard/summary")
+    Call<StaffDashboardDto> staffDashboard();
 }
