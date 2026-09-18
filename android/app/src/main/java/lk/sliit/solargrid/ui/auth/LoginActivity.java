@@ -63,7 +63,7 @@ public class LoginActivity extends BaseActivity {
         return fromIntent != null ? fromIntent : sessions().takeEndedReason();
     }
 
-    /** Checks the two boxes, then asks the API to sign the user in. */
+    /** Checks the two boxes and that the server may be reached, then signs in. */
     private void submit() {
         String username = text(binding.loginUsername.getText());
         String password = text(binding.loginPassword.getText());
@@ -85,6 +85,12 @@ public class LoginActivity extends BaseActivity {
             return;
         }
 
+        withLocalNetwork(() -> sendLogin(username, password),
+                () -> showNotice(getString(R.string.local_network_refused)));
+    }
+
+    /** Asks the API to sign the user in. */
+    private void sendLogin(String username, String password) {
         setBusy(true);
         app().auth().login(username, password, new ApiCallback<Session>() {
 

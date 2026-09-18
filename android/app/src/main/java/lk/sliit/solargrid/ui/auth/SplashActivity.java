@@ -56,7 +56,9 @@ public class SplashActivity extends BaseActivity {
             goToLogin(getString(R.string.login_backoffice));
             return;
         }
-        checkWithServer(session);
+        // Without the local network permission the server cannot be asked, so
+        // the saved details open the home screen instead.
+        withLocalNetwork(() -> checkWithServer(session), () -> openHomeForRole(session.user.role));
     }
 
     /**

@@ -34,6 +34,7 @@
     <string name="login_backoffice">Backoffice accounts use the web portal, not this app.</string>
     <string name="login_signed_in_as">Signed in as %1$s</string>
     <string name="session_expired">Your session has ended. Please log in again.</string>
+    <string name="local_network_refused">SolarGrid needs the Nearby devices permission to reach the server on this network. Allow it in the app settings, then log in again.</string>
 
     <!-- Start-up -->
     <string name="splash_loading">Getting things ready…</string>

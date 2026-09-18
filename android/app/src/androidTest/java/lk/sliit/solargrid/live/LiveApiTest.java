@@ -24,9 +24,11 @@ import androidx.test.espresso.IdlingRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.GrantPermissionRule;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -35,6 +37,7 @@ import lk.sliit.solargrid.BuildConfig;
 import lk.sliit.solargrid.R;
 import lk.sliit.solargrid.testing.ApiIdlingResource;
 import lk.sliit.solargrid.ui.auth.LoginActivity;
+import lk.sliit.solargrid.util.LocalNetwork;
 
 @LiveApi
 @LargeTest
@@ -45,6 +48,10 @@ public class LiveApiTest {
     private static final String DEFAULT_API = "http://10.0.2.2:5090/";
 
     private final ApiIdlingResource idling = new ApiIdlingResource();
+
+    /** The test API lives on the computer, which Android 17 counts as the local network. */
+    @Rule
+    public GrantPermissionRule localNetwork = GrantPermissionRule.grant(LocalNetwork.PERMISSION);
 
     /** Points the app at the test API and signs nobody in. */
     @Before

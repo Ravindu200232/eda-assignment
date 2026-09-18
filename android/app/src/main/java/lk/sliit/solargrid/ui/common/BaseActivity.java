@@ -3,8 +3,10 @@
  * Module:  Shared screens
  * Owner:   Ravindu
  * Purpose: The things every screen in the app needs: quick access to the
- *          shared objects, one way of showing a message, and one way of
- *          sending the user back to the login screen when the session ends.
+ *          shared objects, one way of showing a message, one way of sending
+ *          the user back to the login screen when the session ends, and the
+ *          local network permission that Android 17 asks for.
+ * Source:  AND-12 (asking for a permission), AND-23 (local network permission).
  */
 package lk.sliit.solargrid.ui.common;
 
@@ -12,6 +14,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -29,8 +33,16 @@ import lk.sliit.solargrid.session.SessionStore;
 import lk.sliit.solargrid.ui.auth.LoginActivity;
 import lk.sliit.solargrid.ui.operator.OperatorActivity;
 import lk.sliit.solargrid.ui.prosumer.MainActivity;
+import lk.sliit.solargrid.util.LocalNetwork;
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+    /** Asks for the local network permission and hands the answer back. */
+    private final ActivityResultLauncher<String> localNetworkRequest =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), this::onLocalNetworkAnswer);
+
+    private Runnable whenAllowed;
+    private Runnable whenRefused;
 
     /**
      * Newer Android versions draw the app behind the status bar and the
@@ -55,6 +67,31 @@ public abstract class BaseActivity extends AppCompatActivity {
             view.setPadding(bars.left, bars.top, bars.right, bars.bottom);
             return WindowInsetsCompat.CONSUMED;
         });
+    }
+
+    /**
+     * Runs the request once the app may reach the server. Android 17 blocks a
+     * server on the local network (such as the development computer) until
+     * the user allows it, so the permission is asked for first when needed.
+     */
+    protected void withLocalNetwork(Runnable allowed, Runnable refused) {
+        if (!LocalNetwork.needsPermission(this, app().baseUrl())) {
+            allowed.run();
+            return;
+        }
+        whenAllowed = allowed;
+        whenRefused = refused;
+        localNetworkRequest.launch(LocalNetwork.PERMISSION);
+    }
+
+    /** Carries on with whatever was waiting for the permission answer. */
+    private void onLocalNetworkAnswer(boolean granted) {
+        Runnable next = granted ? whenAllowed : whenRefused;
+        whenAllowed = null;
+        whenRefused = null;
+        if (next != null) {
+            next.run();
+        }
     }
 
     /** The shared objects of the app (API, database, session). */
