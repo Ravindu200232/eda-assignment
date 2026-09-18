@@ -49,6 +49,15 @@ const ICONS = {
   'calendar-days': 'Ravindu (Hamnad: bookings)',
   'list-checks': 'Ravindu (Hamnad: today at the station)',
   'battery-charging': 'Ravindu (Nimthara: battery bays)',
+  // Malith: sign-up, profile and account
+  'mail': 'Malith',
+  'id-card': 'Malith',
+  'gauge': 'Malith',
+  'pencil': 'Malith',
+  'lock': 'Malith',
+  'user-x': 'Malith',
+  'user-plus': 'Malith',
+  'hourglass': 'Malith',
 }
 
 /*

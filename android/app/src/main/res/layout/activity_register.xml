@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    activity_register.xml
+  Module:  Prosumer Accounts
+  Owner:   Malith
+  Purpose: The sign-up form. The NIC becomes the account key, and the account
+           waits for Backoffice activation before it can be used.
+  Source:  AND-02 (clay design system), AND-05 (Material text fields).
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_blobs"
+    tools:ignore="UselessParent">
+
+    <!-- The frame takes the room for the system bars and the keyboard, so
+         the scrolling area itself gets shorter and can still reach the
+         last box. Padding on the ScrollView would hide it instead. -->
+    <ScrollView
+        android:id="@+id/register_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/screen_padding">
+
+            <ImageButton
+                android:id="@+id/register_back"
+                android:layout_width="@dimen/touch_target"
+                android:layout_height="@dimen/touch_target"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/action_back"
+                android:src="@drawable/ic_arrow_left"
+                app:tint="@color/ink" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_s"
+                android:text="@string/register_title"
+                android:textAppearance="@style/TextAppearance.SolarGrid.Title" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:text="@string/register_subtitle"
+                android:textAppearance="@style/TextAppearance.SolarGrid.Muted" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_l">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/register_about_you"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/register_nic_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:hint="@string/register_nic"
+                        app:helperText="@string/register_nic_help"
+                        app:startIconDrawable="@drawable/ic_id_card">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/register_nic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapCharacters|textNoSuggestions"
+                            android:maxLength="12"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/register_name_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:hint="@string/register_full_name"
+                        app:startIconDrawable="@drawable/ic_user_round">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/register_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="name"
+                            android:inputType="textPersonName|textCapWords"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/register_email_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:hint="@string/register_email"
+                        app:startIconDrawable="@drawable/ic_mail">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/register_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="emailAddress"
+                            android:inputType="textEmailAddress"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/register_phone_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:hint="@string/register_phone"
+                        app:helperText="@string/register_phone_help"
+                        app:startIconDrawable="@drawable/ic_phone">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/register_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="phone"
+                            android:inputType="phone"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/register_address_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:hint="@string/register_address"
+                        app:startIconDrawable="@drawable/ic_house">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/register_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="postalAddress"
+                            android:inputType="textPostalAddress|textMultiLine"
+                            android:maxLines="3" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_l"
+                        android:text="@string/register_about_panels"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/register_meter_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:hint="@string/register_meter"
+                        app:helperText="@string/optional"
+                        app:startIconDrawable="@drawable/ic_gauge">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/register_meter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapCharacters|textNoSuggestions"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/register_solar_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:hint="@string/register_solar"
+                        app:helperText="@string/optional"
+                        app:startIconDrawable="@drawable/ic_sun">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/register_solar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_l"
+                        android:text="@string/register_about_password"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/register_password_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:hint="@string/login_password"
+                        app:endIconMode="password_toggle"
+                        app:helperText="@string/password_rule"
+                        app:startIconDrawable="@drawable/ic_key_round">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/register_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="newPassword"
+                            android:inputType="textPassword"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/register_confirm_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:hint="@string/register_confirm_password"
+                        app:endIconMode="password_toggle"
+                        app:startIconDrawable="@drawable/ic_key_round">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/register_confirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="newPassword"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Filled when the API refuses the sign-up as a whole. -->
+                    <TextView
+                        android:id="@+id/register_notice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_l"
+                        android:background="@drawable/bg_well"
+                        android:drawablePadding="@dimen/space_s"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/space_m"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Body"
+                        android:textColor="@color/danger"
+                        android:visibility="gone"
+                        app:drawableStartCompat="@drawable/ic_circle_alert"
+                        app:drawableTint="@color/danger" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/register_submit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_l"
+                        android:text="@string/register_action"
+                        app:icon="@drawable/ic_user_plus" />
+
+                    <ProgressBar
+                        android:id="@+id/register_progress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:indeterminate="true"
+                        android:indeterminateTint="@color/accent"
+                        android:visibility="invisible" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/register_have_account"
+                style="@style/Widget.SolarGrid.Button.Ghost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/space_m"
+                android:layout_marginBottom="@dimen/space_l"
+                android:text="@string/register_have_account" />
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

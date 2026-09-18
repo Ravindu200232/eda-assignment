@@ -9,6 +9,7 @@
  */
 package lk.sliit.solargrid.ui.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -46,6 +47,8 @@ public class LoginActivity extends BaseActivity {
         showNotice(noticeToShow());
 
         binding.loginSubmit.setOnClickListener(view -> submit());
+        binding.loginRegister.setOnClickListener(view ->
+                startActivity(new Intent(this, RegisterActivity.class)));
         binding.loginPassword.setOnEditorActionListener((view, actionId, event) -> {
             // The keyboard "done" key signs in as well.
             if (actionId == EditorInfo.IME_ACTION_DONE) {
