@@ -104,6 +104,9 @@ reader without a programming background, can see **what** we used, **where** we 
 | AND-22 | Taking the screenshots for the report | Ravindu | Android Developers |
 | AND-23 | Reaching the API on the local network (Android 17) | Ravindu | Android Developers |
 | AND-24 | Keeping the login token out of backups | Ravindu | Android Developers |
+| AND-25 | Lists of bookings (RecyclerView) | Malith | Android Developers |
+| AND-26 | Pull down to refresh | Malith | Android Developers |
+| AND-27 | A confirmation dialog that asks for the password | Malith | Android Developers, Material Components |
 
 ## Glossary (plain English)
 

@@ -294,3 +294,39 @@ Android Developers pages are published under the Creative Commons Attribution 4.
 | **How much we used** | The two file formats and the `exclude` rules. Leaving out the database, preferences and files (because the database holds a login token) is our decision. |
 | **Licence** | CC BY 4.0 (text) / Apache 2.0 (samples) |
 | **Added by** | Ravindu |
+
+## AND-25 · Lists of bookings (RecyclerView)
+
+| | |
+|---|---|
+| **What it does** | Shows a list by building only the rows on screen and reusing them while the user scrolls. |
+| **Where we used it** | `ui/prosumer/BookingSummaryAdapter.java`, `ui/prosumer/HomeFragment.java`, `res/layout/item_booking_summary.xml` |
+| **Source** | Android Developers — *Create dynamic lists with RecyclerView* |
+| **Link** | https://developer.android.com/develop/ui/views/layout/recyclerview |
+| **How much we used** | The adapter and view holder pattern and `LinearLayoutManager`. The card layout and what each row shows are ours. |
+| **Licence** | CC BY 4.0 (text) / Apache 2.0 (samples) |
+| **Added by** | Malith |
+
+## AND-26 · Pull down to refresh
+
+| | |
+|---|---|
+| **What it does** | Lets the prosumer pull the home screen down to load the newest numbers, with the usual spinning circle. |
+| **Where we used it** | `res/layout/fragment_home.xml`, `ui/prosumer/HomeFragment.java` |
+| **Source** | Android Developers — *Add swipe-to-refresh to your app* |
+| **Link** | https://developer.android.com/develop/ui/views/touch-and-input/swipe/add-swipe-interface |
+| **How much we used** | The `SwipeRefreshLayout` wrapper, `setOnRefreshListener` and `setRefreshing`. |
+| **Licence** | CC BY 4.0 (text) / Apache 2.0 (samples) |
+| **Added by** | Malith |
+
+## AND-27 · A confirmation dialog that asks for the password
+
+| | |
+|---|---|
+| **What it does** | A dialog can hold a small form of its own. Taking over the click of its main button keeps the dialog open when the password is wrong, so the prosumer can read the reason and try again. |
+| **Where we used it** | `ui/common/AccountFragment.java` (deactivating the account), `res/layout/dialog_password.xml` |
+| **Source** | Android Developers — *Dialogs* · Material Components — *Dialogs* |
+| **Link** | https://developer.android.com/develop/ui/views/components/dialogs · https://github.com/material-components/material-components-android/blob/master/docs/components/Dialog.md |
+| **How much we used** | `setView` with our own layout and `getButton(BUTTON_POSITIVE)` after `show()`. What the dialog checks and says is ours. |
+| **Licence** | CC BY 4.0 / Apache 2.0 |
+| **Added by** | Malith |
