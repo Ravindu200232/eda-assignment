@@ -88,6 +88,8 @@ Versions come from `android/gradle/libs.versions.toml`.
 | com.squareup.okhttp3:okhttp | 4.12.0 | Android app | Sends the HTTP requests, with timeouts and the token header | Apache-2.0 | https://github.com/square/okhttp |
 | com.squareup.okhttp3:logging-interceptor | 4.12.0 | Android app (debug) | Writes the request line to Logcat while developing | Apache-2.0 | https://github.com/square/okhttp |
 | com.google.code.gson:gson | 2.11.0 | Android app | Reads the error answers of the API | Apache-2.0 | https://github.com/google/gson |
+| com.google.android.gms:play-services-maps | 19.2.0 | Android app | The Google map with the station markers | Google Maps Platform Terms of Service | https://developers.google.com/maps/documentation/android-sdk/overview |
+| com.google.android.gms:play-services-location | 21.3.0 | Android app | Finds where the phone is for the map | Android Software Development Kit License | https://developers.google.com/android/guides/setup |
 | com.journeyapps:zxing-android-embedded | 4.3.0 | Android app | The camera screen that reads a QR code | Apache-2.0 | https://github.com/journeyapps/zxing-android-embedded |
 | com.google.zxing:core | 3.5.3 | Android app | The barcode reading and drawing engine behind it | Apache-2.0 | https://github.com/zxing/zxing |
 

@@ -72,7 +72,7 @@ Android Developers pages are published under the Creative Commons Attribution 4.
 | | |
 |---|---|
 | **What it does** | Lucide is the icon set the web portal uses. Android needs the same drawings as `VectorDrawable` XML files, which have their own tag and path format. |
-| **Where we used it** | `android/scripts/make-icons.mjs` and the 28 `res/drawable/ic_*.xml` files it writes |
+| **Where we used it** | `android/scripts/make-icons.mjs` and the `res/drawable/ic_*.xml` files it writes (each member adds the icons of their screens) |
 | **Source** | Lucide — *Icons* · Android Developers — *Vector drawables overview* |
 | **Link** | https://lucide.dev/icons/ · https://developer.android.com/develop/ui/views/graphics/vector-drawable-resources |
 | **How much we used** | The icon shapes (path data) from the Lucide package that is already installed for the web portal, and the `<vector>` file format. The converter script is ours. |
@@ -330,3 +330,51 @@ Android Developers pages are published under the Creative Commons Attribution 4.
 | **How much we used** | `setView` with our own layout and `getButton(BUTTON_POSITIVE)` after `show()`. What the dialog checks and says is ours. |
 | **Licence** | CC BY 4.0 / Apache 2.0 |
 | **Added by** | Malith |
+
+## AND-28 · Where the phone is (fused location)
+
+| | |
+|---|---|
+| **What it does** | Google Play services works out the phone's place from GPS, Wi-Fi and the mobile network, and gives one fresh answer when asked. |
+| **Where we used it** | `util/LocationFinder.java`, `ui/map/StationsFragment.java` |
+| **Source** | Android Developers — *Get the current location* |
+| **Link** | https://developer.android.com/develop/sensors-and-location/location/retrieve-current |
+| **How much we used** | `getFusedLocationProviderClient(...).getCurrentLocation(PRIORITY_BALANCED_POWER_ACCURACY, token)` and the permission check before it. The Colombo fallback and the fixed place used by the tests are ours. |
+| **Licence** | CC BY 4.0 (text) / Apache 2.0 (samples) |
+| **Added by** | Nimthara |
+
+## AND-29 · The map of nearby stations (Google Maps SDK for Android)
+
+| | |
+|---|---|
+| **What it does** | Shows a Google map inside the app, with a marker for each station. The key is read from `local.properties` and placed in the manifest at build time (AND-03). |
+| **Where we used it** | `ui/map/StationsFragment.java`, `res/layout/fragment_stations.xml`, `AndroidManifest.xml` (the key), `app/build.gradle.kts` |
+| **Source** | Google Maps Platform — *Maps SDK for Android: Set up* and *Markers* |
+| **Link** | https://developers.google.com/maps/documentation/android-sdk/start · https://developers.google.com/maps/documentation/android-sdk/marker |
+| **How much we used** | `SupportMapFragment`, `getMapAsync`, `addMarker` with coloured default markers, the marker click listener, `moveCamera` and the "my location" layer. The station card, the list view and the missing-key fallback are ours. |
+| **Licence** | Google Maps Platform Terms of Service (the SDK); CC BY 4.0 / Apache 2.0 (documentation) |
+| **Added by** | Nimthara |
+
+## AND-30 · Picking a station and a day (dropdown and chips)
+
+| | |
+|---|---|
+| **What it does** | A text box that opens a list of stations for the operator, and a row of single-choice chips for the seven days of slots. |
+| **Where we used it** | `ui/operator/BaysFragment.java`, `res/layout/fragment_bays.xml`, `ui/map/StationDetailsActivity.java` |
+| **Source** | Material Components — *Menus (exposed dropdown)* and *Chips* |
+| **Link** | https://github.com/material-components/material-components-android/blob/master/docs/components/Menu.md · https://github.com/material-components/material-components-android/blob/master/docs/components/Chip.md |
+| **How much we used** | `MaterialAutoCompleteTextView` with `setSimpleItems`, and a `ChipGroup` with single selection. |
+| **Licence** | Apache 2.0 |
+| **Added by** | Nimthara |
+
+## AND-31 · "1 bay" and "12 bays" (plural strings)
+
+| | |
+|---|---|
+| **What it does** | Android picks the right form of a sentence for a number, so the app writes "1 of 1 bay free" and "9 of 12 bays free". |
+| **Where we used it** | `res/values/strings.xml` (`station_bays_free`, `slot_bays_free`, `bays_saved`), `ui/map/StationTexts.java`, `ui/map/StationDetailsActivity.java`, `ui/operator/BaysFragment.java` |
+| **Source** | Android Developers — *String resources: Quantity strings (plurals)* |
+| **Link** | https://developer.android.com/guide/topics/resources/string-resource |
+| **How much we used** | The `<plurals>` format and `getQuantityString`. |
+| **Licence** | CC BY 4.0 (text) / Apache 2.0 (samples) |
+| **Added by** | Nimthara |

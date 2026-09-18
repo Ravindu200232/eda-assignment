@@ -107,6 +107,10 @@ reader without a programming background, can see **what** we used, **where** we 
 | AND-25 | Lists of bookings (RecyclerView) | Malith | Android Developers |
 | AND-26 | Pull down to refresh | Malith | Android Developers |
 | AND-27 | A confirmation dialog that asks for the password | Malith | Android Developers, Material Components |
+| AND-28 | Where the phone is (fused location) | Nimthara | Android Developers |
+| AND-29 | The map of nearby stations | Nimthara | Google Maps Platform documentation |
+| AND-30 | Picking a station and a day | Nimthara | Material Components |
+| AND-31 | Plural strings ("1 bay", "12 bays") | Nimthara | Android Developers |
 
 ## Glossary (plain English)
 

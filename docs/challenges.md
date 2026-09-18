@@ -296,3 +296,22 @@ page. Each entry says what went wrong, why it happened, and what we changed.
 - **Fix:** The screens whose top view is a ScrollView now have a plain frame around it. The frame takes the padding, so
   the scrolling area itself becomes shorter and every box can be scrolled into view.
 - **Where:** `android/app/src/main/res/layout/activity_login.xml`, `activity_register.xml`, `activity_registered.xml`.
+
+### 41. A tap on a tab was sometimes lost in the emulator tests
+- **Problem:** The operator bay test tapped the Bays tab straight after the screen opened, and now and then the Scan
+  tab stayed on screen, so the test could not find the counter.
+- **Why:** The tap arrived while Android was still running the window animation of the new screen, and was dropped.
+  Espresso cannot wait for those system animations.
+- **Fix:** The emulator tests run with the window animations switched off (`testOptions.animationsDisabled`), as the
+  Espresso guide advises. During one long run the emulator's own Android system also restarted, which has nothing to
+  do with the app; restarting the emulator before a full run avoids it.
+- **Where:** `android/app/build.gradle.kts`.
+
+### 42. The first map on the emulator stayed empty in the screenshots
+- **Problem:** The map picture showed a beige area with the Google logo, but no streets and no station markers.
+- **Why:** The key and the markers were fine: on the emulator the first map needs several seconds to load its drawing
+  code and tiles, and the picture was taken after four.
+- **Fix:** The screenshot walk waits twelve seconds for the map before the picture. The station card was also made
+  solid, because the see-through clay card let the streets show through its words.
+- **Where:** `android/app/src/androidTest/java/lk/sliit/solargrid/screens/ScreensTest.java`,
+  `android/app/src/main/res/layout/fragment_stations.xml`.
