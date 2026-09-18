@@ -69,7 +69,7 @@ public class OperatorActivity extends BaseActivity {
         }
         if (itemId == R.id.tab_bays) {
             // Nimthara: the battery bay counter.
-            return PlaceholderFragment.of(R.string.operator_bays_screen);
+            return new BaysFragment();
         }
         if (itemId == R.id.tab_account) {
             return new AccountFragment();
