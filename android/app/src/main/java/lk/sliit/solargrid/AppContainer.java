@@ -14,11 +14,14 @@ import android.content.Context;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import lk.sliit.solargrid.data.local.ProfileDao;
 import lk.sliit.solargrid.data.local.SolarGridDbHelper;
 import lk.sliit.solargrid.data.remote.ApiClient;
 import lk.sliit.solargrid.data.remote.SolarGridApi;
 import lk.sliit.solargrid.data.repo.AuthRepository;
 import lk.sliit.solargrid.data.repo.CheckInRepository;
+import lk.sliit.solargrid.data.repo.DashboardRepository;
+import lk.sliit.solargrid.data.repo.ProsumerRepository;
 import lk.sliit.solargrid.session.SessionStore;
 
 public final class AppContainer {
@@ -30,10 +33,14 @@ public final class AppContainer {
     private final ExecutorService worker;
     private final SessionStore sessionStore;
 
+    private final ProfileDao profileDao;
+
     private String baseUrl;
     private SolarGridApi api;
     private AuthRepository authRepository;
     private CheckInRepository checkInRepository;
+    private ProsumerRepository prosumerRepository;
+    private DashboardRepository dashboardRepository;
 
     /** Builds everything the app shares. Only AppContainer.init() calls this. */
     private AppContainer(Context context) {
@@ -41,6 +48,7 @@ public final class AppContainer {
         this.dbHelper = new SolarGridDbHelper(appContext);
         this.worker = Executors.newSingleThreadExecutor();
         this.sessionStore = new SessionStore(dbHelper, worker);
+        this.profileDao = new ProfileDao(dbHelper);
         useBaseUrl(BuildConfig.API_BASE_URL);
     }
 
@@ -70,6 +78,8 @@ public final class AppContainer {
         this.api = ApiClient.create(this.baseUrl, sessionStore);
         this.authRepository = new AuthRepository(api, sessionStore);
         this.checkInRepository = new CheckInRepository(api);
+        this.prosumerRepository = new ProsumerRepository(api, sessionStore, profileDao, worker);
+        this.dashboardRepository = new DashboardRepository(api);
     }
 
     /** The API address the app is using. */
@@ -90,6 +100,16 @@ public final class AppContainer {
     /** Operator check-in calls. */
     public synchronized CheckInRepository checkIn() {
         return checkInRepository;
+    }
+
+    /** The prosumer own account: sign-up, profile, password and deactivation. */
+    public synchronized ProsumerRepository prosumers() {
+        return prosumerRepository;
+    }
+
+    /** The numbers on the prosumer home screen. */
+    public synchronized DashboardRepository dashboard() {
+        return dashboardRepository;
     }
 
     /** The signed-in user and their token. */

@@ -15,6 +15,7 @@ import lk.sliit.solargrid.data.remote.ApiError;
 import lk.sliit.solargrid.data.remote.SolarGridApi;
 import lk.sliit.solargrid.data.remote.dto.LoginRequest;
 import lk.sliit.solargrid.data.remote.dto.LoginResponse;
+import lk.sliit.solargrid.data.remote.dto.PasswordRequests;
 import lk.sliit.solargrid.data.remote.dto.UserDto;
 import lk.sliit.solargrid.session.SessionStore;
 
@@ -83,5 +84,14 @@ public class AuthRepository {
     /** Forgets the saved login. The API keeps no session, so there is no call. */
     public void logOut() {
         sessions.clear();
+    }
+
+    /**
+     * Changes the password of whoever is signed in (added by Malith). The API
+     * checks the current password and the rules for the new one.
+     */
+    public void changePassword(String currentPassword, String newPassword, ApiCallback<Void> callback) {
+        ApiCalls.enqueue(api.changePassword(new PasswordRequests.ChangePassword(currentPassword, newPassword)),
+                callback);
     }
 }
