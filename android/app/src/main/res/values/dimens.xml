@@ -13,6 +13,8 @@
     <dimen name="space_l">24dp</dimen>
     <dimen name="space_xl">32dp</dimen>
     <dimen name="screen_padding">20dp</dimen>
+    <!-- Hamnad: lets a scrolling chip row reach the screen edges. -->
+    <dimen name="screen_padding_negative">-20dp</dimen>
 
     <dimen name="radius_control">20dp</dimen>
     <dimen name="radius_tile">24dp</dimen>

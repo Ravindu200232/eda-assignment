@@ -95,6 +95,20 @@
             android:name=".ui.map.StationDetailsActivity"
             android:exported="false" />
 
+        <!-- Hamnad: one booking, the booking form and the summary after each action -->
+        <activity
+            android:name=".ui.booking.BookingDetailsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.booking.BookingWizardActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.booking.BookingResultActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    activity_booking_details.xml
+  Module:  Energy Reservations
+  Owner:   Hamnad
+  Purpose: One booking: its status and what happens next, the QR code once it
+           is approved, the details, until when it can be changed, and its
+           history.
+  Source:  AND-02 (clay design system), AND-32 (QR code picture).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_s"
+        android:paddingTop="@dimen/space_s"
+        android:paddingEnd="@dimen/screen_padding"
+        android:paddingBottom="@dimen/space_s">
+
+        <ImageButton
+            android:id="@+id/details_back"
+            android:layout_width="@dimen/touch_target"
+            android:layout_height="@dimen/touch_target"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/action_back"
+            android:src="@drawable/ic_arrow_left"
+            app:tint="@color/ink" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_s"
+            android:layout_weight="1"
+            android:text="@string/booking_title"
+            android:textAppearance="@style/TextAppearance.SolarGrid.CardTitle" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/details_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/screen_padding"
+        android:layout_marginEnd="@dimen/screen_padding"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/accent"
+        android:visibility="invisible" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/screen_padding"
+            android:paddingEnd="@dimen/screen_padding"
+            android:paddingBottom="@dimen/screen_padding">
+
+            <TextView
+                android:id="@+id/details_notice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/space_m"
+                android:background="@drawable/bg_well"
+                android:drawablePadding="@dimen/space_s"
+                android:gravity="center_vertical"
+                android:padding="@dimen/space_m"
+                android:textAppearance="@style/TextAppearance.SolarGrid.Body"
+                android:visibility="gone"
+                app:drawableStartCompat="@drawable/ic_wifi_off"
+                app:drawableTint="@color/warning" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/details_reference"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/space_s"
+                            android:gravity="center_vertical"
+                            android:textAppearance="@style/TextAppearance.SolarGrid.CardTitle"
+                            app:drawableStartCompat="@drawable/ic_ticket"
+                            app:drawableTint="@color/accent"
+                            tools:text="RSV-260918-HURV8" />
+
+                        <TextView
+                            android:id="@+id/details_status"
+                            style="@style/Widget.SolarGrid.StatusChip"
+                            tools:text="Approved" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/details_next"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Body"
+                        tools:text="Show the QR code at the station when you arrive." />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Only for an approved booking that has a QR code. -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/details_qr_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/card_solid"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/booking_qr_title"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle" />
+
+                    <ImageView
+                        android:id="@+id/details_qr"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:contentDescription="@string/booking_qr_description"
+                        android:scaleType="fitCenter" />
+
+                    <TextView
+                        android:id="@+id/details_qr_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
+                        android:textIsSelectable="true"
+                        tools:text="SSG1.66eb1f2c9a2b4c0012ab34cd.7f3a91.2b8c4d6e" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/details_station_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/details_slot_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/details_energy_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/details_trade_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/details_delivered_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/details_prosumer_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Changes: only while the booking is waiting or approved and still to come. -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/details_changes_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/details_change_window"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/space_s"
+                        android:gravity="center_vertical"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Body"
+                        app:drawableStartCompat="@drawable/ic_clock"
+                        app:drawableTint="@color/accent"
+                        tools:text="You can change or cancel until Thu, 17 Sept 2026 20:30." />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/details_change"
+                        style="@style/Widget.SolarGrid.Button.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:text="@string/booking_change"
+                        app:icon="@drawable/ic_pencil" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/details_cancel"
+                        style="@style/Widget.SolarGrid.Button.Danger"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:text="@string/booking_cancel"
+                        app:icon="@drawable/ic_ban" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/space_s"
+                        android:gravity="center_vertical"
+                        android:text="@string/booking_timeline_title"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle"
+                        app:drawableStartCompat="@drawable/ic_history"
+                        app:drawableTint="@color/accent" />
+
+                    <LinearLayout
+                        android:id="@+id/details_timeline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:orientation="vertical" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

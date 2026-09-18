@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    view_timeline_step.xml
+  Module:  Energy Reservations
+  Owner:   Hamnad
+  Purpose: One step of a booking's history: a dot, what happened, when, and
+           who did it or why.
+  Source:  AND-02 (clay design system).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/space_s"
+    android:paddingBottom="@dimen/space_s">
+
+    <View
+        android:id="@+id/step_dot"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_timeline_dot" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_m"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/step_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle"
+            tools:text="Approved" />
+
+        <TextView
+            android:id="@+id/step_when"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
+            tools:text="Thu, 17 Sept 2026 10:12" />
+
+        <TextView
+            android:id="@+id/step_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.SolarGrid.Body"
+            tools:text="By SolarGrid staff · QR code issued" />
+    </LinearLayout>
+</LinearLayout>

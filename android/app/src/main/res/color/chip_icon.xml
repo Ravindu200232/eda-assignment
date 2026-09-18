@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    chip_icon.xml
+  Module:  Energy Reservations
+  Owner:   Hamnad
+  Purpose: The icon of a choice chip: white on the violet of a chosen chip,
+           violet otherwise, so the icon never disappears into its chip.
+  Source:  AND-02 (clay design system).
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/on_accent" android:state_checked="true" />
+    <item android:color="@color/accent" />
+</selector>
