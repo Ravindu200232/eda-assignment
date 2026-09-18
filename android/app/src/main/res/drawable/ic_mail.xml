@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    ic_mail.xml
+  Module:  Icons
+  Owner:   Malith
+  Purpose: Lucide "mail" icon, converted by scripts/make-icons.mjs.
+  Source:  AND-06 (Lucide icons, ISC licence).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:tint="?attr/colorControlNormal"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="m22 7 l-8.991 5.727 a2 2 0 0 1 -2.009 0 L2 7"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M4 4 h16 a2 2 0 0 1 2 2 v12 a2 2 0 0 1 -2 2 h-16 a2 2 0 0 1 -2 -2 v-12 a2 2 0 0 1 2 -2 z"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

@@ -25,7 +25,7 @@ reader without a programming background, can see **what** we used, **where** we 
 | [api-sources.md](api-sources.md) | The central Web API (C#, MongoDB, IIS) |
 | [libraries.md](libraries.md) | Every ready-made software package (library) we installed, with version and licence |
 | [web-sources.md](web-sources.md) | The React web application (staff portal) |
-| `android-sources.md` | The Android application (added when the mobile app is built) |
+| [android-sources.md](android-sources.md) | The Android application (Java, SQLite, Google Maps) |
 
 ## All sources at a glance
 
@@ -80,6 +80,42 @@ reader without a programming background, can see **what** we used, **where** we 
 | WEB-31 | Keeping the chosen list in the address | Hamnad | React Router documentation |
 | WEB-32 | Copying the QR code text | Hamnad | MDN Web Docs |
 
+| AND-01 | Android project and Gradle set-up | Ravindu | Android Developers, Gradle documentation |
+| AND-02 | The clay look on Android | Ravindu | Design Prompts (same as WEB-01) |
+| AND-03 | Keeping the Maps key out of Git | Ravindu | Google Maps Platform, Android Developers |
+| AND-04 | The two fonts (Nunito, DM Sans) | Ravindu | Google Fonts, Android Developers |
+| AND-05 | Material Components for Android | Ravindu | Material Components documentation |
+| AND-06 | Icons drawn as Android vectors | Ravindu | Lucide, Android Developers |
+| AND-07 | The app icon | Ravindu | Android Developers |
+| AND-08 | Plain HTTP only for the local API | Ravindu | Android Developers |
+| AND-09 | Saving data on the phone with SQLite | Ravindu | Android Developers |
+| AND-10 | The bottom bar and swapping screens | Ravindu | Material Components, Android Developers |
+| AND-11 | Reading the booking QR code | Ravindu | ZXing Android Embedded (GitHub) |
+| AND-12 | Asking for the camera at the right moment | Ravindu | Android Developers |
+| AND-13 | Running Android code in a normal unit test | Ravindu | Robolectric |
+| AND-14 | A stand-in Web API for the tests | Ravindu | OkHttp MockWebServer (GitHub) |
+| AND-15 | Tests that tap through the app | Ravindu | Android Developers (Espresso) |
+| AND-16 | Making the tests wait for the server | Ravindu | Android Developers |
+| AND-17 | Calling the Web API (Retrofit) | Ravindu | Retrofit (GitHub) |
+| AND-18 | The token header, timeouts and safe logging | Ravindu | OkHttp (GitHub) |
+| AND-19 | Reading the error answers of the API | Ravindu | RFC 9457, Microsoft Learn |
+| AND-20 | Dates and times on Android | Ravindu | Android Developers |
+| AND-21 | Doing slow work off the screen thread | Ravindu | Android Developers |
+| AND-22 | Taking the screenshots for the report | Ravindu | Android Developers |
+| AND-23 | Reaching the API on the local network (Android 17) | Ravindu | Android Developers |
+| AND-24 | Keeping the login token out of backups | Ravindu | Android Developers |
+| AND-25 | Lists of bookings (RecyclerView) | Malith | Android Developers |
+| AND-26 | Pull down to refresh | Malith | Android Developers |
+| AND-27 | A confirmation dialog that asks for the password | Malith | Android Developers, Material Components |
+| AND-28 | Where the phone is (fused location) | Nimthara | Android Developers |
+| AND-29 | The map of nearby stations | Nimthara | Google Maps Platform documentation |
+| AND-30 | Picking a station and a day | Nimthara | Material Components |
+| AND-31 | Plural strings ("1 bay", "12 bays") | Nimthara | Android Developers |
+| AND-32 | Drawing the booking QR code | Hamnad | ZXing Android Embedded (GitHub), ZXing API documentation |
+| AND-33 | Booking tabs, the date range filter and the step bar | Hamnad | Material Components |
+| AND-34 | A bright screen while the QR code is shown | Hamnad | Android Developers |
+| AND-35 | Moving between the booking screens | Hamnad | Android Developers |
+
 ## Glossary (plain English)
 
 | Term | Meaning |
@@ -111,3 +147,9 @@ reader without a programming background, can see **what** we used, **where** we 
 | **Map tiles** | The small square pictures a web map is made of; the map downloads the ones on screen. |
 | **API key** | A code that identifies our app to an online service such as Google Maps. It is kept out of Git and limited to our own web addresses. |
 | **Error boundary** | A React component that catches a crash in one part of the page and shows something else there, so the rest of the page keeps working. |
+| **APK** | The single file an Android app is installed from, like a `.exe` on Windows. |
+| **SQLite** | The small database that lives inside the phone, used for the login and for data the app shows offline. |
+| **Emulator** | A pretend phone that runs on the computer, used to run and test the Android app. |
+| **Activity / Fragment** | An Activity is one screen of an Android app; a Fragment is a piece of a screen, such as one tab. |
+| **Vector drawable** | An icon stored as lines and curves instead of pixels, so it stays sharp on any screen. |
+| **Instrumented test** | A test that runs on a real phone or emulator, tapping the app like a person would. |

@@ -1,7 +1,9 @@
-# Database Design (MongoDB)
+# Database Design (MongoDB and Android SQLite)
 
 **Database:** `SolarGridDb` on MongoDB Community Server 8.3.
 Only the Web API reads or writes this database; the web and Android apps go through the API.
+The Android app also keeps a small read-only copy on the phone in SQLite, described at the end
+([Android SQLite](#android-sqlite)).
 
 The four collections are named after the items in the marking scheme:
 
@@ -186,3 +188,23 @@ When `App:SeedDemoData` is `true` and the database has no stations, the API adds
 | `EnergyReservations` | 6 bookings covering every status |
 
 Log-in details are listed in the main [README](../README.md#demo-accounts).
+
+## Android SQLite
+
+The Android app keeps a small copy of data on the phone in SQLite (`solargrid.db`, opened by
+`android/app/src/main/java/lk/sliit/solargrid/data/local/SolarGridDbHelper.java`). It is only a cache: the Web API and
+MongoDB stay the one source of truth, every change goes through the API first, and a copy on the phone never allows a
+change on its own. Each member added the table of their feature, which is why the database version counts up.
+
+| Table | Version | Key | Main columns | What it is for | Owner |
+|---|---|---|---|---|---|
+| `session` | 1 | `id` (always 1) | `token`, `expires_at`, `nic`, `full_name`, `email`, `phone`, `role`, `status`, `saved_at` | Login details, so the app signs the user in again until the token expires | Ravindu |
+| `profile` | 2 | `nic` | `full_name`, `email`, `phone`, `address`, `meter_number`, `solar_kw`, `status`, `updated_at` | The prosumer's own profile when offline | Malith |
+| `stations` | 3 | `id` | `code`, `name`, `address`, `lat`, `lng`, `solar_kw`, `storage_kwh`, `total_bays`, `free_bays`, `bay_kwh`, `schedule_json`, `status`, `distance_km`, `cached_at` | Reference data for the map, the station list and the station page | Nimthara |
+| `reservations` | 4 | `id` | `reference_no`, `prosumer_nic`, `prosumer_name`, `station_id`, `station_name`, `slot_id`, `start_utc`, `end_utc`, `trade_type`, `energy_kwh`, `delivered_kwh`, `status`, `reason`, `can_modify`, `modify_deadline`, `is_past`, `has_qr`, `created_by`, `created_at`, `approved_at`, `rejected_at`, `cancelled_by`, `cancelled_at`, `completed_at`, `cached_at` | The last bookings seen, for the lists and the booking page when offline | Hamnad |
+
+- **Logging out** clears `session`, `profile` and `reservations`. `stations` stays, because it holds the same public
+  data for every user.
+- **Times** are stored as the UTC text the API sends and shown in Sri Lanka time.
+- **Offline rules:** a saved booking is read with `can_modify` off, and its slot counts as past once its end time has
+  gone by, even if it was saved earlier. Slots are never saved, because a booking needs the free bays of right now.

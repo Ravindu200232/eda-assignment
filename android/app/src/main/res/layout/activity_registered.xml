@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    activity_registered.xml
+  Module:  Prosumer Accounts
+  Owner:   Malith
+  Purpose: Shown after a sign-up: the account exists but waits for the
+           Backoffice, and the prosumer is told what happens next.
+  Source:  AND-02 (clay design system).
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_blobs"
+    tools:ignore="UselessParent">
+
+    <!-- The frame takes the room for the system bars and the keyboard, so
+         the scrolling area itself gets shorter and can still reach the
+         last box. Padding on the ScrollView would hide it instead. -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/screen_padding">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="@dimen/orb_size"
+                        android:layout_height="@dimen/orb_size"
+                        android:background="@drawable/bg_orb_amber">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_hourglass"
+                            app:tint="@color/on_accent" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:text="@string/registered_title"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.CardTitle" />
+
+                    <TextView
+                        android:id="@+id/registered_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Body"
+                        tools:text="Thank you, Kasun. Your account 200034501234 is waiting for the Backoffice to check it." />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_l"
+                        android:background="@drawable/bg_well"
+                        android:padding="@dimen/space_m"
+                        android:text="@string/registered_steps"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Body" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/registered_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_l"
+                        android:text="@string/registered_back_to_login"
+                        app:icon="@drawable/ic_log_in" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

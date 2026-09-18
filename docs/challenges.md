@@ -224,3 +224,183 @@ page. Each entry says what went wrong, why it happened, and what we changed.
 - **Fix:** `E2E_MAPS_PROVIDER=osm` takes the screenshots with OpenStreetMap on purpose (Google Maps is used once the
   key allows that address), and the screenshot helper moves the mouse away before each picture.
 - **Where:** `web/playwright.config.js`, `web/e2e/screens.js`.
+
+## Android app
+
+### 34. The clay look needs Android 9
+- **Problem:** The app was set to run from Android 8.0, but lint reported errors: the coloured shadows
+  (`outlineAmbientShadowColor`, `outlineSpotShadowColor`) and the variable font weights (`fontVariationSettings`)
+  only work from Android 9.
+- **Why:** Those attributes were added in API 28. On Android 8 the shadows would be grey and every heading would fall
+  back to one weight, so the app would not match the web portal.
+- **Fix:** The lowest supported version is Android 9 (minSdk 28). It still covers the phones people use, and the design
+  is the same on every one of them.
+- **Where:** `android/app/build.gradle.kts`.
+
+### 35. Icons drawn in a browser did not draw on Android
+- **Problem:** Some screens crashed with *"a needs to be followed by a multiple of 7 floats. However, 6 float(s) are
+  found"* while the layout was being inflated.
+- **Why:** The icons are the Lucide set used by the web portal. In SVG the two yes/no flags of an arc may be written
+  without a separator (`a1.5 1.5 0 00-2.4-1.5`). Browsers accept that; Android's path reader counts six numbers instead
+  of seven and refuses the whole file.
+- **Fix:** The converter now reads each path command itself and writes every number with a space in between, treating
+  the two arc flags as single digits. All icons were made again with it.
+- **Where:** `android/scripts/make-icons.mjs`, `android/app/src/main/res/drawable/ic_*.xml`.
+
+### 36. Saving the screenshots off the phone
+- **Problem:** The screenshot test ran and passed, but no pictures arrived on the computer.
+- **Why:** The test asked Android for the app's own folder on the shared storage, and on this emulator that folder is
+  not given out, so the pictures were written to a read-only place. The failure was silent because the screenshot call
+  only returns true or false.
+- **Fix:** The test now hands each picture to the test runner's own storage (the AndroidX test services), which copies
+  it into `app/build/outputs`, and the script moves the files into `docs/screenshots/android`. A picture that cannot be
+  saved now fails the test instead of being lost.
+- **Where:** `android/app/src/androidTest/java/lk/sliit/solargrid/screens/ScreensTest.java`,
+  `android/scripts/take-screenshots.ps1`.
+
+### 37. The title sat under the phone's clock
+- **Problem:** On the check-in screen the back arrow and the title were drawn behind the status bar.
+- **Why:** From Android 15 an app is always drawn edge to edge, behind the status bar and the navigation bar.
+- **Fix:** Every screen asks the system how much room those bars need and pads itself by that much, so the content
+  starts below the clock and ends above the gesture bar.
+- **Where:** `android/app/src/main/java/lk/sliit/solargrid/ui/common/BaseActivity.java`.
+
+### 38. The live test script started nothing
+- **Problem:** `android\scripts\run-e2e.ps1` said it was starting the API, then waited three minutes and gave up.
+- **Why:** The repository folder is `C:\eda assignment`, with a space in the name. PowerShell's `Start-Process` does not
+  put quotes around the values in `-ArgumentList`, so `dotnet` was told the project was `C:\eda`. The window was
+  hidden, so the message never reached the screen.
+- **Fix:** The project path is quoted, and the API now writes to a log file that the script prints when the server does
+  not answer in time.
+- **Where:** `android/scripts/run-e2e.ps1`.
+
+### 39. The app could not reach the API that the emulator could
+- **Problem:** Against a real server, every request from the app ran for 20 seconds and then failed with
+  *"failed to connect to /10.0.2.2 (port 8080)"*, although the emulator itself reached the same port at once.
+- **Why:** From Android 17, an app that targets it may not connect to the local network (private addresses such as
+  `10.0.2.2` or `192.168.x.x`) until the user allows the "Nearby devices" permission `ACCESS_LOCAL_NETWORK`. The
+  blocked connection does not fail quickly; it just never answers. Our tests with the stand-in server passed because
+  that server runs on the phone itself, which does not count as the local network.
+- **Fix:** The app declares the permission and asks for it before its first request when the API address is on the
+  local network; an API on the internet needs nothing. If the user says no, the login screen explains how to allow it.
+  The live tests grant the permission before they start.
+- **Where:** `android/app/src/main/java/lk/sliit/solargrid/util/LocalNetwork.java`, `ui/common/BaseActivity.java`,
+  `ui/auth/LoginActivity.java`, `ui/auth/SplashActivity.java`, `AndroidManifest.xml`.
+
+### 40. The last boxes of the sign-up form could not be reached
+- **Problem:** On the sign-up screen the tests could not scroll to the solar panel box: *"Scrolling to view was attempted,
+  but the view is not displayed"*.
+- **Why:** The screen leaves room for the status bar, the navigation bar and the keyboard by adding padding. That
+  padding was put on the ScrollView itself, but a ScrollView ignores its own padding when it works out how far to
+  scroll, so a box could end up hidden behind the keyboard.
+- **Fix:** The screens whose top view is a ScrollView now have a plain frame around it. The frame takes the padding, so
+  the scrolling area itself becomes shorter and every box can be scrolled into view.
+- **Where:** `android/app/src/main/res/layout/activity_login.xml`, `activity_register.xml`, `activity_registered.xml`.
+
+### 41. A tap on a tab was sometimes lost in the emulator tests
+- **Problem:** The operator bay test tapped the Bays tab straight after the screen opened, and now and then the Scan
+  tab stayed on screen, so the test could not find the counter.
+- **Why:** The tap arrived while Android was still running the window animation of the new screen, and was dropped.
+  Espresso cannot wait for those system animations.
+- **Fix:** The emulator tests run with the window animations switched off (`testOptions.animationsDisabled`), as the
+  Espresso guide advises. During one long run the emulator's own Android system also restarted, which has nothing to
+  do with the app; restarting the emulator before a full run avoids it.
+- **Where:** `android/app/build.gradle.kts`.
+
+### 42. The first map on the emulator stayed empty in the screenshots
+- **Problem:** The map picture showed a beige area with the Google logo, but no streets and no station markers.
+- **Why:** The key and the markers were fine: on the emulator the first map needs several seconds to load its drawing
+  code and tiles, and the picture was taken after four.
+- **Fix:** The screenshot walk waits twelve seconds for the map before the picture. The station card was also made
+  solid, because the see-through clay card let the streets show through its words.
+- **Where:** `android/app/src/androidTest/java/lk/sliit/solargrid/screens/ScreensTest.java`,
+  `android/app/src/main/res/layout/fragment_stations.xml`.
+
+### 43. Changing a booking whose own slot is now full
+- **Problem:** In "Change booking" the slot the booking already held would be missing from the list whenever the
+  booking's own bay was the last one, so the prosumer could not keep the slot and only change the energy.
+- **Why:** For prosumers the API only lists slots that can still be booked: open, not started and with a free bay. The
+  booking itself uses one of the bays of its slot, so a slot filled by it is left out.
+- **Fix:** The form adds the booking's own slot back when it shows the booking's own station and day, marked "your
+  booking", and chooses it at the start - the same answer the web portal gives (challenge 26). The API still checks
+  everything when the change is saved.
+- **Where:** `android/app/src/main/java/lk/sliit/solargrid/ui/booking/SlotChoices.java`, `BookingWizardActivity.java`.
+
+### 44. The summary screen opened a second copy of the booking page
+- **Problem:** Every booking action ends on the summary screen, but the booking page that started a change or a
+  cancel is still open underneath it. Opening the booking from the summary would add a second copy of the page, and
+  pressing back would show the booking as it was before.
+- **Why:** Starting a screen normally always adds a new copy, and the old page does not know the booking changed.
+- **Fix:** The summary screen asks Android to bring back the page that is already open
+  (`FLAG_ACTIVITY_CLEAR_TOP` with `FLAG_ACTIVITY_SINGLE_TOP`), and the booking page loads the booking again whenever
+  it comes back to the front. "Back to my bookings" does the same with the prosumer home and opens the list where the
+  booking now is: waiting after a new booking or a change, history after a cancel. The home screen only switches tab
+  once it is on screen again, because a tab cannot be swapped while Android is still restoring the screen.
+- **Where:** `ui/booking/BookingResultActivity.java`, `ui/booking/BookingDetailsActivity.java`,
+  `ui/prosumer/MainActivity.java`, `ui/operator/OperatorActivity.java`.
+
+### 45. Turning the picked dates back into days
+- **Problem:** The first version of the date filter did not build for Android 9, and on a phone set to a time zone
+  behind UTC it would have filtered by the day before the one that was tapped.
+- **Why:** The Material date picker answers with midnight UTC of each chosen day, as milliseconds. Reading those in
+  the phone's own time zone moves the moment back a day wherever the clock is behind UTC. The easy
+  `LocalDate.ofInstant` method is also missing on Android 9, the oldest version the app supports.
+- **Fix:** The milliseconds are read as UTC on purpose: `Instant.ofEpochMilli(ms).atZone(ZoneOffset.UTC).toLocalDate()`,
+  which works on every supported version and gives exactly the day that was tapped.
+- **Where:** `ui/booking/BookingsFragment.java`.
+
+### 46. The reason for a refused booking disappeared
+- **Problem:** While writing the emulator tests we saw that when the API refused a booking because the slot had just
+  filled up, its message would be hidden again a moment later.
+- **Why:** After a refusal the form reloads the slots and chooses the same slot again, and choosing a slot also hid the
+  message - even though the prosumer had not tapped anything.
+- **Fix:** Choosing a slot no longer hides the message; it is cleared only when the prosumer moves to another step.
+  An emulator test now fills the slot on purpose and checks that the message stays.
+- **Where:** `ui/booking/BookingWizardActivity.java`, `android/app/src/androidTest/.../ui/booking/BookingFlowTest.java`.
+
+### 47. The operator's day list started with the evening
+- **Problem:** Straight from the API, the operator "Today" list would show the latest booking first, which is the
+  wrong way round for planning the day at a station.
+- **Why:** Without a list tab the API sorts bookings newest first, which suits the history lists of the web portal.
+- **Fix:** The day list holds at most one day of bookings (one page of up to 100), so the app sorts that page from the
+  morning on before showing it. The API and its other users are unchanged.
+- **Where:** `ui/operator/TodayFragment.java`.
+
+### 48. Test data showed slots that crossed midnight
+- **Problem:** Some booking screenshots showed slots such as "22:30 - 00:30", which no real station has.
+- **Why:** The sample bookings started on whole UTC hours. Sri Lanka is 5 hours 30 ahead of UTC, so every sample began
+  at half past the hour in the app, and some ran past midnight.
+- **Fix:** The sample bookings now start on whole Sri Lankan hours, like the real two-hour slots, and the booking
+  saved in the form walk uses exactly the slot that was chosen on screen.
+- **Where:** `android/app/src/testShared/java/lk/sliit/solargrid/testing/Samples.java`, `ScreensTest.java`.
+
+### 49. An operator's booking history said "by you"
+- **Problem:** In the emulator tests an operator opening a prosumer's booking read "Booked - by you".
+- **Why:** The test helper signed every role in with the same NIC as the sample prosumer, so the app rightly thought
+  the operator had made the booking.
+- **Fix:** The helper now gives an operator a NIC and name of their own and a prosumer the sample prosumer's details.
+  The screenshot script also stopped copying Espresso's "view-op-error" pictures, which it saves whenever a step fails,
+  even one the test expects.
+- **Where:** `android/app/src/androidTest/java/lk/sliit/solargrid/testing/AppUnderTest.java`,
+  `android/scripts/take-screenshots.ps1`.
+
+### 50. A tap on a booking tab became a long press
+- **Problem:** On a busy emulator the filter test tapped the "Waiting" tab, but the list never changed, and the test
+  failed twice at the same step while every other tap worked.
+- **Why:** The emulator was so slow that the finger-up event arrived late. Android then reads the tap as a long press
+  (the log says "Overslept and turned a tap into a long press"), and a long press on a tab only shows its tooltip.
+- **Fix:** The tests choose a booking tab directly through a small Espresso action (`TabActions.selectTab`) and then
+  wait for the app, so the step no longer depends on how fast the emulator is. The screen code is unchanged.
+- **Where:** `android/app/src/androidTest/java/lk/sliit/solargrid/testing/TabActions.java`, `BookingFlowTest.java`,
+  `ScreensTest.java`, `LiveApiTest.java`.
+
+### 51. The emulator tests stopped after one second
+- **Problem:** `connectedDebugAndroidTest` failed at once with *"The process cannot access the file because it is
+  being used by another process"* for the folder of the test results.
+- **Why:** The Gradle daemon and the emulator had been started from a terminal that was sitting inside that folder.
+  Windows does not delete a folder that a running program uses as its working folder.
+- **Fix:** Stop the Gradle daemon (`gradlew --stop`), start the emulator from its own folder, and run Gradle from the
+  project folder. A slow emulator was also restarted, which brought a full emulator run back from about 45 minutes to
+  about 3.
+- **Where:** How the tests are run; nothing in the code changed.
+

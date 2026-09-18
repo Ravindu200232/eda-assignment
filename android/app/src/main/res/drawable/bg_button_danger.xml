@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    bg_button_danger.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: Danger button: pink gradient pill for cancel and deactivate.
+  Source:  AND-02 (clay design system).
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/radius_control" />
+            <solid android:color="#F9A8D4" />
+        </shape>
+    </item>
+    <item>
+        <ripple android:color="#33FFFFFF">
+            <item>
+                <shape android:shape="rectangle">
+                    <corners android:radius="@dimen/radius_control" />
+                    <gradient android:angle="315" android:endColor="@color/accent_alt" android:startColor="#F472B6" />
+                </shape>
+            </item>
+        </ripple>
+    </item>
+</selector>

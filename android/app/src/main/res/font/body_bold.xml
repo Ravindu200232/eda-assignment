@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    body_bold.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: DM Sans Bold for strong text.
+  Source:  AND-04 (bundled variable fonts, SIL Open Font License).
+-->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font
+        android:font="@font/dm_sans"
+        android:fontStyle="normal"
+        android:fontWeight="700"
+        android:fontVariationSettings="'wght' 700"
+        app:font="@font/dm_sans"
+        app:fontStyle="normal"
+        app:fontWeight="700"
+        app:fontVariationSettings="'wght' 700" />
+</font-family>

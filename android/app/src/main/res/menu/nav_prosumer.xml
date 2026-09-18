@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    nav_prosumer.xml
+  Module:  Prosumer shell
+  Owner:   Ravindu
+  Purpose: The four tabs a prosumer sees. The screens behind Home, Map and
+           Bookings are built by Malith, Nimthara and Hamnad.
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/tab_home"
+        android:icon="@drawable/ic_house"
+        android:title="@string/nav_home" />
+
+    <item
+        android:id="@+id/tab_map"
+        android:icon="@drawable/ic_map_pin"
+        android:title="@string/nav_map" />
+
+    <item
+        android:id="@+id/tab_bookings"
+        android:icon="@drawable/ic_calendar_days"
+        android:title="@string/nav_bookings" />
+
+    <item
+        android:id="@+id/tab_account"
+        android:icon="@drawable/ic_user_round"
+        android:title="@string/nav_account" />
+
+</menu>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    ic_list_checks.xml
+  Module:  Icons
+  Owner:   Ravindu (Hamnad: today at the station)
+  Purpose: Lucide "list-checks" icon, converted by scripts/make-icons.mjs.
+  Source:  AND-06 (Lucide icons, ISC licence).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:tint="?attr/colorControlNormal"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M13 5 h8"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M13 12 h8"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M13 19 h8"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="m3 17 l2 2 l4 -4"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="m3 7 l2 2 l4 -4"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

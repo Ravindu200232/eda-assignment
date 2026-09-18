@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    strings.xml
+  Module:  Core
+  Owner:   Ravindu
+  Purpose: Every word shown on the shared screens (app name, sign-in,
+           messages and operator check-in). Each member adds the texts of
+           their own screens here.
+-->
+<resources>
+    <string name="app_name">SolarGrid</string>
+    <string name="app_tagline">Smart Microgrid</string>
+
+    <!-- Shared words -->
+    <string name="action_retry">Try again</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_close">Close</string>
+    <string name="action_ok">OK</string>
+    <string name="action_back">Back</string>
+    <string name="loading">Loading…</string>
+    <string name="offline_title">No connection</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_network">Cannot reach the server. Check that the API is running and try again.</string>
+    <string name="error_timeout">The server took too long to answer. Please try again.</string>
+
+    <!-- Sign in -->
+    <string name="login_title">Welcome back</string>
+    <string name="login_subtitle">Sign in to book energy slots or to run a station.</string>
+    <string name="login_username">NIC or email</string>
+    <string name="login_password">Password</string>
+    <string name="login_action">Log in</string>
+    <string name="login_missing_username">Enter your NIC or email.</string>
+    <string name="login_missing_password">Enter your password.</string>
+    <string name="login_backoffice">Backoffice accounts use the web portal, not this app.</string>
+    <string name="login_signed_in_as">Signed in as %1$s</string>
+    <string name="session_expired">Your session has ended. Please log in again.</string>
+    <string name="local_network_refused">SolarGrid needs the Nearby devices permission to reach the server on this network. Allow it in the app settings, then log in again.</string>
+
+    <!-- Start-up -->
+    <string name="splash_loading">Getting things ready…</string>
+    <string name="api_address">API: %1$s</string>
+
+    <!-- Bottom bars -->
+    <string name="nav_home">Home</string>
+    <string name="nav_map">Map</string>
+    <string name="nav_bookings">Bookings</string>
+    <string name="nav_account">Account</string>
+
+    <!-- Account -->
+    <string name="account_title">My account</string>
+    <string name="account_status">Status</string>
+    <string name="account_app_title">About this app</string>
+    <string name="account_version">App version</string>
+    <string name="account_server">Server</string>
+    <string name="account_role">Role</string>
+    <string name="role_prosumer">Prosumer</string>
+    <string name="role_operator">Grid Operator</string>
+    <string name="role_backoffice">Backoffice</string>
+
+    <string name="account_nic">NIC</string>
+    <string name="account_email">Email</string>
+    <string name="account_phone">Phone</string>
+    <string name="account_logout">Log out</string>
+    <string name="account_logout_question">Log out of SolarGrid?</string>
+    <string name="account_change_password">Change password</string>
+    <string name="account_current_password">Current password</string>
+    <string name="account_new_password">New password</string>
+    <string name="account_password_changed">Your password was changed.</string>
+
+    <!-- Operator mode -->
+    <string name="operator_home_title">Station desk</string>
+    <string name="operator_scan_tab">Scan</string>
+    <string name="operator_account_tab">Account</string>
+    <string name="operator_scan_title">Check in a booking</string>
+    <string name="operator_scan_subtitle">Scan the QR code in the prosumer\'s app, or type the code text.</string>
+    <string name="operator_scan_action">Scan QR code</string>
+    <string name="operator_manual_code">Booking code text</string>
+    <string name="operator_check_action">Check code</string>
+    <string name="operator_camera_needed">Camera permission is needed to scan a QR code. You can also paste the code text.</string>
+    <string name="operator_scan_cancelled">Scanning was cancelled.</string>
+    <string name="operator_booking_title">Booking</string>
+    <string name="operator_delivered_kwh">Delivered energy (kWh)</string>
+    <string name="operator_complete_action">Complete transfer</string>
+    <string name="operator_complete_question">Finish this energy transfer?</string>
+    <string name="operator_completed_title">Transfer completed</string>
+    <string name="operator_completed_message">%1$s is done. %2$s was recorded for %3$s.</string>
+    <string name="operator_next_booking">Check in another booking</string>
+    <string name="operator_window">Check-in is open from %1$s to %2$s</string>
+    <string name="operator_phone">Prosumer phone: %1$s</string>
+    <string name="operator_scan_prompt">Point the camera at the booking QR code</string>
+    <string name="operator_scan_permission_title">Camera</string>
+    <string name="operator_today_tab">Today</string>
+    <string name="operator_bays_tab">Bays</string>
+    <string name="operator_eyebrow">Operator mode</string>
+    <string name="operator_scan_helper">The server checks the code: it must be an approved booking for your station, inside the check-in window.</string>
+    <string name="operator_manual_missing">Scan a QR code or type the code text.</string>
+    <string name="checkin_checking">Checking the code…</string>
+    <string name="checkin_ready_title">Ready to complete</string>
+    <string name="checkin_blocked_title">Cannot complete yet</string>
+    <string name="checkin_reference">Reference</string>
+    <string name="checkin_prosumer">Prosumer</string>
+    <string name="checkin_station">Station</string>
+    <string name="checkin_slot">Slot</string>
+    <string name="checkin_energy">Energy booked</string>
+    <string name="checkin_trade">Direction</string>
+    <string name="checkin_status">Status</string>
+    <string name="checkin_delivered_missing">Enter the delivered energy.</string>
+    <string name="checkin_delivered_invalid">Delivered energy must be more than 0 kWh.</string>
+    <string name="checkin_call_prosumer">Call the prosumer</string>
+    <string name="checkin_no_phone_app">This device cannot make calls.</string>
+
+    <!-- Malith: shared form words -->
+    <string name="field_required">This box is needed.</string>
+    <string name="optional">Optional</string>
+    <string name="number_needed">Enter a number, for example 5.5.</string>
+    <string name="password_mismatch">The two passwords are not the same.</string>
+    <string name="password_rule">At least 8 characters, with letters and numbers.</string>
+    <string name="form_check_marked">Please check the boxes marked in pink.</string>
+
+    <!-- Malith: sign-up -->
+    <string name="login_register">New here? Create an account</string>
+    <string name="register_title">Create your account</string>
+    <string name="register_subtitle">Sign up to sell your solar energy or charge from the grid. The Backoffice checks every new account before it can book.</string>
+    <string name="register_about_you">About you</string>
+    <string name="register_about_panels">About your solar panels</string>
+    <string name="register_about_password">Your password</string>
+    <string name="register_nic">NIC number</string>
+    <string name="register_nic_help">Old (123456789V) or new (200012345678) format.</string>
+    <string name="register_full_name">Full name</string>
+    <string name="register_email">Email</string>
+    <string name="register_phone">Phone</string>
+    <string name="register_phone_help">For example 0771234567.</string>
+    <string name="register_address">Address</string>
+    <string name="register_meter">Meter number</string>
+    <string name="register_solar">Solar panel size (kW)</string>
+    <string name="register_confirm_password">Password again</string>
+    <string name="register_action">Create account</string>
+    <string name="register_have_account">Already have an account? Log in</string>
+    <string name="registered_title">Almost there</string>
+    <string name="registered_message">Thank you, %1$s. Your account %2$s has been created and is waiting for the Backoffice to check it.</string>
+    <string name="registered_steps">What happens next\n1. The Backoffice checks your details.\n2. They activate your account.\n3. Log in with your NIC or email and book your first slot.</string>
+    <string name="registered_back_to_login">Back to log in</string>
+
+    <!-- Malith: profile, password and deactivation -->
+    <string name="account_edit_profile">Edit my profile</string>
+    <string name="account_deactivate">Deactivate my account</string>
+    <string name="account_status_active">Active</string>
+    <string name="account_status_pending">Waiting for activation</string>
+    <string name="account_status_deactivated">Deactivated</string>
+    <string name="profile_title">My profile</string>
+    <string name="profile_save">Save changes</string>
+    <string name="profile_saved">Your profile was saved.</string>
+    <string name="profile_offline">%1$s The details below are the ones saved on this phone.</string>
+    <string name="password_intro">Type your current password first, then the new one twice.</string>
+    <string name="password_save">Change password</string>
+    <string name="deactivate_title">Deactivate your account?</string>
+    <string name="deactivate_message">You will be logged out and cannot book energy any more. Only the Backoffice can turn the account back on. Type your password to confirm.</string>
+    <string name="deactivate_password_needed">Type your password to confirm.</string>
+    <string name="deactivate_done">Your account has been deactivated. Ask the Backoffice if you want to use it again.</string>
+
+    <!-- Malith: home dashboard -->
+    <string name="home_eyebrow">Your energy</string>
+    <string name="home_greeting">Hello, %1$s</string>
+    <string name="home_greeting_plain">Hello</string>
+    <string name="home_subtitle">Here is where your bookings stand. Pull down to refresh.</string>
+    <string name="home_pending_label">Waiting for approval</string>
+    <string name="home_approved_label">Approved and coming up</string>
+    <string name="home_completed_label">Transfers done</string>
+    <string name="home_delivered_label">kWh delivered</string>
+    <string name="home_next_title">Next booking</string>
+    <string name="home_upcoming_title">After that</string>
+    <string name="home_empty_title">Nothing booked yet</string>
+    <string name="home_empty_message">Book a slot at a nearby station to sell your solar energy or charge from the grid.</string>
+    <string name="home_book_action">Book a slot</string>
+    <string name="booking_summary_line">%1$s · %2$s · %3$s</string>
+
+    <!-- Nimthara: map, stations, slots and battery bays -->
+    <string name="stations_eyebrow">Solar stations</string>
+    <string name="stations_title">Stations near you</string>
+    <string name="stations_show_map">Show the map</string>
+    <string name="stations_show_list">Show the list</string>
+    <string name="stations_search">Search by name, code or town</string>
+    <string name="stations_see_slots">See the free slots</string>
+    <string name="stations_no_location">Location is off, so the map starts in Colombo. Allow location to see the stations nearest to you.</string>
+    <string name="stations_far_away">You seem to be outside Sri Lanka, so the map starts in Colombo.</string>
+    <string name="stations_no_maps_key">The Google Maps key is not set on this build, so the stations are shown as a list.</string>
+    <string name="stations_offline">%1$s These are the stations saved on this phone.</string>
+    <string name="stations_none_found">No stations were found.</string>
+    <string name="station_title">Station</string>
+    <string name="station_where">%1$s · %2$s km away</string>
+    <string name="station_energy">Up to %1$s kWh per booking</string>
+    <string name="station_today">Today: %1$s</string>
+    <string name="station_closed_today">Closed today</string>
+    <string name="station_closed">Closed</string>
+    <string name="station_inactive">Not taking bookings</string>
+    <string name="station_full">All bays in use</string>
+    <plurals name="station_bays_free">
+        <item quantity="one">%1$d of %2$d bay free</item>
+        <item quantity="other">%1$d of %2$d bays free</item>
+    </plurals>
+    <string name="station_energy_label">Energy per booking</string>
+    <string name="station_solar_label">Solar panels</string>
+    <string name="station_storage_label">Battery storage</string>
+    <string name="station_code_label">Station code</string>
+    <string name="station_slots_title">Slots</string>
+    <string name="station_hours_title">Opening hours</string>
+    <string name="station_no_slots">No slots on this day.</string>
+    <string name="station_offline">%1$s The details below were saved on this phone earlier; the slots need a connection.</string>
+    <plurals name="slot_bays_free">
+        <item quantity="one">%1$d of %2$d bay free</item>
+        <item quantity="other">%1$d of %2$d bays free</item>
+    </plurals>
+    <string name="slot_full">Full</string>
+    <string name="slot_closed">Closed</string>
+    <string name="day_today">Today</string>
+    <string name="day_tomorrow">Tomorrow</string>
+    <string name="kw_value">%1$s kW</string>
+    <string name="bays_title">Battery bays</string>
+    <string name="bays_subtitle">When a bay breaks or is repaired, set how many are free, so prosumers only book bays that work.</string>
+    <string name="bays_station">Station</string>
+    <string name="bays_minus">One bay fewer</string>
+    <string name="bays_plus">One bay more</string>
+    <string name="bays_out_of">bays free out of %1$d</string>
+    <string name="bays_choose_station">Choose a station first</string>
+    <string name="bays_save">Save the free bays</string>
+    <plurals name="bays_saved">
+        <item quantity="one">Saved: %1$d of %2$d bay is free at %3$s.</item>
+        <item quantity="other">Saved: %1$d of %2$d bays are free at %3$s.</item>
+    </plurals>
+
+    <!-- Hamnad: booking lists -->
+    <string name="bookings_eyebrow">Your bookings</string>
+    <string name="bookings_title">Bookings</string>
+    <string name="bookings_new">New</string>
+    <string name="bookings_tab_current">Current</string>
+    <string name="bookings_tab_pending">Waiting</string>
+    <string name="bookings_tab_history">History</string>
+    <string name="bookings_search">Search by reference or station</string>
+    <string name="bookings_offline">%1$s These bookings were saved on this phone earlier.</string>
+    <string name="bookings_empty_current">No approved bookings coming up. Tap New to book a slot.</string>
+    <string name="bookings_empty_pending">Nothing is waiting for approval.</string>
+    <string name="bookings_empty_history">No finished, cancelled or missed bookings yet.</string>
+    <string name="bookings_empty_filtered">No bookings match these filters.</string>
+    <string name="filter_status_any">Any status</string>
+    <string name="filter_status_value">Status: %1$s</string>
+    <string name="filter_station_any">Any station</string>
+    <string name="filter_dates_any">Any dates</string>
+    <string name="filter_dates_value">%1$s - %2$s</string>
+    <string name="filter_clear">Clear</string>
+    <string name="filter_status_title">Show bookings that are</string>
+    <string name="filter_any_status">Any status</string>
+    <string name="filter_station_title">Show bookings at</string>
+    <string name="filter_any_station">Any station</string>
+    <string name="filter_dates_title">Bookings starting between</string>
+
+    <!-- Hamnad: one booking -->
+    <string name="booking_title">Booking</string>
+    <string name="booking_station">Station</string>
+    <string name="booking_slot">Slot</string>
+    <string name="booking_energy">Energy</string>
+    <string name="booking_trade">Direction</string>
+    <string name="booking_delivered">Delivered</string>
+    <string name="booking_prosumer">Prosumer</string>
+    <string name="booking_prosumer_value">%1$s (%2$s)</string>
+    <string name="booking_offline">%1$s This is the copy saved on this phone, so it cannot be changed now.</string>
+    <string name="booking_qr_title">Show this code at the station</string>
+    <string name="booking_qr_description">QR code of the booking</string>
+    <string name="booking_qr_failed">The QR code could not be drawn. Please try again.</string>
+    <string name="booking_timeline_title">History</string>
+    <string name="booking_change">Change booking</string>
+    <string name="booking_cancel">Cancel booking</string>
+    <string name="booking_cancel_for_prosumer">Cancel for the prosumer</string>
+    <string name="booking_change_until">You can change or cancel this booking until %1$s.</string>
+    <string name="booking_change_closed">Changes and cancellations closed 12 hours before the start.</string>
+    <string name="booking_change_offline">Changes need a connection to the server.</string>
+    <string name="booking_cancel_title">Cancel %1$s?</string>
+    <string name="booking_cancel_message">The bay is given back to the station. A cancelled booking cannot be opened again; you can make a new one.</string>
+    <string name="booking_cancel_message_staff">You are cancelling this booking for %1$s. Tell them it was cancelled; the bay is given back to the station.</string>
+    <string name="booking_cancel_reason">Reason</string>
+    <string name="booking_cancel_confirm">Cancel booking</string>
+    <string name="booking_keep">Keep it</string>
+    <string name="booking_next_pending">Waiting for Backoffice approval. The QR code appears here once the booking is approved.</string>
+    <string name="booking_next_pending_staff">Waiting for Backoffice approval.</string>
+    <string name="booking_next_approved">Approved. Show the QR code to the operator when you arrive at the station.</string>
+    <string name="booking_next_approved_staff">Approved. The prosumer shows the QR code at the station; scan it in the Scan tab.</string>
+    <string name="booking_next_missed">The slot ended without a check-in, so this booking was missed.</string>
+    <string name="booking_next_expired">The slot ended before the booking was approved.</string>
+    <string name="booking_next_completed">Finished: %1$s was delivered.</string>
+    <string name="booking_next_cancelled">This booking was cancelled and its bay was given back.</string>
+    <string name="booking_next_cancelled_reason">This booking was cancelled: %1$s</string>
+    <string name="booking_next_rejected">The Backoffice rejected this booking.</string>
+    <string name="booking_next_rejected_reason">The Backoffice rejected this booking: %1$s</string>
+    <string name="trade_export_long">Export - sell spare solar energy</string>
+    <string name="trade_import_long">Import - take stored energy</string>
+    <string name="timeline_booked">Booked</string>
+    <string name="timeline_approved">Approved</string>
+    <string name="timeline_approved_detail">%1$s · QR code issued</string>
+    <string name="timeline_rejected">Rejected</string>
+    <string name="timeline_no_reason">No reason given</string>
+    <string name="timeline_cancelled">Cancelled</string>
+    <string name="timeline_deadline">Changes close</string>
+    <string name="timeline_deadline_detail">Last moment to change or cancel (12 hours before the start)</string>
+    <string name="timeline_starts">Energy transfer starts</string>
+    <string name="timeline_starts_detail">At %1$s</string>
+    <string name="timeline_completed">Completed</string>
+    <string name="timeline_completed_detail">%1$s delivered</string>
+    <string name="timeline_missed">Missed</string>
+    <string name="timeline_missed_detail">The slot ended without a check-in</string>
+    <string name="timeline_by_you">By you</string>
+    <string name="timeline_by_prosumer">By the prosumer</string>
+    <string name="timeline_by_staff">By SolarGrid staff</string>
+    <string name="timeline_by_staff_member">By staff member %1$s</string>
+    <string name="timeline_by_unknown">By an unknown user</string>
+
+    <!-- Hamnad: the booking form -->
+    <string name="wizard_step_new">New booking · step %1$d of %2$d</string>
+    <string name="wizard_step_change">Changing a booking · step %1$d of %2$d</string>
+    <string name="wizard_title_station">Choose a station</string>
+    <string name="wizard_title_slot">Choose a day and a slot</string>
+    <string name="wizard_title_energy">Energy and direction</string>
+    <string name="wizard_title_review">Check and confirm</string>
+    <string name="wizard_other_station">Choose another station</string>
+    <string name="wizard_day_title">Day</string>
+    <string name="wizard_day_hint">Bookings can be made for today and the next six days.</string>
+    <string name="wizard_slot_title">Free slots</string>
+    <string name="wizard_no_slots">No free slots on this day. Try another day.</string>
+    <string name="wizard_own_slot">your booking</string>
+    <string name="wizard_slot_gone">The slot you chose is no longer free. Please choose another one.</string>
+    <string name="wizard_trade_title">Direction</string>
+    <string name="wizard_trade_hint">Choose Export to sell spare solar energy, or Import to take stored energy.</string>
+    <string name="wizard_trade_export_hint">Export: you send spare solar energy into the station battery and sell it to the grid.</string>
+    <string name="wizard_trade_import_hint">Import: you take energy that is stored in the station battery.</string>
+    <string name="wizard_trade_missing">Choose Export or Import.</string>
+    <string name="wizard_energy">Energy</string>
+    <string name="wizard_energy_hint">One booking can use up to %1$s kWh at this station.</string>
+    <string name="wizard_energy_missing">Enter the energy in kWh, for example 12.5.</string>
+    <string name="wizard_energy_too_much">At most %1$s kWh fits in one battery bay at this station.</string>
+    <string name="wizard_station_missing">Choose a station first.</string>
+    <string name="wizard_slot_missing">Choose one of the free slots.</string>
+    <string name="wizard_review_new">The Backoffice checks every booking. Once it is approved, its QR code appears in Bookings. You can change or cancel it until 12 hours before the start.</string>
+    <string name="wizard_review_change">A changed booking waits for approval again and gets a new QR code once it is approved.</string>
+    <string name="wizard_next">Next</string>
+    <string name="wizard_book">Book now</string>
+    <string name="wizard_save">Save changes</string>
+    <string name="wizard_locked">This booking can no longer be changed. Changes were possible until %1$s.</string>
+    <string name="wizard_change_offline">%1$s A booking can only be changed while the server can be reached.</string>
+    <string name="kwh_unit">kWh</string>
+
+    <!-- Hamnad: the summary after each action -->
+    <string name="result_created_title">Booking sent</string>
+    <string name="result_created_message">%1$s is booked and waits for Backoffice approval.</string>
+    <string name="result_changed_title">Booking changed</string>
+    <string name="result_changed_message">%1$s was changed. It waits for approval again and gets a new QR code once approved.</string>
+    <string name="result_cancelled_title">Booking cancelled</string>
+    <string name="result_cancelled_message">%1$s is cancelled and its bay is free again.</string>
+    <string name="result_cancelled_message_staff">%1$s for %2$s is cancelled and its bay is free again.</string>
+    <string name="result_open_booking">See the booking</string>
+    <string name="result_back_to_bookings">Back to my bookings</string>
+    <string name="result_back_to_today">Back to the bookings list</string>
+
+    <!-- Hamnad: the operator "Today" tab -->
+    <string name="today_title">Bookings</string>
+    <string name="today_search">Search by reference, name or NIC</string>
+    <string name="today_empty">No bookings on this day.</string>
+    <string name="today_count_day">Bookings that day</string>
+    <string name="today_count_day_on">Bookings · %1$s</string>
+    <string name="today_count_pending">Waiting for approval</string>
+    <string name="today_count_approved">Approved, still to come</string>
+    <string name="no_number">-</string>
+
+    <!-- Hamnad: booking from a station -->
+    <string name="station_book">Book a slot here</string>
+
+    <!-- Booking words used on several screens -->
+    <string name="trade_export">Export</string>
+    <string name="trade_import">Import</string>
+    <string name="kwh_value">%1$s kWh</string>
+    <string name="status_pending">Pending</string>
+    <string name="status_approved">Approved</string>
+    <string name="status_rejected">Rejected</string>
+    <string name="status_cancelled">Cancelled</string>
+    <string name="status_completed">Completed</string>
+    <string name="status_missed">Missed</string>
+</resources>

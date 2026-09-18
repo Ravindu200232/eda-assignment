@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    activity_booking_wizard.xml
+  Module:  Energy Reservations
+  Owner:   Hamnad
+  Purpose: The booking form in four steps - station, day and free slot, energy
+           and direction, and a review - with one step shown at a time. The
+           same form changes an existing booking.
+  Source:  AND-02 (clay design system), AND-30 (chips), AND-33 (step bar).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/space_s"
+        android:paddingTop="@dimen/space_s"
+        android:paddingEnd="@dimen/screen_padding">
+
+        <ImageButton
+            android:id="@+id/wizard_close"
+            android:layout_width="@dimen/touch_target"
+            android:layout_height="@dimen/touch_target"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/action_close"
+            android:src="@drawable/ic_x"
+            app:tint="@color/ink" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_s"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/wizard_step_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.SolarGrid.Eyebrow"
+                tools:text="Step 2 of 4" />
+
+            <TextView
+                android:id="@+id/wizard_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.SolarGrid.CardTitle"
+                tools:text="Choose a day and a slot" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/wizard_steps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/screen_padding"
+        android:layout_marginTop="@dimen/space_s"
+        android:layout_marginEnd="@dimen/screen_padding"
+        android:max="4"
+        app:indicatorColor="@color/accent"
+        app:indicatorTrackGapSize="0dp"
+        app:trackColor="@color/accent_soft"
+        app:trackCornerRadius="4dp"
+        app:trackStopIndicatorSize="0dp"
+        app:trackThickness="6dp"
+        tools:progress="2" />
+
+    <ProgressBar
+        android:id="@+id/wizard_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/screen_padding"
+        android:layout_marginEnd="@dimen/screen_padding"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/accent"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/wizard_notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/screen_padding"
+        android:layout_marginEnd="@dimen/screen_padding"
+        android:layout_marginBottom="@dimen/space_s"
+        android:background="@drawable/bg_well"
+        android:drawablePadding="@dimen/space_s"
+        android:gravity="center_vertical"
+        android:padding="@dimen/space_m"
+        android:textAppearance="@style/TextAppearance.SolarGrid.Body"
+        android:visibility="gone"
+        app:drawableStartCompat="@drawable/ic_circle_alert"
+        app:drawableTint="@color/danger"
+        tools:text="This slot is fully booked. Please choose another slot."
+        tools:visibility="visible" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- Step 1: the station -->
+        <LinearLayout
+            android:id="@+id/wizard_step_station"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/wizard_search_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/screen_padding"
+                android:layout_marginEnd="@dimen/screen_padding"
+                android:hint="@string/stations_search"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/ic_search">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/wizard_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/wizard_stations"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingStart="@dimen/screen_padding"
+                    android:paddingTop="@dimen/space_m"
+                    android:paddingEnd="@dimen/screen_padding"
+                    android:paddingBottom="@dimen/screen_padding"
+                    tools:listitem="@layout/item_station" />
+
+                <TextView
+                    android:id="@+id/wizard_stations_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="@dimen/screen_padding"
+                    android:text="@string/stations_none_found"
+                    android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
+                    android:visibility="gone" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Step 2: the day and a free slot -->
+        <ScrollView
+            android:id="@+id/wizard_step_slot"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <!-- clipToPadding off, so the day row can reach the screen edges. -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/screen_padding"
+                android:paddingTop="@dimen/space_s"
+                android:paddingEnd="@dimen/screen_padding"
+                android:paddingBottom="@dimen/screen_padding">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/wizard_station_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/space_s"
+                            android:gravity="center_vertical"
+                            android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle"
+                            app:drawableStartCompat="@drawable/ic_map_pin"
+                            app:drawableTint="@color/accent"
+                            tools:text="SLIIT Malabe Campus Microgrid" />
+
+                        <TextView
+                            android:id="@+id/wizard_station_where"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_xs"
+                            android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
+                            tools:text="New Kandy Road, Malabe" />
+
+                        <TextView
+                            android:id="@+id/wizard_station_energy"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
+                            tools:text="Up to 50 kWh per booking" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/wizard_other_station"
+                            style="@style/Widget.SolarGrid.Button.Ghost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/wizard_other_station"
+                            app:icon="@drawable/ic_list" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_l"
+                    android:text="@string/wizard_day_title"
+                    android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wizard_day_hint"
+                    android:textAppearance="@style/TextAppearance.SolarGrid.Muted" />
+
+                <!-- The row reaches the screen edges, so chips scroll out of
+                     sight instead of being cut at the margin. -->
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/screen_padding_negative"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:layout_marginEnd="@dimen/screen_padding_negative"
+                    android:clipToPadding="false"
+                    android:paddingStart="@dimen/screen_padding"
+                    android:paddingEnd="@dimen/screen_padding"
+                    android:scrollbars="none">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/wizard_days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:selectionRequired="true"
+                        app:singleLine="true"
+                        app:singleSelection="true" />
+                </HorizontalScrollView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_l"
+                    android:text="@string/wizard_slot_title"
+                    android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/wizard_slots"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    app:singleSelection="true" />
+
+                <TextView
+                    android:id="@+id/wizard_slots_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:text="@string/wizard_no_slots"
+                    android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Step 3: how much energy and which way -->
+        <ScrollView
+            android:id="@+id/wizard_step_energy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/screen_padding"
+                android:paddingTop="@dimen/space_s"
+                android:paddingEnd="@dimen/screen_padding"
+                android:paddingBottom="@dimen/screen_padding">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/wizard_trade_title"
+                    android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/wizard_trade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/wizard_trade_export"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/trade_export"
+                        app:chipIcon="@drawable/ic_sun_medium"
+                        app:chipIconTint="@color/chip_icon"
+                        app:chipIconVisible="true" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/wizard_trade_import"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/trade_import"
+                        app:chipIcon="@drawable/ic_battery_charging"
+                        app:chipIconTint="@color/chip_icon"
+                        app:chipIconVisible="true" />
+                </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:id="@+id/wizard_trade_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:text="@string/wizard_trade_hint"
+                    android:textAppearance="@style/TextAppearance.SolarGrid.Muted" />
+
+                <TextView
+                    android:id="@+id/wizard_trade_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:text="@string/wizard_trade_missing"
+                    android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
+                    android:textColor="@color/danger"
+                    android:visibility="gone" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/wizard_energy_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_l"
+                    android:hint="@string/wizard_energy"
+                    app:startIconDrawable="@drawable/ic_zap"
+                    app:suffixText="@string/kwh_unit">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/wizard_energy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Step 4: check everything, then book -->
+        <ScrollView
+            android:id="@+id/wizard_step_review"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/screen_padding"
+                android:paddingTop="@dimen/space_s"
+                android:paddingEnd="@dimen/screen_padding"
+                android:paddingBottom="@dimen/screen_padding">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include
+                            android:id="@+id/review_station_row"
+                            layout="@layout/view_detail_row"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <include
+                            android:id="@+id/review_slot_row"
+                            layout="@layout/view_detail_row"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <include
+                            android:id="@+id/review_energy_row"
+                            layout="@layout/view_detail_row"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <include
+                            android:id="@+id/review_trade_row"
+                            layout="@layout/view_detail_row"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/review_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_m"
+                    android:background="@drawable/bg_well"
+                    android:drawablePadding="@dimen/space_s"
+                    android:padding="@dimen/space_m"
+                    android:textAppearance="@style/TextAppearance.SolarGrid.Body"
+                    app:drawableStartCompat="@drawable/ic_info"
+                    app:drawableTint="@color/accent"
+                    tools:text="The Backoffice checks every booking. Once it is approved, its QR code appears in Bookings." />
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/screen_padding"
+        android:paddingTop="@dimen/space_s"
+        android:paddingEnd="@dimen/screen_padding"
+        android:paddingBottom="@dimen/space_m">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/wizard_previous"
+            style="@style/Widget.SolarGrid.Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/action_back"
+            app:icon="@drawable/ic_arrow_left" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/wizard_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_s"
+            android:layout_weight="1"
+            android:text="@string/wizard_next"
+            app:icon="@drawable/ic_arrow_right"
+            app:iconGravity="textEnd" />
+    </LinearLayout>
+</LinearLayout>

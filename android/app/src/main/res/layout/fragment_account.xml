@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    fragment_account.xml
+  Module:  Account
+  Owner:   Ravindu
+  Purpose: The account tab of both shells: who is signed in, their details, the
+           server the app is talking to, and the log-out button. Malith adds
+           the profile buttons for prosumers under the details card.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_padding">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_title"
+            android:textAppearance="@style/TextAppearance.SolarGrid.Title" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_l">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="@dimen/orb_size"
+                        android:layout_height="@dimen/orb_size"
+                        android:background="@drawable/bg_orb_violet">
+
+                        <TextView
+                            android:id="@+id/account_initials"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textAppearance="@style/TextAppearance.SolarGrid.Number"
+                            android:textColor="@color/on_accent"
+                            tools:text="KP" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/space_m"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/account_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.SolarGrid.CardTitle"
+                            tools:text="Kasun Perera" />
+
+                        <TextView
+                            android:id="@+id/account_role_chip"
+                            style="@style/Widget.SolarGrid.StatusChip"
+                            android:layout_marginTop="@dimen/space_xs"
+                            android:backgroundTint="@color/chip_accent_bg"
+                            android:textColor="@color/chip_accent_text"
+                            tools:text="Prosumer" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <include
+                    android:id="@+id/account_nic_row"
+                    layout="@layout/view_detail_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_m" />
+
+                <include
+                    android:id="@+id/account_email_row"
+                    layout="@layout/view_detail_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/account_phone_row"
+                    layout="@layout/view_detail_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <include
+                    android:id="@+id/account_status_row"
+                    layout="@layout/view_detail_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <!-- Malith: profile, password and deactivation. -->
+                <LinearLayout
+                    android:id="@+id/account_extra_actions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_m"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/account_edit_profile"
+                        style="@style/Widget.SolarGrid.Button.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/account_edit_profile"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_pencil" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/account_change_password"
+                        style="@style/Widget.SolarGrid.Button.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:text="@string/account_change_password"
+                        app:icon="@drawable/ic_lock" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/account_deactivate"
+                        style="@style/Widget.SolarGrid.Button.Ghost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:text="@string/account_deactivate"
+                        android:textColor="@color/danger"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_user_x"
+                        app:iconTint="@color/danger" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_m">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_app_title"
+                    android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle" />
+
+                <include
+                    android:id="@+id/account_server_row"
+                    layout="@layout/view_detail_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs" />
+
+                <include
+                    android:id="@+id/account_version_row"
+                    layout="@layout/view_detail_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/account_logout"
+            style="@style/Widget.SolarGrid.Button.Danger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_l"
+            android:layout_marginBottom="@dimen/space_l"
+            android:text="@string/account_logout"
+            app:icon="@drawable/ic_log_out" />
+
+    </LinearLayout>
+</ScrollView>

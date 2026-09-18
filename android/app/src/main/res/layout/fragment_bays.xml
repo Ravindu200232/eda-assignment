@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    fragment_bays.xml
+  Module:  Stations
+  Owner:   Nimthara
+  Purpose: The operator Bays tab: choose a station and set how many of its
+           battery bays are free, with a big minus and plus.
+  Source:  AND-02 (clay design system), AND-05 (Material exposed dropdown).
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_padding">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/operator_eyebrow"
+            android:textAppearance="@style/TextAppearance.SolarGrid.Eyebrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:text="@string/bays_title"
+            android:textAppearance="@style/TextAppearance.SolarGrid.Title" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:text="@string/bays_subtitle"
+            android:textAppearance="@style/TextAppearance.SolarGrid.Muted" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_l">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/bays_station_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/bays_station"
+                    app:endIconMode="dropdown_menu"
+                    app:startIconDrawable="@drawable/ic_sun_medium">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/bays_station"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_l"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/bays_minus"
+                        style="@style/Widget.SolarGrid.Button.Secondary"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:contentDescription="@string/bays_minus"
+                        android:insetLeft="0dp"
+                        android:insetRight="0dp"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="0dp"
+                        app:icon="@drawable/ic_minus"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp" />
+
+                    <TextView
+                        android:id="@+id/bays_free"
+                        android:layout_width="112dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Title"
+                        android:textSize="48sp"
+                        tools:text="9" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/bays_plus"
+                        style="@style/Widget.SolarGrid.Button.Secondary"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:contentDescription="@string/bays_plus"
+                        android:insetLeft="0dp"
+                        android:insetRight="0dp"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="0dp"
+                        app:icon="@drawable/ic_plus"
+                        app:iconGravity="textStart"
+                        app:iconPadding="0dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/bays_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xs"
+                    android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
+                    tools:text="bays free out of 12" />
+
+                <TextView
+                    android:id="@+id/bays_notice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_l"
+                    android:background="@drawable/bg_well"
+                    android:drawablePadding="@dimen/space_s"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/space_m"
+                    android:textAppearance="@style/TextAppearance.SolarGrid.Body"
+                    android:visibility="gone" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bays_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_l"
+                    android:text="@string/bays_save"
+                    app:icon="@drawable/ic_battery_charging" />
+
+                <ProgressBar
+                    android:id="@+id/bays_progress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/accent"
+                    android:visibility="invisible" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</ScrollView>

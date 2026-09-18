@@ -59,6 +59,15 @@ Each member owns one feature from end to end — in the API, the web app and the
 | **Nimthara** | Stations (list and map), New / edit station, Station details | Google Maps with an OpenStreetMap fallback, location chooser, weekly opening hours editor, battery bays, slots per day with add, generate, change and delete, bay shortcut on the Operations page |
 | **Hamnad** | Reservations (lists), New / change booking wizard, Booking page | Tabs kept in the address for dashboard links, filters and search, approve / reject / cancel dialogs, 12-hour lock, booking timeline, booking QR code with print and copy |
 
+### Android app contributions
+
+| Member | Screens | Other work |
+|---|---|---|
+| **Ravindu** | Start-up, Log in, Account, operator Scan and Check-in | Project set-up (Gradle, Java 17, minimum Android 9), the clay theme on Android (fonts, shapes, clay buttons and cards, icons), the Web API client with the token header and the error reader, the SQLite helper and the session table, role routing and session end, the Android 17 local network permission, edge-to-edge screens, the test set-up (Robolectric, stand-in API, Espresso, screenshots, live test script) |
+| **Malith** | Sign-up and "waiting for activation", Home dashboard, Profile, Change password, Deactivate | Profile table for offline use, dashboard counts with pull to refresh, form helpers and messages, the password dialog |
+| **Nimthara** | Map and station list, Station page, operator Bays | Google Maps with coloured markers and a station card, the phone's location with a Colombo fallback, stations table for offline use, weekly opening hours, slots per day, plural strings |
+| **Hamnad** | Bookings (current, waiting, history), Booking form (new and change), Booking page with the QR code, Summary, operator Today | Reservations table for offline use, search, filters and paging, QR drawing with a bright screen, the booking history, the own slot kept when changing, cancelling for a prosumer |
+
 Every source file starts with a header that names its owner.
 
 ## Branches
@@ -86,9 +95,9 @@ How work reaches `main`:
 ```
 api/        C# Web API solution (src + unit tests + end-to-end tests)
 web/        React web application (staff portal for Backoffice and Grid Operators)
-android/    Android Studio project (Java)    (added in the Android phase)
+android/    Android Studio project (Java + XML + SQLite) for prosumers and Grid Operators
 deploy/iis/ Scripts to host the API and the web portal on IIS and check them
-docs/       Database design, API endpoints, web pages, deployment guide, demo script, screenshots
+docs/       Database design, API endpoints, web pages, Android screens, deployment guide, demo script, screenshots
 sources/    Every outside source and library we used, explained in plain English
 ```
 
@@ -144,6 +153,30 @@ To host the portal on IIS (http://localhost:8081), run `deploy\iis\deploy-web.ps
 
 ![Home page of the web portal](docs/screenshots/web/00-home.png)
 
+## Running the Android app
+
+Requirements: Android Studio (it brings Java and the Android SDK), an emulator or a phone with
+Android 9 or newer, and the API running.
+
+```powershell
+cd android
+copy local.properties.example local.properties
+.\gradlew installDebug
+```
+
+Open `local.properties` and fill in `sdk.dir`, the Google Maps key and `API_BASE_URL`.
+The default address is `http://10.0.2.2:8080/`, which is how an emulator reaches the API on this
+computer. For a real phone, use the computer's address on the same Wi-Fi (for example
+`http://192.168.1.5:8080/`) and add that host to `app/src/main/res/xml/network_security_config.xml`.
+The file is ignored by Git, so no key is ever committed.
+
+Log in with the prosumer or Grid Operator demo account; Backoffice accounts are refused on purpose,
+because Backoffice staff work in the web portal. Every screen, its API calls and what each role may do are
+listed in [docs/android-app.md](docs/android-app.md); building the APK and the Google Maps key are explained in
+[docs/deployment.md](docs/deployment.md#7-the-android-app).
+
+![Home screen of the Android app](docs/screenshots/android/00-android-home.png)
+
 ## Tests
 
 ```powershell
@@ -169,14 +202,32 @@ npm run e2e       # browser tests (Playwright) against a temporary API and datab
 - **Screenshots:** `npm run e2e:screens` saves every page at desktop and phone size to `docs/screenshots/web/`.
 - **IIS check:** `deploy\iis\smoke-test-web.ps1` tests the hosted portal and its connection to the API.
 
+```powershell
+cd android
+.\gradlew lintDebug testDebugUnitTest
+.\gradlew connectedDebugAndroidTest "-Pandroid.testInstrumentationRunnerArguments.notAnnotation=lk.sliit.solargrid.live.LiveApi"
+```
+
+- **Android unit tests** run on the computer (Robolectric): the SQLite tables, the error reader, the repositories
+  against a stand-in server, the booking words, history and slot choices, and the Sri Lankan time formatting.
+- **Android emulator tests** (Espresso) sign in as each role, sign up, edit the profile, walk the map and the station
+  page, book, change and cancel a slot, show a QR code, walk the operator check-in and Today list, and open every
+  screen for the report pictures, also against a stand-in server, so they need no API.
+- **Live tests:** `android\scripts\run-e2e.ps1` starts the real API on port 5090 with a temporary MongoDB
+  database, runs the tests marked `@LiveApi` on the emulator (sign-in and refusals, a real sign-up, nearby
+  stations, booking and cancelling, and the app's QR code passing the operator check) and deletes the database
+  afterwards.
+- **Screenshots:** `android\scripts\take-screenshots.ps1` saves every app screen to `docs/screenshots/android/`.
+
 ## Documentation
 
 - [Database design](docs/database-design.md)
 - [API endpoints](docs/api-endpoints.md)
 - [Web pages and permissions](docs/web-pages.md)
+- [Android screens and permissions](docs/android-app.md)
 - [Deployment guide](docs/deployment.md)
 - [Demo video script](docs/demo-script.md)
-- [Screenshots](docs/screenshots/web/)
+- Screenshots: [web portal](docs/screenshots/web/), [Android app](docs/screenshots/android/)
 - [Challenges and how we solved them](docs/challenges.md)
 - [Code sources and libraries](sources/README.md)
 

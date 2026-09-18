@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    ic_launcher_foreground.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: The sun on the app icon: a warm disc with eight rays, inside the
+           safe area of an adaptive icon.
+  Source:  AND-07 (adaptive launcher icons).
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group android:translateX="0" android:translateY="0">
+        <path
+            android:fillColor="#00000000"
+            android:pathData="M54,26v-9M54,91v-9M26,54h-9M91,54h-9M34.2,34.2l-6.4,-6.4M80.2,80.2l-6.4,-6.4M34.2,73.8l-6.4,6.4M80.2,27.8l-6.4,6.4"
+            android:strokeWidth="6"
+            android:strokeColor="#FDE68A"
+            android:strokeLineCap="round" />
+        <path android:pathData="M36,54a18,18 0 1,0 36,0a18,18 0 1,0 -36,0z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:endX="72"
+                    android:endY="72"
+                    android:startX="36"
+                    android:startY="36"
+                    android:type="linear">
+                    <item android:color="#FCD34D" android:offset="0" />
+                    <item android:color="#F59E0B" android:offset="1" />
+                </gradient>
+            </aapt:attr>
+        </path>
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M56.5,41.5L45,57h8.5l-2.5,10.5L62.5,52h-8.5z" />
+    </group>
+</vector>

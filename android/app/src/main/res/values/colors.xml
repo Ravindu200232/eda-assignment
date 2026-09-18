@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    colors.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: The clay colour tokens, the same values as the web portal's theme.
+  Source:  AND-02 (clay design system, see WEB-01).
+-->
+<resources>
+    <!-- Surfaces -->
+    <color name="canvas">#F4F1FA</color>
+    <color name="well">#EFEBF5</color>
+    <color name="card">#F2FFFFFF</color>
+    <color name="card_solid">#FFFFFFFF</color>
+
+    <!-- Text -->
+    <color name="ink">#332F3A</color>
+    <color name="muted">#635F69</color>
+    <color name="on_accent">#FFFFFFFF</color>
+
+    <!-- Brand and status -->
+    <color name="accent">#7C3AED</color>
+    <color name="accent_light">#A78BFA</color>
+    <color name="accent_soft">#EDE9FE</color>
+    <color name="accent_alt">#DB2777</color>
+    <color name="info">#0EA5E9</color>
+    <color name="success">#10B981</color>
+    <color name="warning">#F59E0B</color>
+    <color name="danger">#DB2777</color>
+
+    <!-- Status chip backgrounds and text -->
+    <color name="chip_success_bg">#D1FAE5</color>
+    <color name="chip_success_text">#065F46</color>
+    <color name="chip_warning_bg">#FEF3C7</color>
+    <color name="chip_warning_text">#92400E</color>
+    <color name="chip_danger_bg">#FCE7F3</color>
+    <color name="chip_danger_text">#9D174D</color>
+    <color name="chip_info_bg">#E0F2FE</color>
+    <color name="chip_info_text">#075985</color>
+    <color name="chip_accent_bg">#EDE9FE</color>
+    <color name="chip_accent_text">#5B21B6</color>
+    <color name="chip_neutral_bg">#EFEBF5</color>
+    <color name="chip_neutral_text">#635F69</color>
+
+    <!-- Soft coloured shadows and background blobs -->
+    <color name="shadow_violet">#667C3AED</color>
+    <color name="shadow_ink">#40332F3A</color>
+    <color name="blob_violet">#55A78BFA</color>
+    <color name="blob_pink">#40F472B6</color>
+    <color name="blob_sky">#4038BDF8</color>
+    <color name="transparent">#00000000</color>
+</resources>

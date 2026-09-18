@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    activity_splash.xml
+  Module:  Authentication
+  Owner:   Ravindu
+  Purpose: The first screen. It shows the app mark while the saved login is
+           read from SQLite and checked with the server.
+  Source:  AND-02 (clay design system).
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_blobs"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/screen_padding">
+
+    <FrameLayout
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:background="@drawable/bg_brand_tile"
+        android:elevation="@dimen/elevation_card"
+        android:outlineSpotShadowColor="@color/shadow_violet">
+
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_sun"
+            app:tint="@color/on_accent" />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_l"
+        android:text="@string/app_name"
+        android:textAppearance="@style/TextAppearance.SolarGrid.Title" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xs"
+        android:text="@string/app_tagline"
+        android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle" />
+
+    <ProgressBar
+        android:id="@+id/splash_progress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xl"
+        android:indeterminateTint="@color/accent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_m"
+        android:text="@string/splash_loading"
+        android:textAppearance="@style/TextAppearance.SolarGrid.Muted" />
+
+</LinearLayout>

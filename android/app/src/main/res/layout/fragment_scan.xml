@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    fragment_scan.xml
+  Module:  Operator Check-in
+  Owner:   Ravindu
+  Purpose: The first operator screen: scan the QR code in the prosumer app, or
+           type the code text when the camera cannot read it.
+  Source:  AND-02 (clay design system), AND-11 (ZXing scanner).
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_padding">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/operator_eyebrow"
+            android:textAppearance="@style/TextAppearance.SolarGrid.Eyebrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:text="@string/operator_scan_title"
+            android:textAppearance="@style/TextAppearance.SolarGrid.Title" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xs"
+            android:text="@string/operator_scan_subtitle"
+            android:textAppearance="@style/TextAppearance.SolarGrid.Muted" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_l">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="@dimen/orb_size"
+                    android:layout_height="@dimen/orb_size"
+                    android:background="@drawable/bg_orb_violet">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_qr_code"
+                        app:tint="@color/on_accent" />
+                </FrameLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/scan_action"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_l"
+                    android:text="@string/operator_scan_action"
+                    app:icon="@drawable/ic_scan_line" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/scan_code_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_l"
+                    android:hint="@string/operator_manual_code"
+                    app:startIconDrawable="@drawable/ic_keyboard">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/scan_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="textNoSuggestions"
+                        android:maxLines="2" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/scan_check_code"
+                    style="@style/Widget.SolarGrid.Button.Secondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_m"
+                    android:text="@string/operator_check_action"
+                    app:icon="@drawable/ic_shield_check" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_m"
+            android:layout_marginBottom="@dimen/space_l">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/space_s"
+                android:text="@string/operator_scan_helper"
+                android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
+                app:drawableStartCompat="@drawable/ic_info"
+                app:drawableTint="@color/info" />
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>

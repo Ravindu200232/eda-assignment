@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    activity_login.xml
+  Module:  Authentication
+  Owner:   Ravindu
+  Purpose: The sign-in screen: NIC or email, password, and the place where the
+           message from the API is shown when a login is refused.
+  Source:  AND-02 (clay design system), AND-05 (Material text fields).
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_blobs"
+    tools:ignore="UselessParent">
+
+    <!-- The frame takes the room for the system bars and the keyboard, so
+         the scrolling area itself gets shorter and can still reach the
+         last box. Padding on the ScrollView would hide it instead. -->
+    <ScrollView
+        android:id="@+id/login_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/screen_padding">
+
+            <FrameLayout
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_marginTop="@dimen/space_xl"
+                android:background="@drawable/bg_brand_tile"
+                android:elevation="@dimen/elevation_card"
+                android:outlineSpotShadowColor="@color/shadow_violet">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="center"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_sun"
+                    app:tint="@color/on_accent" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m"
+                android:text="@string/app_name"
+                android:textAppearance="@style/TextAppearance.SolarGrid.Title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_tagline"
+                android:textAppearance="@style/TextAppearance.SolarGrid.Muted" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login_title"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.CardTitle" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_xs"
+                        android:text="@string/login_subtitle"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Muted" />
+
+                    <!-- Filled by the app when a session ends or a login is refused. -->
+                    <TextView
+                        android:id="@+id/login_notice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:background="@drawable/bg_well"
+                        android:drawablePadding="@dimen/space_s"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/space_m"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Body"
+                        android:textColor="@color/danger"
+                        android:visibility="gone"
+                        app:drawableStartCompat="@drawable/ic_circle_alert"
+                        app:drawableTint="@color/danger" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/login_username_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_l"
+                        android:hint="@string/login_username"
+                        app:startIconDrawable="@drawable/ic_user_round">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/login_username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="username"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/login_password_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:hint="@string/login_password"
+                        app:endIconMode="password_toggle"
+                        app:startIconDrawable="@drawable/ic_key_round">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/login_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:autofillHints="password"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword"
+                            android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/login_submit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_l"
+                        android:text="@string/login_action"
+                        app:icon="@drawable/ic_log_in" />
+
+                    <ProgressBar
+                        android:id="@+id/login_progress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:indeterminate="true"
+                        android:indeterminateTint="@color/accent"
+                        android:visibility="invisible" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Malith: new prosumers sign up here. -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/login_register"
+                style="@style/Widget.SolarGrid.Button.Ghost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m"
+                android:text="@string/login_register"
+                app:icon="@drawable/ic_user_plus" />
+
+            <TextView
+                android:id="@+id/login_api_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_l"
+                android:layout_marginBottom="@dimen/space_l"
+                android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
+                tools:text="API: http://10.0.2.2:8080/" />
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

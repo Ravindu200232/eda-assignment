@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    chip_filter_background.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: Filter chip background: violet when chosen, soft well otherwise.
+  Source:  AND-02 (clay design system).
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/accent" android:state_checked="true" />
+    <item android:color="@color/card_solid" />
+</selector>

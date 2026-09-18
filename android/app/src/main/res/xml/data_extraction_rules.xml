@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    data_extraction_rules.xml
+  Module:  Core
+  Owner:   Ravindu
+  Purpose: Keeps the app data on this phone. The local database holds a login
+           token and cached bookings, so nothing is copied to a cloud backup or
+           handed to a new phone during device transfer. The user signs in
+           again on the new phone instead.
+  Source:  AND-24 (Android backup and data extraction rules).
+-->
+<data-extraction-rules>
+
+    <cloud-backup>
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="file" path="." />
+    </cloud-backup>
+
+    <device-transfer>
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="file" path="." />
+    </device-transfer>
+
+</data-extraction-rules>

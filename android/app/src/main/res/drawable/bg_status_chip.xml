@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    bg_status_chip.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: Rounded pill behind status words; the colour is set in code.
+  Source:  AND-02 (clay design system).
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <corners android:radius="999dp" />
+    <solid android:color="@color/chip_neutral_bg" />
+</shape>

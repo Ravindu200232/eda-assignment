@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    bg_brand_tile.xml
+  Module:  Theme
+  Owner:   Ravindu
+  Purpose: Amber tile behind the sun logo in the app bar.
+  Source:  AND-02 (clay design system).
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <corners android:radius="16dp" />
+    <gradient android:angle="315" android:endColor="#F59E0B" android:startColor="#FCD34D" android:type="linear" />
+</shape>
