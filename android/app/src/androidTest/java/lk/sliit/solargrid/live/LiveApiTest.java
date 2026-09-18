@@ -14,6 +14,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -32,11 +33,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Locale;
+
 import lk.sliit.solargrid.AppContainer;
 import lk.sliit.solargrid.BuildConfig;
 import lk.sliit.solargrid.R;
 import lk.sliit.solargrid.testing.ApiIdlingResource;
 import lk.sliit.solargrid.ui.auth.LoginActivity;
+import lk.sliit.solargrid.ui.auth.RegisterActivity;
 import lk.sliit.solargrid.util.LocalNetwork;
 
 @LiveApi
@@ -115,6 +119,39 @@ public class LiveApiTest {
 
         onView(withId(R.id.login_notice)).check(matches(isDisplayed()));
         onView(withId(R.id.login_submit)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Malith: a real sign-up creates an account that must wait for the
+     * Backoffice, so signing in with it straight away is refused.
+     */
+    @Test
+    public void signUpWaitsForTheBackoffice() {
+        // A new NIC each run: year 1999, day 123 of the year, then five digits.
+        String digits = String.format(Locale.ROOT, "%05d", System.currentTimeMillis() % 100000);
+        String nic = "1999123" + digits;
+        String email = "android" + digits + "@example.com";
+
+        ActivityScenario.launch(RegisterActivity.class);
+        type(R.id.register_nic, nic);
+        type(R.id.register_name, "Android Test Prosumer");
+        type(R.id.register_email, email);
+        type(R.id.register_phone, "0712345678");
+        type(R.id.register_address, "No. 1, Test Road, Malabe");
+        type(R.id.register_password, "Solar2026x");
+        type(R.id.register_confirm, "Solar2026x");
+        onView(withId(R.id.register_submit)).perform(scrollTo(), click());
+
+        onView(withText(R.string.registered_title)).check(matches(isDisplayed()));
+        onView(withId(R.id.registered_login)).perform(click());
+
+        signIn(email, "Solar2026x");
+        onView(withId(R.id.login_notice)).check(matches(isDisplayed()));
+    }
+
+    /** Scrolls to a box and types into it. */
+    private static void type(int boxId, String text) {
+        onView(withId(boxId)).perform(scrollTo(), replaceText(text), closeSoftKeyboard());
     }
 
     /** Fills the form and taps the button. */
