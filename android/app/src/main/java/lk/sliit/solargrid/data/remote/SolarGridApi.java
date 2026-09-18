@@ -12,6 +12,7 @@ package lk.sliit.solargrid.data.remote;
 import java.util.List;
 
 import lk.sliit.solargrid.data.remote.dto.BatterySlotsRequest;
+import lk.sliit.solargrid.data.remote.dto.BookingRequests;
 import lk.sliit.solargrid.data.remote.dto.CheckInResponse;
 import lk.sliit.solargrid.data.remote.dto.CompleteTransferRequest;
 import lk.sliit.solargrid.data.remote.dto.HealthDto;
@@ -19,9 +20,12 @@ import lk.sliit.solargrid.data.remote.dto.LoginRequest;
 import lk.sliit.solargrid.data.remote.dto.LoginResponse;
 import lk.sliit.solargrid.data.remote.dto.PasswordRequests;
 import lk.sliit.solargrid.data.remote.dto.ProsumerDashboardDto;
+import lk.sliit.solargrid.data.remote.dto.QrCodeDto;
 import lk.sliit.solargrid.data.remote.dto.RegisterProsumerRequest;
 import lk.sliit.solargrid.data.remote.dto.ReservationDto;
+import lk.sliit.solargrid.data.remote.dto.ReservationPageDto;
 import lk.sliit.solargrid.data.remote.dto.SlotDto;
+import lk.sliit.solargrid.data.remote.dto.StaffDashboardDto;
 import lk.sliit.solargrid.data.remote.dto.StationDto;
 import lk.sliit.solargrid.data.remote.dto.UpdateProsumerRequest;
 import lk.sliit.solargrid.data.remote.dto.UserDto;
@@ -111,4 +115,37 @@ public interface SolarGridApi {
     /** Sets how many battery bays are free now (Grid Operators). */
     @PATCH("api/stations/{id}/battery-slots")
     Call<StationDto> updateBatterySlots(@Path("id") String stationId, @Body BatterySlotsRequest request);
+
+    // ----- Hamnad: bookings and their QR codes -----
+
+    /** A page of bookings. Every filter is optional; the API keeps prosumers to their own. */
+    @GET("api/reservations")
+    Call<ReservationPageDto> reservations(@Query("scope") String scope, @Query("status") String status,
+                                          @Query("stationId") String stationId, @Query("from") String fromDate,
+                                          @Query("to") String toDate, @Query("search") String search,
+                                          @Query("page") Integer page, @Query("pageSize") Integer pageSize);
+
+    /** One booking with its rule flags (canModify, hasQrCode, isPast). */
+    @GET("api/reservations/{id}")
+    Call<ReservationDto> reservation(@Path("id") String id);
+
+    /** Books a slot; the booking waits for Backoffice approval. */
+    @POST("api/reservations")
+    Call<ReservationDto> createReservation(@Body BookingRequests.Booking request);
+
+    /** Changes the slot, energy or direction (12-hour notice). */
+    @PUT("api/reservations/{id}")
+    Call<ReservationDto> updateReservation(@Path("id") String id, @Body BookingRequests.Booking request);
+
+    /** Cancels a booking (12-hour notice, for prosumers and staff alike). */
+    @POST("api/reservations/{id}/cancel")
+    Call<ReservationDto> cancelReservation(@Path("id") String id, @Body BookingRequests.Cancel request);
+
+    /** The signed QR text of an approved booking. */
+    @GET("api/reservations/{id}/qr")
+    Call<QrCodeDto> reservationQr(@Path("id") String id);
+
+    /** The staff numbers for the operator "Today" tab (Grid Operators and Backoffice only). */
+    @GET("api/dashboard/summary")
+    Call<StaffDashboardDto> staffDashboard();
 }

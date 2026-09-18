@@ -8,7 +8,7 @@
  *          runs:  node android/scripts/make-icons.mjs
  * Source:  AND-06 (Lucide icons, ISC licence; Android VectorDrawable format).
  */
-import { writeFileSync } from 'node:fs'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
@@ -68,6 +68,14 @@ const ICONS = {
   'battery': 'Nimthara',
   'locate-fixed': 'Nimthara',
   'sun-medium': 'Nimthara',
+  // Hamnad: bookings, the booking form and QR codes
+  'funnel': 'Hamnad',
+  'ticket': 'Hamnad',
+  'arrow-right': 'Hamnad',
+  'check': 'Hamnad',
+  'calendar-plus': 'Hamnad',
+  'ban': 'Hamnad',
+  'history': 'Hamnad',
 }
 
 /*
@@ -191,10 +199,21 @@ function toPathData([tag, attrs]) {
   }
 }
 
+// Loads the drawing of a Lucide icon. A few names are only aliases that point
+// to another icon (for example "history" is "rotate-ccw-clock"), so the alias is
+// followed to the file that holds the drawing.
+async function iconData(name) {
+  const file = join(iconFolder, `${name}.mjs`)
+  const module = await import(pathToFileURL(file).href)
+  if (module.__iconData) return module.__iconData
+  const target = /from '\.\/([a-z0-9-]+)\.mjs'/.exec(readFileSync(file, 'utf8'))
+  if (!target) throw new Error(`No icon data in ${name}.mjs`)
+  return iconData(target[1])
+}
+
 // Writes one vector drawable file for a Lucide icon.
 async function writeIcon(name, owner) {
-  const module = await import(pathToFileURL(join(iconFolder, `${name}.mjs`)).href)
-  const paths = module.__iconData.node
+  const paths = (await iconData(name)).node
     .map((shape) =>
       [
         '    <path',

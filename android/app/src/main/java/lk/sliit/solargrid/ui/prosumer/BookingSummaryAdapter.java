@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -28,7 +29,21 @@ import lk.sliit.solargrid.util.Times;
 
 public class BookingSummaryAdapter extends RecyclerView.Adapter<BookingSummaryAdapter.Row> {
 
+    /** Told which booking was tapped (added by Hamnad: a card opens the booking page). */
+    public interface OnBookingTap {
+
+        /** Runs when a card is tapped. */
+        void onTap(BookingSummaryDto booking);
+    }
+
     private final List<BookingSummaryDto> bookings = new ArrayList<>();
+    @Nullable
+    private final OnBookingTap onTap;
+
+    /** Needs to know what to do when a card is tapped, or null for nothing. */
+    public BookingSummaryAdapter(@Nullable OnBookingTap onTap) {
+        this.onTap = onTap;
+    }
 
     /**
      * Replaces the list with the newest bookings from the API. The dashboard
@@ -55,7 +70,9 @@ public class BookingSummaryAdapter extends RecyclerView.Adapter<BookingSummaryAd
     /** Fills the card with one booking. */
     @Override
     public void onBindViewHolder(@NonNull Row row, int position) {
-        bind(row.binding, bookings.get(position));
+        BookingSummaryDto booking = bookings.get(position);
+        bind(row.binding, booking);
+        row.binding.getRoot().setOnClickListener(onTap == null ? null : view -> onTap.onTap(booking));
     }
 
     /** How many bookings are in the list. */

@@ -22,13 +22,17 @@ public final class StatusChips {
     private StatusChips() {
     }
 
-    /** Writes the status into the chip and gives it the matching colours. */
+    /**
+     * Writes the status into the chip and gives it the matching colours. A
+     * waiting or approved booking whose slot is over was missed, as in the
+     * web portal (Hamnad added the waiting case with the booking screens).
+     */
     public static void apply(TextView chip, String status, boolean isPast) {
         int label;
         int background;
         int text;
 
-        if ("Approved".equals(status) && isPast) {
+        if (("Approved".equals(status) || "Pending".equals(status)) && isPast) {
             label = R.string.status_missed;
             background = R.color.chip_warning_bg;
             text = R.color.chip_warning_text;

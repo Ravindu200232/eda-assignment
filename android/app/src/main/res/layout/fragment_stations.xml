@@ -231,11 +231,21 @@
                     android:textAppearance="@style/TextAppearance.SolarGrid.Muted"
                     tools:text="Up to 50 kWh per booking" />
 
+                <!-- Hamnad: book a slot at this station straight from the map. -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/station_card_details"
+                    android:id="@+id/station_card_book"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_m"
+                    android:text="@string/station_book"
+                    app:icon="@drawable/ic_calendar_plus" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/station_card_details"
+                    style="@style/Widget.SolarGrid.Button.Secondary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
                     android:text="@string/stations_see_slots"
                     app:icon="@drawable/ic_calendar_days" />
             </LinearLayout>

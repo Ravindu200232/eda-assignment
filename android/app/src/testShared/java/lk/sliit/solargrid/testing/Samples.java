@@ -11,6 +11,7 @@ package lk.sliit.solargrid.testing;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 public final class Samples {
@@ -127,6 +128,110 @@ public final class Samples {
         return "[" + slot("sl-1", today, 8, 5, 2, true) + ","
                 + slot("sl-2", today, 10, 5, 5, true) + ","
                 + slot("sl-3", today, 12, 5, 0, false) + "]";
+    }
+
+    // ----- Hamnad: bookings and QR codes -----
+
+    /** The id of the sample booking, used in the addresses the tests answer. */
+    public static final String BOOKING_ID = "bk-hurv8";
+
+    /** The NIC of the signed-in test user, so the booking is "by you". */
+    public static final String MY_NIC = "199512345678";
+
+    /** The signed QR text the API sends for the sample booking. */
+    public static final String QR_PAYLOAD = "SSG1.bk-hurv8.q7Hn2kLp9wXz.3fA9c1d2e4b5";
+
+    /** The sample booking with the given status, its slot starting that many hours from now. */
+    public static String booking(String status, long startsInHours) {
+        return booking(BOOKING_ID, "RSV-260918-HURV8", status, startsInHours);
+    }
+
+    /**
+     * One booking of the signed-in prosumer at the Malabe station, its slot
+     * starting the given number of hours from now (negative for the past), on
+     * a whole Sri Lankan hour like the real slots.
+     */
+    public static String booking(String id, String reference, String status, long startsInHours) {
+        Instant start = ZonedDateTime.now(ZoneId.of("Asia/Colombo"))
+                .truncatedTo(ChronoUnit.HOURS).plusHours(startsInHours).toInstant();
+        return bookingAt(id, reference, status, start);
+    }
+
+    /** The sample booking in the two-hour slot that starts at the given Sri Lankan hour of a day. */
+    public static String bookingInSlot(String status, LocalDate day, int hour) {
+        Instant start = day.atTime(hour, 0).atZone(ZoneId.of("Asia/Colombo")).toInstant();
+        return bookingAt(BOOKING_ID, "RSV-260918-HURV8", status, start);
+    }
+
+    /**
+     * One booking starting at the given moment. The rule flags are worked out
+     * the way the API does it: a change is allowed until 12 hours before the
+     * start, and the booking is past once its slot has ended. The steps of its
+     * history match the status.
+     */
+    private static String bookingAt(String id, String reference, String status, Instant start) {
+        Instant now = Instant.now();
+        Instant end = start.plus(2, ChronoUnit.HOURS);
+        Instant created = start.minus(3, ChronoUnit.DAYS);
+        boolean live = "Pending".equals(status) || "Approved".equals(status);
+        boolean canModify = live && !start.minus(12, ChronoUnit.HOURS).isBefore(now);
+        boolean isPast = !end.isAfter(now);
+
+        StringBuilder steps = new StringBuilder();
+        if ("Approved".equals(status) || "Completed".equals(status)) {
+            steps.append(",\"approvedBy\":\"199001234567\",\"approvedAt\":\"")
+                    .append(created.plus(2, ChronoUnit.HOURS)).append("\"");
+        }
+        if ("Completed".equals(status)) {
+            steps.append(",\"completedBy\":\"199001234567\",\"completedAt\":\"")
+                    .append(start.plus(90, ChronoUnit.MINUTES)).append("\",\"deliveredKwh\":12.0");
+        }
+        if ("Cancelled".equals(status)) {
+            steps.append(",\"cancelledBy\":\"" + MY_NIC + "\",\"cancelledAt\":\"")
+                    .append(created.plus(1, ChronoUnit.DAYS)).append("\",\"reason\":\"Plans changed\"");
+        }
+        if ("Rejected".equals(status)) {
+            steps.append(",\"rejectedBy\":\"199001234567\",\"rejectedAt\":\"")
+                    .append(created.plus(5, ChronoUnit.HOURS)).append("\",\"reason\":\"Station maintenance\"");
+        }
+        return "{\"id\":\"" + id + "\",\"referenceNo\":\"" + reference + "\","
+                + "\"prosumerNic\":\"" + MY_NIC + "\",\"prosumerName\":\"Kasun Perera\","
+                + "\"stationId\":\"st-mal\",\"stationName\":\"SLIIT Malabe Campus Microgrid\","
+                + "\"slotId\":\"sl-" + id + "\","
+                + "\"startTime\":\"" + start + "\",\"endTime\":\"" + end + "\","
+                + "\"tradeType\":\"Export\",\"energyKwh\":12.5,"
+                + "\"status\":\"" + status + "\",\"createdBy\":\"" + MY_NIC + "\","
+                + "\"createdAt\":\"" + created + "\",\"updatedAt\":\"" + created + "\","
+                + "\"canModify\":" + canModify + ",\"modifyDeadline\":\"" + start.minus(12, ChronoUnit.HOURS) + "\","
+                + "\"hasQrCode\":" + ("Approved".equals(status)) + ",\"isPast\":" + isPast
+                + steps + "}";
+    }
+
+    /** One page of the booking list, as GET api/reservations sends it. */
+    public static String bookingPage(int total, int page, int totalPages, String... bookings) {
+        return "{\"items\":[" + String.join(",", bookings) + "],\"total\":" + total + ","
+                + "\"page\":" + page + ",\"pageSize\":20,\"totalPages\":" + totalPages + "}";
+    }
+
+    /** The QR answer of the sample booking. */
+    public static String qrCode() {
+        return "{\"reservationId\":\"" + BOOKING_ID + "\",\"referenceNo\":\"RSV-260918-HURV8\","
+                + "\"stationName\":\"SLIIT Malabe Campus Microgrid\","
+                + "\"startTime\":\"2026-09-20T02:30:00Z\",\"endTime\":\"2026-09-20T04:30:00Z\","
+                + "\"payload\":\"" + QR_PAYLOAD + "\"}";
+    }
+
+    /** Free slots on a day at the Malabe station, as a prosumer gets them (open, with bays, not started). */
+    public static String freeSlots(LocalDate day) {
+        return "[" + slot("sl-1", day, 8, 5, 2, true) + ","
+                + slot("sl-2", day, 10, 5, 4, true) + "]";
+    }
+
+    /** The staff numbers of GET api/dashboard/summary. */
+    public static String staffDashboard() {
+        return "{\"pendingReservations\":4,\"approvedFutureReservations\":9,\"todaysReservations\":3,"
+                + "\"activeStations\":3,\"totalStations\":4,\"pendingActivations\":2,\"activeProsumers\":18,"
+                + "\"upcomingReservations\":[],\"generatedAt\":\"2026-09-18T02:00:00Z\"}";
     }
 
     /** One station with the same hours every day of the week. */

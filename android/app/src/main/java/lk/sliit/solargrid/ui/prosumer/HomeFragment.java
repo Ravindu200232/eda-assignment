@@ -34,6 +34,8 @@ import lk.sliit.solargrid.data.remote.dto.ProsumerDashboardDto;
 import lk.sliit.solargrid.data.remote.dto.UserDto;
 import lk.sliit.solargrid.databinding.FragmentHomeBinding;
 import lk.sliit.solargrid.databinding.ViewStatTileBinding;
+import lk.sliit.solargrid.ui.booking.BookingDetailsActivity;
+import lk.sliit.solargrid.ui.booking.BookingWizardActivity;
 import lk.sliit.solargrid.ui.common.BaseActivity;
 import lk.sliit.solargrid.util.Texts;
 import lk.sliit.solargrid.util.Times;
@@ -41,7 +43,7 @@ import lk.sliit.solargrid.util.Times;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private final BookingSummaryAdapter upcoming = new BookingSummaryAdapter();
+    private final BookingSummaryAdapter upcoming = new BookingSummaryAdapter(this::openBooking);
 
     /** Builds the screen, labels the four tiles and starts loading. */
     @Nullable
@@ -59,7 +61,7 @@ public class HomeFragment extends Fragment {
         binding.homeUpcoming.setAdapter(upcoming);
         binding.homeRefresh.setColorSchemeResources(R.color.accent);
         binding.homeRefresh.setOnRefreshListener(this::load);
-        binding.homeBook.setOnClickListener(view -> openBookings());
+        binding.homeBook.setOnClickListener(view -> startBooking());
 
         showGreeting(AppContainer.get().session().user());
         load();
@@ -121,6 +123,7 @@ public class HomeFragment extends Fragment {
         binding.homeEmpty.setVisibility(next == null ? View.VISIBLE : View.GONE);
         if (next != null) {
             BookingSummaryAdapter.bind(binding.homeNext, next);
+            binding.homeNext.getRoot().setOnClickListener(view -> openBooking(next));
             binding.homeNextGap.setText(Times.humanGap(next.startTime, Instant.now()));
         }
 
@@ -140,11 +143,14 @@ public class HomeFragment extends Fragment {
         tile.statValue.setText("-");
     }
 
-    /** Moves to the Bookings tab, where a new booking is made. */
-    private void openBookings() {
-        if (requireActivity() instanceof MainActivity) {
-            ((MainActivity) requireActivity()).openTab(R.id.tab_bookings);
-        }
+    /** Opens the booking form (Hamnad's screens). */
+    private void startBooking() {
+        startActivity(BookingWizardActivity.forNewBooking(requireContext(), null));
+    }
+
+    /** Opens the page of a booking, with its QR code once it is approved (Hamnad's screens). */
+    private void openBooking(BookingSummaryDto booking) {
+        startActivity(BookingDetailsActivity.intentFor(requireContext(), booking.id));
     }
 
     /** Lets go of the views when the tab is closed. */

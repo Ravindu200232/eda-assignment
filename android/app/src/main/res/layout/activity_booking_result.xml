@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    activity_booking_result.xml
+  Module:  Energy Reservations
+  Owner:   Hamnad
+  Purpose: The summary page after a booking is made, changed or cancelled:
+           what happened, the booking as the API saved it, and what happens
+           next.
+  Source:  AND-02 (clay design system).
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_blobs"
+    tools:ignore="UselessParent">
+
+    <!-- The frame takes the room for the system bars, so the scrolling area
+         can still reach its last button. -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/screen_padding">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:id="@+id/result_orb"
+                        android:layout_width="@dimen/orb_size"
+                        android:layout_height="@dimen/orb_size"
+                        android:background="@drawable/bg_orb_emerald">
+
+                        <ImageView
+                            android:id="@+id/result_icon"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_circle_check"
+                            app:tint="@color/on_accent" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/result_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.CardTitle"
+                        tools:text="Booking sent" />
+
+                    <TextView
+                        android:id="@+id/result_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Body"
+                        tools:text="RSV-260918-HURV8 is booked and waits for Backoffice approval." />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_l"
+                        android:baselineAligned="false"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/result_reference"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/space_s"
+                            android:gravity="center_vertical"
+                            android:textAppearance="@style/TextAppearance.SolarGrid.Subtitle"
+                            app:drawableStartCompat="@drawable/ic_ticket"
+                            app:drawableTint="@color/accent"
+                            tools:text="RSV-260918-HURV8" />
+
+                        <TextView
+                            android:id="@+id/result_status"
+                            style="@style/Widget.SolarGrid.StatusChip"
+                            tools:text="Pending" />
+                    </LinearLayout>
+
+                    <include
+                        android:id="@+id/result_station_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s" />
+
+                    <include
+                        android:id="@+id/result_slot_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/result_energy_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/result_trade_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/result_prosumer_row"
+                        layout="@layout/view_detail_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/result_next"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:background="@drawable/bg_well"
+                        android:drawablePadding="@dimen/space_s"
+                        android:padding="@dimen/space_m"
+                        android:textAppearance="@style/TextAppearance.SolarGrid.Body"
+                        app:drawableStartCompat="@drawable/ic_info"
+                        app:drawableTint="@color/accent"
+                        tools:text="Waiting for Backoffice approval. You will see the QR code in the booking once it is approved." />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/result_open"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_l"
+                        android:text="@string/result_open_booking"
+                        app:icon="@drawable/ic_ticket" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/result_list"
+                        style="@style/Widget.SolarGrid.Button.Secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_s"
+                        android:text="@string/result_back_to_bookings"
+                        app:icon="@drawable/ic_list" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

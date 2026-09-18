@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  File:    bg_timeline_dot.xml
+  Module:  Energy Reservations
+  Owner:   Hamnad
+  Purpose: The round dot in front of each step of a booking's history. Steps
+           that have happened are violet; steps still to come are tinted
+           lighter in code.
+  Source:  AND-02 (clay design system).
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <solid android:color="@color/accent" />
+</shape>

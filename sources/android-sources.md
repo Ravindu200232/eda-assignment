@@ -378,3 +378,51 @@ Android Developers pages are published under the Creative Commons Attribution 4.
 | **How much we used** | The `<plurals>` format and `getQuantityString`. |
 | **Licence** | CC BY 4.0 (text) / Apache 2.0 (samples) |
 | **Added by** | Nimthara |
+
+## AND-32 · Drawing the booking QR code (ZXing encoder)
+
+| | |
+|---|---|
+| **What it does** | Turns the signed text the API sends for an approved booking into a QR picture on the phone. The text itself always comes from the API; the phone only draws it. |
+| **Where we used it** | `ui/booking/QrImages.java`, `ui/booking/BookingDetailsActivity.java` |
+| **Source** | ZXing Android Embedded — README, *Generate Barcode example* · ZXing API documentation — *EncodeHintType* |
+| **Link** | https://github.com/journeyapps/zxing-android-embedded · https://zxing.github.io/zxing/apidocs/com/google/zxing/EncodeHintType.html |
+| **How much we used** | `new BarcodeEncoder().encodeBitmap(text, BarcodeFormat.QR_CODE, width, height, hints)` with the `ERROR_CORRECTION` (level M) and `MARGIN` hints. The library is the same one the operator scanner uses (AND-11). |
+| **Licence** | Apache 2.0 |
+| **Added by** | Hamnad |
+
+## AND-33 · Booking tabs, the date range filter and the step bar (Material Components)
+
+| | |
+|---|---|
+| **What it does** | Three tabs switch the booking list between current, waiting and history; a calendar lets the prosumer pick a range of days to filter by; a bar shows how far the booking form has got. |
+| **Where we used it** | `ui/booking/BookingsFragment.java`, `res/layout/fragment_bookings.xml`, `res/layout/activity_booking_wizard.xml` |
+| **Source** | Material Components — *Tabs*, *Date pickers* and *Progress indicators* |
+| **Link** | https://github.com/material-components/material-components-android/blob/master/docs/components/Tabs.md · https://github.com/material-components/material-components-android/blob/master/docs/components/DatePicker.md · https://github.com/material-components/material-components-android/blob/master/docs/components/ProgressIndicator.md |
+| **How much we used** | `TabLayout` with `TabItem`s and `addOnTabSelectedListener`; `MaterialDatePicker.Builder.dateRangePicker()` and its positive-button listener (the picker answers in UTC milliseconds, which we turn back into dates); `LinearProgressIndicator` with `setProgressCompat` and the track attributes. |
+| **Licence** | Apache 2.0 |
+| **Added by** | Hamnad |
+
+## AND-34 · A bright screen while the QR code is shown
+
+| | |
+|---|---|
+| **What it does** | Turns the screen to full brightness and keeps it on while the booking page shows its QR code, so the operator's camera reads it easily. Android undoes it as soon as the page is left. |
+| **Where we used it** | `ui/booking/BookingDetailsActivity.java` (`keepScreenBright`) |
+| **Source** | Android Developers — *WindowManager.LayoutParams* (`screenBrightness`, `BRIGHTNESS_OVERRIDE_FULL`, `FLAG_KEEP_SCREEN_ON`) |
+| **Link** | https://developer.android.com/reference/android/view/WindowManager.LayoutParams#screenBrightness |
+| **How much we used** | Setting `screenBrightness` on the window attributes and adding or clearing `FLAG_KEEP_SCREEN_ON`. When to do it is ours. |
+| **Licence** | CC BY 4.0 (text) / Apache 2.0 (samples) |
+| **Added by** | Hamnad |
+
+## AND-35 · Moving between the booking screens
+
+| | |
+|---|---|
+| **What it does** | The back button steps back through the booking form instead of closing it, the form keeps its choices when the phone is turned, and the summary screen returns to a screen that is already open instead of opening a second copy. |
+| **Where we used it** | `ui/booking/BookingWizardActivity.java`, `ui/booking/BookingResultActivity.java`, `ui/booking/BookingDetailsActivity.java`, `ui/prosumer/MainActivity.java`, `ui/operator/OperatorActivity.java` |
+| **Source** | Android Developers — *Provide custom back navigation*, *Save UI states* and *Tasks and the back stack* |
+| **Link** | https://developer.android.com/guide/navigation/custom-back · https://developer.android.com/topic/libraries/architecture/saving-states · https://developer.android.com/guide/components/activities/tasks-and-back-stack |
+| **How much we used** | An `OnBackPressedCallback`, `onSaveInstanceState` with a few ids in the `Bundle`, and `FLAG_ACTIVITY_CLEAR_TOP` with `FLAG_ACTIVITY_SINGLE_TOP` plus `onNewIntent`. Which screen comes next is ours. |
+| **Licence** | CC BY 4.0 (text) / Apache 2.0 (samples) |
+| **Added by** | Hamnad |

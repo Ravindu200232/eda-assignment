@@ -16,14 +16,25 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.RootMatchers.isDialog;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import static lk.sliit.solargrid.testing.TabActions.selectTab;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.startsWith;
+
 import android.Manifest;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -31,12 +42,15 @@ import androidx.test.rule.GrantPermissionRule;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.hamcrest.Matcher;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.LocalDate;
 import java.util.Locale;
 
 import lk.sliit.solargrid.AppContainer;
@@ -47,6 +61,7 @@ import lk.sliit.solargrid.ui.auth.LoginActivity;
 import lk.sliit.solargrid.ui.auth.RegisterActivity;
 import lk.sliit.solargrid.util.LocalNetwork;
 import lk.sliit.solargrid.util.LocationFinder;
+import lk.sliit.solargrid.util.Times;
 
 @LiveApi
 @LargeTest
@@ -173,6 +188,114 @@ public class LiveApiTest {
         onView(withId(R.id.stations_show_list)).perform(click());
 
         onView(withText("SLIIT Malabe Campus Microgrid")).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Hamnad: the prosumer books a free slot at Malabe four days ahead through
+     * the real API, lands on the summary, opens the booking and cancels it.
+     */
+    @Test
+    public void prosumerBooksAndCancels() {
+        ActivityScenario.launch(LoginActivity.class);
+        signIn("kasun@example.com", "Prosumer@123");
+
+        onView(withId(R.id.tab_bookings)).perform(click());
+        onView(withId(R.id.bookings_new)).perform(click());
+        onView(withText("SLIIT Malabe Campus Microgrid")).perform(click());
+        LocalDate day = Times.today().plusDays(4);
+        onView(withText(Times.dayChip(day))).perform(scrollTo(), click());
+        onView(withText(startsWith("10:00 - 12:00"))).perform(scrollTo(), click());
+        onView(withId(R.id.wizard_next)).perform(click());
+        onView(withId(R.id.wizard_trade_export)).perform(click());
+        type(R.id.wizard_energy, "5");
+        onView(withId(R.id.wizard_next)).perform(click());
+        onView(withId(R.id.wizard_next)).perform(click());
+
+        onView(withId(R.id.result_title)).check(matches(withText(R.string.result_created_title)));
+        onView(withId(R.id.result_status)).check(matches(withText(R.string.status_pending)));
+
+        onView(withId(R.id.result_open)).perform(scrollTo(), click());
+        onView(withId(R.id.details_cancel)).perform(scrollTo(), click());
+        onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click());
+
+        onView(withId(R.id.result_title)).check(matches(withText(R.string.result_cancelled_title)));
+        onView(withId(R.id.result_status)).check(matches(withText(R.string.status_cancelled)));
+    }
+
+    /** Hamnad: the demo booking that waits for approval is in the Waiting tab. */
+    @Test
+    public void prosumerSeesTheWaitingBooking() {
+        ActivityScenario.launch(LoginActivity.class);
+        signIn("kasun@example.com", "Prosumer@123");
+
+        onView(withId(R.id.tab_bookings)).perform(click());
+        onView(withId(R.id.bookings_tabs)).perform(selectTab(1));
+
+        onView(withText(containsString("RSV-DEMO-0003"))).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Hamnad: the QR code the app draws for an approved booking carries the
+     * signed text of the API, and the operator's check of that text finds the
+     * same booking. Its slot is hours away, so the API says it cannot be
+     * finished yet.
+     */
+    @Test
+    public void qrCodeOfTheAppPassesTheOperatorCheck() {
+        ActivityScenario.launch(LoginActivity.class);
+        signIn("kasun@example.com", "Prosumer@123");
+        onView(withId(R.id.tab_bookings)).perform(click());
+        onView(withText(containsString("RSV-DEMO-0002"))).perform(click());
+        onView(withId(R.id.details_qr)).perform(scrollTo()).check(matches(isDisplayed()));
+        String payload = textOf(R.id.details_qr_text);
+
+        AppContainer.get().session().clear();
+        ActivityScenario.launch(LoginActivity.class);
+        signIn("operator@solargrid.lk", "Operator@123");
+        onView(withId(R.id.scan_code)).perform(replaceText(payload), closeSoftKeyboard());
+        onView(withId(R.id.scan_check_code)).perform(click());
+
+        onView(withId(R.id.booking_reference)).perform(scrollTo()).check(matches(withText("RSV-DEMO-0002")));
+        onView(withId(R.id.result_title)).check(matches(withText(R.string.checkin_blocked_title)));
+    }
+
+    /** Hamnad: the operator's list of the day reads the real booking list and staff numbers. */
+    @Test
+    public void operatorSeesTheBookingsOfTheDay() {
+        ActivityScenario.launch(LoginActivity.class);
+        signIn("operator@solargrid.lk", "Operator@123");
+
+        onView(withId(R.id.tab_today)).perform(click());
+
+        onView(withId(R.id.today_count_pending)).check(matches(not(withText(R.string.no_number))));
+        onView(withId(R.id.today_count_approved)).check(matches(not(withText(R.string.no_number))));
+        onView(withId(R.id.today_list)).check(matches(isDisplayed()));
+    }
+
+    /** Reads the text a view shows, such as the QR text under the picture. */
+    private static String textOf(int viewId) {
+        String[] text = new String[1];
+        onView(withId(viewId)).perform(new ViewAction() {
+
+            /** Only text views have text to read. */
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(TextView.class);
+            }
+
+            /** What Espresso prints if this step fails. */
+            @Override
+            public String getDescription() {
+                return "read the text";
+            }
+
+            /** Copies the text out of the view. */
+            @Override
+            public void perform(UiController uiController, View view) {
+                text[0] = ((TextView) view).getText().toString();
+            }
+        });
+        return text[0];
     }
 
     /** Scrolls to a box and types into it. */

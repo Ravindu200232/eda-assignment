@@ -42,7 +42,11 @@ if ($LASTEXITCODE -ne 0) {
     throw "The screenshot test failed. The report is in android\app\build\reports\androidTests\connected\debug\index.html"
 }
 
-$pictures = @(Get-ChildItem -Path $outputFolder -Filter *.png -Recurse -ErrorAction SilentlyContinue)
+# Only the numbered screen pictures. Espresso also saves a "view-op-error"
+# picture whenever a step fails, even one the test expects and catches (such
+# as closing a keyboard that is not open), and that is not a screen.
+$pictures = @(Get-ChildItem -Path $outputFolder -Filter *.png -Recurse -ErrorAction SilentlyContinue |
+    Where-Object { $_.Name -match '^\d\d-' })
 if ($pictures.Count -eq 0) {
     throw "The test ran but no pictures arrived in $outputFolder."
 }

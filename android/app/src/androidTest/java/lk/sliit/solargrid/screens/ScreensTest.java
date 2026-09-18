@@ -20,7 +20,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 
+import static lk.sliit.solargrid.testing.TabActions.selectTab;
+import static org.hamcrest.Matchers.containsString;
+
 import android.Manifest;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.SystemClock;
 
@@ -51,11 +55,14 @@ import lk.sliit.solargrid.testing.AppUnderTest;
 import lk.sliit.solargrid.testing.Samples;
 import lk.sliit.solargrid.ui.auth.LoginActivity;
 import lk.sliit.solargrid.ui.auth.RegisterActivity;
+import lk.sliit.solargrid.ui.booking.BookingDetailsActivity;
+import lk.sliit.solargrid.ui.booking.BookingWizardActivity;
 import lk.sliit.solargrid.ui.common.ChangePasswordActivity;
 import lk.sliit.solargrid.ui.map.StationDetailsActivity;
 import lk.sliit.solargrid.ui.operator.OperatorActivity;
 import lk.sliit.solargrid.ui.prosumer.MainActivity;
 import lk.sliit.solargrid.ui.prosumer.ProfileActivity;
+import lk.sliit.solargrid.util.Times;
 
 @Screens
 @LargeTest
@@ -66,6 +73,9 @@ public class ScreensTest {
 
     /** Time for Google to download and draw the map tiles. */
     private static final long MAP_DRAWING_MILLIS = 12_000;
+
+    /** The address of the sample booking (Hamnad's screens). */
+    private static final String BOOKING = "/api/reservations/" + Samples.BOOKING_ID;
 
     @Rule
     public AppUnderTest app = new AppUnderTest();
@@ -242,6 +252,130 @@ public class ScreensTest {
         onView(withId(R.id.scan_code)).perform(replaceText(CODE), closeSoftKeyboard());
         onView(withId(R.id.scan_check_code)).perform(click());
         shoot("08-operator-checkin-blocked");
+    }
+
+    /** Hamnad: the booking lists - current, history - and the status filter. */
+    @Test
+    public void captureBookingLists() {
+        app.signIn(Roles.PROSUMER);
+        app.api.willAnswerPath("/api/dashboard", 200, Samples.dashboard());
+        app.api.willAnswerPath("/api/reservations", 200, Samples.bookingPage(3, 1, 1,
+                Samples.booking("bk-1", "RSV-260918-HURV8", "Approved", 20),
+                Samples.booking("bk-2", "RSV-260918-KD7Q2", "Approved", 45),
+                Samples.booking("bk-3", "RSV-260919-MX3PA", "Approved", 70)));
+
+        ActivityScenario.launch(MainActivity.class);
+        onView(withId(R.id.tab_bookings)).perform(click());
+        shoot("20-bookings-current");
+
+        app.api.willAnswerPath("/api/reservations", 200, Samples.bookingPage(4, 1, 1,
+                Samples.booking("bk-4", "RSV-260917-TT4NB", "Approved", -4),
+                Samples.booking("bk-5", "RSV-260915-J8WQE", "Completed", -30),
+                Samples.booking("bk-6", "RSV-260914-P2LHD", "Cancelled", -50),
+                Samples.booking("bk-7", "RSV-260912-ZC9RM", "Rejected", -90)));
+        onView(withId(R.id.bookings_tabs)).perform(selectTab(2));
+        shoot("21-bookings-history");
+
+        onView(withId(R.id.bookings_filter_status)).perform(click());
+        shoot("22-bookings-status-filter");
+    }
+
+    /** Hamnad: the four steps of the booking form and the summary after booking. */
+    @Test
+    public void captureBookingForm() {
+        app.signIn(Roles.PROSUMER);
+        app.api.willAnswerPath("/api/stations/st-mal/slots", 200, Samples.freeSlots(Times.today().plusDays(1)));
+        app.api.willAnswerPath("/api/stations/st-mal", 200, Samples.malabeStation(9));
+        app.api.willAnswerPath("/api/stations", 200, Samples.nearbyStations());
+        app.api.willAnswerPath("/api/reservations", 201,
+                Samples.bookingInSlot("Pending", Times.today().plusDays(1), 8));
+
+        ActivityScenario.launch(BookingWizardActivity.forNewBooking(context(), null));
+        shoot("23-booking-station");
+
+        onView(withText("SLIIT Malabe Campus Microgrid")).perform(click());
+        onView(withText(R.string.day_tomorrow)).perform(click());
+        onView(withText("08:00 - 10:00 · 3 of 5 bays free")).perform(scrollTo(), click());
+        shoot("24-booking-slot");
+
+        onView(withId(R.id.wizard_next)).perform(click());
+        onView(withId(R.id.wizard_trade_export)).perform(click());
+        onView(withId(R.id.wizard_energy)).perform(scrollTo(), replaceText("12.5"), closeSoftKeyboard());
+        shoot("25-booking-energy");
+
+        onView(withId(R.id.wizard_next)).perform(click());
+        shoot("26-booking-review");
+
+        onView(withId(R.id.wizard_next)).perform(click());
+        shoot("27-booking-sent");
+    }
+
+    /** Hamnad: an approved booking with its QR code, then cancelling it with a reason. */
+    @Test
+    public void captureBookingQrAndCancel() {
+        app.signIn(Roles.PROSUMER);
+        app.api.willAnswerPath(BOOKING + "/cancel", 200, Samples.booking("Cancelled", 30));
+        app.api.willAnswerPath(BOOKING + "/qr", 200, Samples.qrCode());
+        app.api.willAnswerPath(BOOKING, 200, Samples.booking("Approved", 30));
+
+        ActivityScenario.launch(BookingDetailsActivity.intentFor(context(), Samples.BOOKING_ID));
+        shoot("28-booking-qr");
+
+        onView(withId(R.id.details_cancel)).perform(scrollTo(), click());
+        onView(withId(R.id.reason)).inRoot(isDialog()).perform(replaceText("Plans changed"), closeSoftKeyboard());
+        shoot("29-booking-cancel-reason");
+
+        onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click());
+        shoot("30-booking-cancelled");
+    }
+
+    /** Hamnad: changing a booking keeps its own slot; a finished booking shows its history. */
+    @Test
+    public void captureBookingChangeAndHistory() {
+        app.signIn(Roles.PROSUMER);
+        app.api.willAnswerPath(BOOKING, 200, Samples.booking("Pending", 30));
+        app.api.willAnswerPath("/api/stations/st-mal/slots", 200, Samples.freeSlots(Times.today()));
+        app.api.willAnswerPath("/api/stations/st-mal", 200, Samples.malabeStation(9));
+
+        ActivityScenario<BookingWizardActivity> change = ActivityScenario.launch(
+                BookingWizardActivity.forChange(context(), Samples.BOOKING_ID));
+        onView(withText(containsString("your booking"))).perform(scrollTo());
+        shoot("31-booking-change");
+        change.close();
+
+        app.api.willAnswerPath(BOOKING, 200, Samples.booking("Completed", -30));
+        ActivityScenario.launch(BookingDetailsActivity.intentFor(context(), Samples.BOOKING_ID));
+        onView(withId(R.id.details_timeline)).perform(scrollTo());
+        shoot("32-booking-completed");
+    }
+
+    /** Hamnad: the operator's list of the day and a booking opened from it. */
+    @Test
+    public void captureOperatorToday() {
+        app.signIn(Roles.GRID_OPERATOR);
+        app.api.willAnswerPath("/api/dashboard/summary", 200, Samples.staffDashboard());
+        app.api.willAnswerPath(BOOKING, 200, Samples.booking("Approved", 30));
+        app.api.willAnswerPath("/api/reservations", 200, Samples.bookingPage(3, 1, 1,
+                Samples.booking(Samples.BOOKING_ID, "RSV-260918-HURV8", "Approved", 2),
+                Samples.booking("bk-2", "RSV-260918-KD7Q2", "Pending", 4),
+                Samples.booking("bk-3", "RSV-260918-MX3PA", "Completed", -3)));
+
+        ActivityScenario.launch(OperatorActivity.class);
+        onView(withId(R.id.tab_today)).perform(click());
+        shoot("33-operator-today");
+
+        // A booking can be cancelled for a prosumer until 12 hours before it starts.
+        app.api.willAnswerPath("/api/reservations", 200, Samples.bookingPage(1, 1, 1,
+                Samples.booking(Samples.BOOKING_ID, "RSV-260918-HURV8", "Approved", 30)));
+        onView(withText(R.string.day_tomorrow)).perform(click());
+        onView(withText(containsString("RSV-260918-HURV8"))).perform(click());
+        onView(withId(R.id.details_cancel)).perform(scrollTo());
+        shoot("34-operator-booking");
+    }
+
+    /** The app, for opening screens directly. */
+    private static Context context() {
+        return getInstrumentation().getTargetContext();
     }
 
     /** Saves one picture of the screen, once the app has finished drawing. */
