@@ -71,6 +71,39 @@ We first installed `react-leaflet` (Leaflet maps as React components). Its Hippo
 | @playwright/test | 1.63.0 | Browser tests | Drives Chromium through the portal | Apache-2.0 | https://www.npmjs.com/package/@playwright/test |
 | mongodb | 7.6.0 | Browser tests | Deletes the temporary test database | Apache-2.0 | https://www.npmjs.com/package/mongodb |
 
+## Android app (Java, from Google Maven and Maven Central)
+
+Versions come from `android/gradle/libs.versions.toml`.
+
+| Library | Version | Used in | What it does (plain English) | Licence | Link |
+|---|---|---|---|---|---|
+| androidx.appcompat:appcompat | 1.7.1 | Android app | Screens and menus that work the same on older Android versions | Apache-2.0 | https://developer.android.com/jetpack/androidx/releases/appcompat |
+| com.google.android.material:material | 1.13.0 | Android app | Buttons, cards, text boxes, dialogs and the bottom bar | Apache-2.0 | https://github.com/material-components/material-components-android |
+| androidx.constraintlayout:constraintlayout | 2.2.1 | Android app | Lays out a screen by describing how views relate to each other | Apache-2.0 | https://developer.android.com/jetpack/androidx/releases/constraintlayout |
+| androidx.recyclerview:recyclerview | 1.4.0 | Android app | Long lists that reuse rows while scrolling | Apache-2.0 | https://developer.android.com/jetpack/androidx/releases/recyclerview |
+| androidx.swiperefreshlayout:swiperefreshlayout | 1.1.0 | Android app | "Pull down to refresh" on the dashboard and lists | Apache-2.0 | https://developer.android.com/jetpack/androidx/releases/swiperefreshlayout |
+| androidx.lifecycle:lifecycle-viewmodel, lifecycle-livedata | 2.9.4 | Android app | Keeps screen data alive when the phone is turned | Apache-2.0 | https://developer.android.com/jetpack/androidx/releases/lifecycle |
+| com.squareup.retrofit2:retrofit | 2.11.0 | Android app | Turns a Java interface into calls to the Web API | Apache-2.0 | https://github.com/square/retrofit |
+| com.squareup.retrofit2:converter-gson | 2.11.0 | Android app | Reads the JSON answers into Java objects | Apache-2.0 | https://github.com/square/retrofit |
+| com.squareup.okhttp3:okhttp | 4.12.0 | Android app | Sends the HTTP requests, with timeouts and the token header | Apache-2.0 | https://github.com/square/okhttp |
+| com.squareup.okhttp3:logging-interceptor | 4.12.0 | Android app (debug) | Writes the request line to Logcat while developing | Apache-2.0 | https://github.com/square/okhttp |
+| com.google.code.gson:gson | 2.11.0 | Android app | Reads the error answers of the API | Apache-2.0 | https://github.com/google/gson |
+| com.journeyapps:zxing-android-embedded | 4.3.0 | Android app | The camera screen that reads a QR code | Apache-2.0 | https://github.com/journeyapps/zxing-android-embedded |
+| com.google.zxing:core | 3.5.3 | Android app | The barcode reading and drawing engine behind it | Apache-2.0 | https://github.com/zxing/zxing |
+
+## Android tests
+
+| Library | Version | Used in | What it does (plain English) | Licence | Link |
+|---|---|---|---|---|---|
+| junit:junit | 4.13.2 | All Android tests | The testing framework | EPL-1.0 | https://github.com/junit-team/junit4 |
+| org.robolectric:robolectric | 4.16 | Unit tests | Runs Android code (SQLite, layouts) on the computer, with no emulator | MIT | https://robolectric.org |
+| androidx.test:core, runner, rules | 1.7.0 | Android tests | Starts screens and runs the tests on a phone | Apache-2.0 | https://developer.android.com/jetpack/androidx/releases/test |
+| androidx.test.ext:junit | 1.3.0 | Android tests | Joins JUnit 4 and the Android test runner | Apache-2.0 | https://developer.android.com/jetpack/androidx/releases/test |
+| androidx.test.espresso:espresso-core, contrib, intents | 3.7.0 | Emulator tests | Taps, types and checks what is on the screen | Apache-2.0 | https://developer.android.com/training/testing/espresso |
+| androidx.test.uiautomator:uiautomator | 2.3.0 | Emulator tests | Works across apps, for example with the system keyboard | Apache-2.0 | https://developer.android.com/training/testing/other-components/ui-automator |
+| androidx.test.services:test-services | 1.6.0 | Emulator tests | Carries the screenshots off the phone into the build folder | Apache-2.0 | https://developer.android.com/jetpack/androidx/releases/test |
+| com.squareup.okhttp3:mockwebserver | 4.12.0 | Android tests | A stand-in Web API that answers with our own JSON | Apache-2.0 | https://github.com/square/okhttp |
+
 ## Tools (not part of the code)
 
 | Tool | Version | Purpose |
@@ -83,3 +116,10 @@ We first installed `react-leaflet` (Leaflet maps as React components). Its Hippo
 | Node.js | 24.19.0 | Runs the web build and tests |
 | npm | 11.17.0 | Installs the web libraries |
 | Playwright Chromium | build 1243 (`npx playwright install chromium`) | Browser used by the web browser tests |
+| Android Studio | 2026.1.4 (Otter 3) | Writing, running and debugging the Android app |
+| Android Gradle plugin | 9.4.0 | Builds the Android app |
+| Gradle | 9.6.0 | The build tool the Android project uses |
+| Android SDK platform | 37 | The Android version the app is compiled against |
+| Android emulator | Pixel 10, API 37 | The pretend phone the Android tests run on |
+| Nunito, DM Sans | Google Fonts (OFL-1.1) | The two fonts bundled with the Android app |
+| Lucide icons | 0.556.0 (via the web app) | The icon set both apps use |

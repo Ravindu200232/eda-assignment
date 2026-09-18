@@ -84,7 +84,7 @@ Android Developers pages are published under the Creative Commons Attribution 4.
 | | |
 |---|---|
 | **What it does** | Explains the two layers (background and foreground) that Android uses to draw a launcher icon in any shape, plus the monochrome layer for themed icons. |
-| **Where we used it** | `res/mipmap-anydpi-v26/ic_launcher.xml`, `ic_launcher_round.xml`, `res/drawable/ic_launcher_background.xml`, `ic_launcher_foreground.xml`, `ic_launcher_monochrome.xml` |
+| **Where we used it** | `res/mipmap-anydpi/ic_launcher.xml`, `ic_launcher_round.xml`, `res/drawable/ic_launcher_background.xml`, `ic_launcher_foreground.xml`, `ic_launcher_monochrome.xml` |
 | **Source** | Android Developers — *Create app icons (adaptive icons)* |
 | **Link** | https://developer.android.com/develop/ui/views/launch/icon_design_adaptive |
 | **How much we used** | The file layout, the sizes and the safe area rules. The sun drawing is ours, in the colours of AND-02. |
@@ -268,5 +268,29 @@ Android Developers pages are published under the Creative Commons Attribution 4.
 | **Source** | Android Developers — *Write automated tests with UI Automator* |
 | **Link** | https://developer.android.com/training/testing/other-components/ui-automator |
 | **How much we used** | `UiDevice.getInstance(...).takeScreenshot(file)` and the app folder on the phone that `adb pull` copies from. The walk through the screens is ours. |
+| **Licence** | CC BY 4.0 (text) / Apache 2.0 (samples) |
+| **Added by** | Ravindu |
+
+## AND-23 · Reaching the API on the local network (Android 17)
+
+| | |
+|---|---|
+| **What it does** | From Android 17, an app that targets it cannot open a connection to an address on the local network (a home or campus Wi-Fi, or the computer that runs the emulator at `10.0.2.2`) until the user allows the "Nearby devices" permission `ACCESS_LOCAL_NETWORK`. Without it the connection simply hangs. |
+| **Where we used it** | `util/LocalNetwork.java`, `ui/common/BaseActivity.java` (`withLocalNetwork`), `ui/auth/SplashActivity.java`, `ui/auth/LoginActivity.java`, `AndroidManifest.xml`, `live/LiveApiTest.java` |
+| **Source** | Android Developers — *Local network permission* |
+| **Link** | https://developer.android.com/privacy-and-security/local-network-permission |
+| **How much we used** | The permission name, the rule that it is enforced for apps targeting Android 17, and which addresses count as local. The check of the API address and when we ask are ours. |
+| **Licence** | CC BY 4.0 (text) / Apache 2.0 (samples) |
+| **Added by** | Ravindu |
+
+## AND-24 · Keeping the login token out of backups
+
+| | |
+|---|---|
+| **What it does** | Android can copy app data into a cloud backup or onto a new phone. Two rule files say which data may leave the phone: one for Android 12 and newer, one for older versions. |
+| **Where we used it** | `res/xml/data_extraction_rules.xml`, `res/xml/backup_rules.xml`, `AndroidManifest.xml` |
+| **Source** | Android Developers — *Back up user data with Auto Backup* |
+| **Link** | https://developer.android.com/identity/data/autobackup |
+| **How much we used** | The two file formats and the `exclude` rules. Leaving out the database, preferences and files (because the database holds a login token) is our decision. |
 | **Licence** | CC BY 4.0 (text) / Apache 2.0 (samples) |
 | **Added by** | Ravindu |
