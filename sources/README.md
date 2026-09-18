@@ -111,6 +111,10 @@ reader without a programming background, can see **what** we used, **where** we 
 | AND-29 | The map of nearby stations | Nimthara | Google Maps Platform documentation |
 | AND-30 | Picking a station and a day | Nimthara | Material Components |
 | AND-31 | Plural strings ("1 bay", "12 bays") | Nimthara | Android Developers |
+| AND-32 | Drawing the booking QR code | Hamnad | ZXing Android Embedded (GitHub), ZXing API documentation |
+| AND-33 | Booking tabs, the date range filter and the step bar | Hamnad | Material Components |
+| AND-34 | A bright screen while the QR code is shown | Hamnad | Android Developers |
+| AND-35 | Moving between the booking screens | Hamnad | Android Developers |
 
 ## Glossary (plain English)
 

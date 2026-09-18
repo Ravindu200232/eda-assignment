@@ -124,4 +124,4 @@ Versions come from `android/gradle/libs.versions.toml`.
 | Android SDK platform | 37 | The Android version the app is compiled against |
 | Android emulator | Pixel 10, API 37 | The pretend phone the Android tests run on |
 | Nunito, DM Sans | Google Fonts (OFL-1.1) | The two fonts bundled with the Android app |
-| Lucide icons | 0.556.0 (via the web app) | The icon set both apps use |
+| Lucide icons | lucide-react 1.46.0 (via the web app) | The icon set both apps use |

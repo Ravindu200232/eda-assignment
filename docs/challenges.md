@@ -315,3 +315,92 @@ page. Each entry says what went wrong, why it happened, and what we changed.
   solid, because the see-through clay card let the streets show through its words.
 - **Where:** `android/app/src/androidTest/java/lk/sliit/solargrid/screens/ScreensTest.java`,
   `android/app/src/main/res/layout/fragment_stations.xml`.
+
+### 43. Changing a booking whose own slot is now full
+- **Problem:** In "Change booking" the slot the booking already held would be missing from the list whenever the
+  booking's own bay was the last one, so the prosumer could not keep the slot and only change the energy.
+- **Why:** For prosumers the API only lists slots that can still be booked: open, not started and with a free bay. The
+  booking itself uses one of the bays of its slot, so a slot filled by it is left out.
+- **Fix:** The form adds the booking's own slot back when it shows the booking's own station and day, marked "your
+  booking", and chooses it at the start - the same answer the web portal gives (challenge 26). The API still checks
+  everything when the change is saved.
+- **Where:** `android/app/src/main/java/lk/sliit/solargrid/ui/booking/SlotChoices.java`, `BookingWizardActivity.java`.
+
+### 44. The summary screen opened a second copy of the booking page
+- **Problem:** Every booking action ends on the summary screen, but the booking page that started a change or a
+  cancel is still open underneath it. Opening the booking from the summary would add a second copy of the page, and
+  pressing back would show the booking as it was before.
+- **Why:** Starting a screen normally always adds a new copy, and the old page does not know the booking changed.
+- **Fix:** The summary screen asks Android to bring back the page that is already open
+  (`FLAG_ACTIVITY_CLEAR_TOP` with `FLAG_ACTIVITY_SINGLE_TOP`), and the booking page loads the booking again whenever
+  it comes back to the front. "Back to my bookings" does the same with the prosumer home and opens the list where the
+  booking now is: waiting after a new booking or a change, history after a cancel. The home screen only switches tab
+  once it is on screen again, because a tab cannot be swapped while Android is still restoring the screen.
+- **Where:** `ui/booking/BookingResultActivity.java`, `ui/booking/BookingDetailsActivity.java`,
+  `ui/prosumer/MainActivity.java`, `ui/operator/OperatorActivity.java`.
+
+### 45. Turning the picked dates back into days
+- **Problem:** The first version of the date filter did not build for Android 9, and on a phone set to a time zone
+  behind UTC it would have filtered by the day before the one that was tapped.
+- **Why:** The Material date picker answers with midnight UTC of each chosen day, as milliseconds. Reading those in
+  the phone's own time zone moves the moment back a day wherever the clock is behind UTC. The easy
+  `LocalDate.ofInstant` method is also missing on Android 9, the oldest version the app supports.
+- **Fix:** The milliseconds are read as UTC on purpose: `Instant.ofEpochMilli(ms).atZone(ZoneOffset.UTC).toLocalDate()`,
+  which works on every supported version and gives exactly the day that was tapped.
+- **Where:** `ui/booking/BookingsFragment.java`.
+
+### 46. The reason for a refused booking disappeared
+- **Problem:** While writing the emulator tests we saw that when the API refused a booking because the slot had just
+  filled up, its message would be hidden again a moment later.
+- **Why:** After a refusal the form reloads the slots and chooses the same slot again, and choosing a slot also hid the
+  message - even though the prosumer had not tapped anything.
+- **Fix:** Choosing a slot no longer hides the message; it is cleared only when the prosumer moves to another step.
+  An emulator test now fills the slot on purpose and checks that the message stays.
+- **Where:** `ui/booking/BookingWizardActivity.java`, `android/app/src/androidTest/.../ui/booking/BookingFlowTest.java`.
+
+### 47. The operator's day list started with the evening
+- **Problem:** Straight from the API, the operator "Today" list would show the latest booking first, which is the
+  wrong way round for planning the day at a station.
+- **Why:** Without a list tab the API sorts bookings newest first, which suits the history lists of the web portal.
+- **Fix:** The day list holds at most one day of bookings (one page of up to 100), so the app sorts that page from the
+  morning on before showing it. The API and its other users are unchanged.
+- **Where:** `ui/operator/TodayFragment.java`.
+
+### 48. Test data showed slots that crossed midnight
+- **Problem:** Some booking screenshots showed slots such as "22:30 - 00:30", which no real station has.
+- **Why:** The sample bookings started on whole UTC hours. Sri Lanka is 5 hours 30 ahead of UTC, so every sample began
+  at half past the hour in the app, and some ran past midnight.
+- **Fix:** The sample bookings now start on whole Sri Lankan hours, like the real two-hour slots, and the booking
+  saved in the form walk uses exactly the slot that was chosen on screen.
+- **Where:** `android/app/src/testShared/java/lk/sliit/solargrid/testing/Samples.java`, `ScreensTest.java`.
+
+### 49. An operator's booking history said "by you"
+- **Problem:** In the emulator tests an operator opening a prosumer's booking read "Booked - by you".
+- **Why:** The test helper signed every role in with the same NIC as the sample prosumer, so the app rightly thought
+  the operator had made the booking.
+- **Fix:** The helper now gives an operator a NIC and name of their own and a prosumer the sample prosumer's details.
+  The screenshot script also stopped copying Espresso's "view-op-error" pictures, which it saves whenever a step fails,
+  even one the test expects.
+- **Where:** `android/app/src/androidTest/java/lk/sliit/solargrid/testing/AppUnderTest.java`,
+  `android/scripts/take-screenshots.ps1`.
+
+### 50. A tap on a booking tab became a long press
+- **Problem:** On a busy emulator the filter test tapped the "Waiting" tab, but the list never changed, and the test
+  failed twice at the same step while every other tap worked.
+- **Why:** The emulator was so slow that the finger-up event arrived late. Android then reads the tap as a long press
+  (the log says "Overslept and turned a tap into a long press"), and a long press on a tab only shows its tooltip.
+- **Fix:** The tests choose a booking tab directly through a small Espresso action (`TabActions.selectTab`) and then
+  wait for the app, so the step no longer depends on how fast the emulator is. The screen code is unchanged.
+- **Where:** `android/app/src/androidTest/java/lk/sliit/solargrid/testing/TabActions.java`, `BookingFlowTest.java`,
+  `ScreensTest.java`, `LiveApiTest.java`.
+
+### 51. The emulator tests stopped after one second
+- **Problem:** `connectedDebugAndroidTest` failed at once with *"The process cannot access the file because it is
+  being used by another process"* for the folder of the test results.
+- **Why:** The Gradle daemon and the emulator had been started from a terminal that was sitting inside that folder.
+  Windows does not delete a folder that a running program uses as its working folder.
+- **Fix:** Stop the Gradle daemon (`gradlew --stop`), start the emulator from its own folder, and run Gradle from the
+  project folder. A slow emulator was also restarted, which brought a full emulator run back from about 45 minutes to
+  about 3.
+- **Where:** How the tests are run; nothing in the code changed.
+
