@@ -17,6 +17,9 @@
     <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
     <!-- Grid Operators scan booking QR codes. -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Nimthara: the map starts where the prosumer is, if they allow it. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -33,6 +36,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SolarGrid">
+
+        <!-- Nimthara: the Google Maps key comes from local.properties, never from Git. -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${mapsApiKey}" />
 
         <!-- Ravindu: start-up, sign in and operator mode -->
         <activity
@@ -81,6 +89,11 @@
             android:name=".ui.common.ChangePasswordActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- Nimthara: the page of one station -->
+        <activity
+            android:name=".ui.map.StationDetailsActivity"
+            android:exported="false" />
 
     </application>
 

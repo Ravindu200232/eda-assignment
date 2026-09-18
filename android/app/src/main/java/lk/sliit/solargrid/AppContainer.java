@@ -16,13 +16,16 @@ import java.util.concurrent.Executors;
 
 import lk.sliit.solargrid.data.local.ProfileDao;
 import lk.sliit.solargrid.data.local.SolarGridDbHelper;
+import lk.sliit.solargrid.data.local.StationDao;
 import lk.sliit.solargrid.data.remote.ApiClient;
 import lk.sliit.solargrid.data.remote.SolarGridApi;
 import lk.sliit.solargrid.data.repo.AuthRepository;
 import lk.sliit.solargrid.data.repo.CheckInRepository;
 import lk.sliit.solargrid.data.repo.DashboardRepository;
 import lk.sliit.solargrid.data.repo.ProsumerRepository;
+import lk.sliit.solargrid.data.repo.StationRepository;
 import lk.sliit.solargrid.session.SessionStore;
+import lk.sliit.solargrid.util.LocationFinder;
 
 public final class AppContainer {
 
@@ -34,6 +37,8 @@ public final class AppContainer {
     private final SessionStore sessionStore;
 
     private final ProfileDao profileDao;
+    private final StationDao stationDao;
+    private LocationFinder locationFinder = new LocationFinder.Fused();
 
     private String baseUrl;
     private SolarGridApi api;
@@ -41,6 +46,7 @@ public final class AppContainer {
     private CheckInRepository checkInRepository;
     private ProsumerRepository prosumerRepository;
     private DashboardRepository dashboardRepository;
+    private StationRepository stationRepository;
 
     /** Builds everything the app shares. Only AppContainer.init() calls this. */
     private AppContainer(Context context) {
@@ -49,6 +55,7 @@ public final class AppContainer {
         this.worker = Executors.newSingleThreadExecutor();
         this.sessionStore = new SessionStore(dbHelper, worker);
         this.profileDao = new ProfileDao(dbHelper);
+        this.stationDao = new StationDao(dbHelper);
         useBaseUrl(BuildConfig.API_BASE_URL);
     }
 
@@ -80,6 +87,7 @@ public final class AppContainer {
         this.checkInRepository = new CheckInRepository(api);
         this.prosumerRepository = new ProsumerRepository(api, sessionStore, profileDao, worker);
         this.dashboardRepository = new DashboardRepository(api);
+        this.stationRepository = new StationRepository(api, stationDao, worker);
     }
 
     /** The API address the app is using. */
@@ -110,6 +118,21 @@ public final class AppContainer {
     /** The numbers on the prosumer home screen. */
     public synchronized DashboardRepository dashboard() {
         return dashboardRepository;
+    }
+
+    /** Stations, their slots and battery bays. */
+    public synchronized StationRepository stations() {
+        return stationRepository;
+    }
+
+    /** Where the phone is, for the map of nearby stations. */
+    public synchronized LocationFinder location() {
+        return locationFinder;
+    }
+
+    /** Replaces the location finder. The tests use a fixed place. */
+    public synchronized void useLocationFinder(LocationFinder finder) {
+        this.locationFinder = finder;
     }
 
     /** The signed-in user and their token. */
